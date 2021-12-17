@@ -1,2 +1,4 @@
-
+*.img
+*.xz
+tmp/
 vendor_vndk/
