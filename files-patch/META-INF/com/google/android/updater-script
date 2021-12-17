@@ -1,0 +1,71 @@
+ui_print("");
+ui_print("#########################################");
+ui_print("#                                       #");
+ui_print("#    Patch to transform a GSI to        #"); 
+ui_print("#    Huavei hi6250                      #");
+ui_print("#                                       #");
+ui_print("#                                       #");
+ui_print("#    by AltairFR (Iceows)               #");
+ui_print("#    Thanks to Darkjoker360, Hamido,    #");
+ui_print("#       Adam                            #");
+ui_print("#                                       #");
+ui_print("#                                       #");
+ui_print("#    V0.1                               #");
+ui_print("#                                       #");
+ui_print("#########################################");
+ui_print("");
+ui_print("");
+
+
+set_progress(0.100000);
+ui_print(" Extract install script...");
+ifelse(is_mounted("/system"), unmount("/system"));
+
+
+package_extract_file("mount-system.sh", "/tmp/mount-system.sh");
+set_perm(0, 0, 0755, "/tmp/mount-system.sh");
+
+package_extract_file("init-fixes.sh", "/tmp/init-fixes.sh");
+package_extract_file("display-fixes.sh", "/tmp/display-fixes.sh");
+package_extract_file("libaptx-fixes.sh", "/tmp/libaptx-fixes.sh");
+package_extract_file("media-fixes.sh", "/tmp/media-fixes.sh");
+
+set_perm(0, 0, 0755, "/tmp/init-fixes.sh");
+set_perm(0, 0, 0755, "/tmp/display-fixes.sh");
+set_perm(0, 0, 0755, "/tmp/libaptx-fixes.sh");
+set_perm(0, 0, 0755, "/tmp/media-fixes.sh");
+
+set_progress(0.200000);
+ui_print(" Mounting filesystems system ...");
+run_program("/tmp/mount-system.sh") == 0 || abort("Could not mount /system");
+ui_print(" system mount ok !! ...");
+
+set_progress(0.300000);
+ui_print(" Extracting files to system.");
+package_extract_dir("system", "/system");
+
+ui_print(" Setting fix");
+set_progress(0.500000);
+run_program("/tmp/init-fixes.sh") == 0 || abort("Could not fix");
+run_program("/tmp/display-fixes.sh") == 0 || abort("Could not fix");
+run_program("/tmp/libaptx-fixes.sh") == 0 || abort("Could not fix");
+run_program("/tmp/media-fixes.sh") == 0 || abort("Could not fix");
+
+delete("/tmp/init-fixes.sh");
+delete("/tmp/display-fixes.sh");
+delete("/tmp/libaptx-fixes.sh");
+delete("/tmp/media-fixes.sh");
+
+
+ui_print("");
+set_progress(0.600000);
+ui_print("Unmounting...");
+delete("/tmp/mount-system.sh");
+unmount("/system");
+
+
+set_progress(1.000000);
+ui_print("**************************************");
+ui_print("*          Install Complete!         *");
+ui_print("**************************************");
+

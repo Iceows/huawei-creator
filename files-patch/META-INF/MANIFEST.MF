@@ -1,0 +1,1471 @@
+Manifest-Version: 1.0
+Created-By: 1.0 (Android SignApk)
+
+Name: system/etc/charger/1080x2160/clric_49.png
+SHA1-Digest: 1FS5M3CJZmBuVHwl1kgZeZk3d2g=
+
+Name: system/etc/charger/1080x1920/dcp_charging_15.png
+SHA1-Digest: K0+ASoLVY1gMN2oaMnHJwJu3bQ4=
+
+Name: system/etc/charger/1080x1920/clric_48.png
+SHA1-Digest: 38KmYdJHHspMtzA6Sl5eXZsgpKE=
+
+Name: system/bin/rw-system.sh
+SHA1-Digest: V26niOOeiGZTyMIi0svrGw7gQC8=
+
+Name: system/etc/charger/1080x1920/charging_01.png
+SHA1-Digest: VsGrxWAYYfbrb0kBv8TmX0Ipb3I=
+
+Name: system/etc/charger/1080x1920/dcp_charging_23.png
+SHA1-Digest: 0gUymfFG68+AjUqByUWrhSGknJU=
+
+Name: system/etc/charger/1080x1920/fcp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x2160/clric_57.png
+SHA1-Digest: D9/QDagGzJoUPpEVVwO5HyQ8GMw=
+
+Name: system/etc/charger/1080x2160/cur_surface.png
+SHA1-Digest: QOG+HS5w0Y2wQTa++iTuogWuqCg=
+
+Name: system/etc/charger/1080x1920/number_8.png
+SHA1-Digest: 5ePrqc2RcgJzu/+a91v+Ru153b0=
+
+Name: system/etc/charger/1080x2160/clric_81.png
+SHA1-Digest: seVXWvWIGBxOsiTQTsNlcz2jLFI=
+
+Name: system/etc/charger/1080x2160/clric_73.png
+SHA1-Digest: 7IS6yS8OFLpzcTUzbQpcPTYthB0=
+
+Name: system/etc/charger/1080x2160/fcp_charging_13.png
+SHA1-Digest: gI4kIpBl77S4hO3QUScFRGgM4jM=
+
+Name: system/etc/charger/1080x2160/clric_65.png
+SHA1-Digest: Ls9A1fRooqRkGQ37VqshBqo+bKE=
+
+Name: system/etc/charger/1080x2160/scp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x2160/fcp_charging_21.png
+SHA1-Digest: wU4s7d+q8eUZ/O6vSGk1oapK7Q0=
+
+Name: system/etc/charger/1080x1920/scp_charging_02.png
+SHA1-Digest: XslZt+O0xXhnktyR1CJ3shy+3Yg=
+
+Name: system/etc/charger/1080x1920/dcp_charging_07.png
+SHA1-Digest: nO5qX/cCpHcaqJ8dBhHZiAoguQk=
+
+Name: system/etc/charger/1080x1920/charging_08.png
+SHA1-Digest: M4znKyVBB5ntno4LoeFVUTk2Bbw=
+
+Name: system/etc/charger/1080x1920/scp_empty_charge.png
+SHA1-Digest: Kk11QR+C4Psyj5kxLb2+CRt30yM=
+
+Name: system/etc/charger/1080x2160/scp_charging_23.png
+SHA1-Digest: 4lLsLAuIRC6vMOfWvRJR7wElC7Y=
+
+Name: system/etc/charger/1080x1920/empty_charge.png
+SHA1-Digest: QH7JrqdeFp1b3ubcreCBwNNaa34=
+
+Name: system/etc/charger/1080x2160/dcp_charging_21.png
+SHA1-Digest: 0NnoF7qCPgRPkObcGCo1BbocmIo=
+
+Name: system/etc/charger/1080x2160/scp_charging_07.png
+SHA1-Digest: mZGWbpw/VuqOmMx0XIUHpyuAar0=
+
+Name: system/etc/charger/1080x1920/dcp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x1920/scp_charging_10.png
+SHA1-Digest: D3dC2E6ULlKqY4N3vMRjV5tjJmw=
+
+Name: system/etc/charger/1080x2160/number_9.png
+SHA1-Digest: bHCmvbESyf3FBRChM6PdSa4mnCQ=
+
+Name: system/etc/charger/1080x1920/clric_41.png
+SHA1-Digest: fjTJ2gZuZ/Key9xTD5HHiDp0kII=
+
+Name: system/etc/charger/1080x2160/clric_42.png
+SHA1-Digest: 58+y2vaK5mdQ1yrECrfQJGTZZbM=
+
+Name: system/etc/charger/1080x1920/number_1.png
+SHA1-Digest: axNjvCj6SOGDAU66bhBR9KSCx8w=
+
+Name: system/etc/charger/1080x1920/battery_03.png
+SHA1-Digest: lwNH8NDgx2wIbqRR+Q3YJJSbdL0=
+
+Name: system/etc/charger/1080x1920/clric_56.png
+SHA1-Digest: ciqWn4BvO+rUQSg735sRAMM7C1w=
+
+Name: system/etc/charger/1080x2160/fcp_charging_05.png
+SHA1-Digest: 5I6lfopl4d7o3Hf+NnVv/nutzOs=
+
+Name: system/etc/charger/1080x1920/clric_72.png
+SHA1-Digest: 2b+vRsWP/qp9SWLhIaWIBJOeE2k=
+
+Name: system/etc/charger/1080x2160/clric_10.png
+SHA1-Digest: XjpQJVvpIvrR3qBl807rDzgdQg0=
+
+Name: system/etc/charger/1080x1920/clric_25.png
+SHA1-Digest: 0uK1osHdXwF9n64IaGNThlUd+Oo=
+
+Name: system/etc/charger/1080x1920/scp_charging_17.png
+SHA1-Digest: g0BBX/vKH5UEsMvpTsG4Y70kAkg=
+
+Name: system/etc/charger/1080x1920/clric_95.png
+SHA1-Digest: xaemT3ple1Kc/MhaeV912N+TDQ8=
+
+Name: system/etc/charger/1080x1920/clric_87.png
+SHA1-Digest: LoL0ts/M+U1eIPowaK8I8kH3FZ0=
+
+Name: libaptx-fixes.sh
+SHA1-Digest: lRL8+NFWMa6Dx2f5v0HJSXVA10w=
+
+Name: system/etc/charger/1080x2160/clric_96.png
+SHA1-Digest: l16EqG+18vZHxPFBjzGSWVa/gNY=
+
+Name: system/etc/charger/1080x2160/number_1.png
+SHA1-Digest: axNjvCj6SOGDAU66bhBR9KSCx8w=
+
+Name: system/etc/charger/1080x2160/clric_26.png
+SHA1-Digest: dE48CXLRNg0Cf6B13MM9XKNmc8g=
+
+Name: system/lib/libhidlbase.so
+SHA1-Digest: DXGgr1C26RrTgmsNNH9cPMQLAK4=
+
+Name: system/etc/charger/1080x2160/battery_04.png
+SHA1-Digest: fjythWD9EBrE2nz/NYC6rRfw9xI=
+
+Name: system/phh/huawei/fingerprint.kl
+SHA1-Digest: fgaWziHvKwTHVXIaw/OQB2lspRk=
+
+Name: system/etc/charger/1080x1920/cur_surface.png
+SHA1-Digest: QOG+HS5w0Y2wQTa++iTuogWuqCg=
+
+Name: system/etc/charger/1080x2160/charging_01.png
+SHA1-Digest: VsGrxWAYYfbrb0kBv8TmX0Ipb3I=
+
+Name: system/etc/charger/1080x2160/clric_34.png
+SHA1-Digest: cwAdOdwGm1QWLC8c7AINLrJhWa4=
+
+Name: system/etc/charger/1080x1920/clric_01.png
+SHA1-Digest: YLhdZi3U6/cojovh4pxJLiiWVBc=
+
+Name: system/etc/charger/1080x2160/clric_17.png
+SHA1-Digest: VlNhq+I3O1KvpUVKdtACTXtDPV0=
+
+Name: system/etc/charger/1080x1920/fcp_charging_23.png
+SHA1-Digest: fJthdkaV+vrY4QoXwMlxBYjOsE0=
+
+Name: system/etc/charger/1080x1920/clric_33.png
+SHA1-Digest: pea7868/hyNCF3QgsGmbz+Qmqzg=
+
+Name: system/etc/charger/1080x2160/charging_16.png
+SHA1-Digest: pU/47efnopVhGkcgAwULb+1jChQ=
+
+Name: system/etc/charger/1080x1920/fcp_charging_08.png
+SHA1-Digest: UxYSbewFrSNd1Tuz9EY7qj7iYrI=
+
+Name: mount-system.sh
+SHA1-Digest: 6v2r160iizCeacYopc/tXJbC9Ps=
+
+Name: system/product/etc/libnfc-nxp.conf
+SHA1-Digest: nkS8PxIflFLpkASgfr/98hMDEu0=
+
+Name: system/etc/permissions/android.hardware.nfc.xml
+SHA1-Digest: 0sIhQL/T4Yrc+VRz7KwMMGl8BWE=
+
+Name: system/etc/charger/1080x1920/clric_80.png
+SHA1-Digest: s1J1QwBSxaGsE/MfzlE1SnlGajY=
+
+Name: system/etc/charger/1080x2160/clric_09.png
+SHA1-Digest: HMF3fs0mENs3OEDuYlB8AJH3p3s=
+
+Name: system/etc/charger/1080x2160/dcp_charging_12.png
+SHA1-Digest: B9N3AwQrOyh9SbgzDsKOYOBTDTo=
+
+Name: system/etc/charger/1080x1920/scp_charging_09.png
+SHA1-Digest: DknWsI7Xr5Vs9haGgxA2bNBHZsk=
+
+Name: system/etc/charger/1080x2160/clric_88.png
+SHA1-Digest: w0wjD8i9PWjiiNg/O6A1uYrFKKU=
+
+Name: system/etc/charger/1080x1920/clric_16.png
+SHA1-Digest: 6SxCZZFXubVqpB+s6sWMc/LPid8=
+
+Name: system/etc/charger/1080x2160/scp_charging_15.png
+SHA1-Digest: BVswK3O+EkB9gCNgWPq/jPKCCBQ=
+
+Name: system/etc/charger/1080x1920/percent_sign.png
+SHA1-Digest: iBewDyXIzz0ZAI+Hpyw3FlfK/OY=
+
+Name: system/etc/charger/1080x2160/clric_02.png
+SHA1-Digest: dcs5/mMM4pv99/DfLehSNGnZ0OQ=
+
+Name: system/etc/charger/1080x1920/clric_57.png
+SHA1-Digest: D9/QDagGzJoUPpEVVwO5HyQ8GMw=
+
+Name: system/etc/charger/1080x2160/clric_74.png
+SHA1-Digest: N2J84Up3kgDWL7HDEdWnz0BGgFI=
+
+Name: system/etc/charger/1080x2160/fcp_charging_14.png
+SHA1-Digest: KegNoKGityed4RUX4ET7Ob282Sg=
+
+Name: system/etc/charger/1080x2160/fcp_charging_22.png
+SHA1-Digest: 6YMLP1MucHlnleosW8CLcchfcW8=
+
+Name: system/etc/charger/1080x2160/clric_90.png
+SHA1-Digest: cYw/Ba9RmOAeyGw0tyDFXxDbL24=
+
+Name: system/etc/charger/1080x1920/clric_65.png
+SHA1-Digest: Ls9A1fRooqRkGQ37VqshBqo+bKE=
+
+Name: system/etc/charger/1080x1920/dcp_charging_08.png
+SHA1-Digest: RWHpQkMWobU0TTE+WXCj3lGvMZ0=
+
+Name: system/etc/charger/1080x2160/clric_56.png
+SHA1-Digest: ciqWn4BvO+rUQSg735sRAMM7C1w=
+
+Name: system/etc/charger/1080x2160/clric_64.png
+SHA1-Digest: Vl722tIt698YA+glv6IHv/uaQ6g=
+
+Name: system/etc/charger/1080x1920/clric_32.png
+SHA1-Digest: MZjVJWLHi/nOhJnzneogYqNRaO0=
+
+Name: system/lib/libhwbinder.so
+SHA1-Digest: oRMWAAtmxzSz0VsfFklk2DBl+iY=
+
+Name: system/etc/charger/1080x1920/fcp_charging_01.png
+SHA1-Digest: qs6p1NQT5+55MkLWt3b+Cl4CEL0=
+
+Name: system/etc/charger/1080x1920/scp_charging_11.png
+SHA1-Digest: dcIRzjR6RunUSue2qIumcZ8y83Y=
+
+Name: system/etc/charger/1080x1920/clric_08.png
+SHA1-Digest: +Onf2M+gSj79ez4JxLPYbneyCho=
+
+Name: system/etc/charger/1080x2160/clric_25.png
+SHA1-Digest: 0uK1osHdXwF9n64IaGNThlUd+Oo=
+
+Name: system/etc/charger/1080x1920/fcp_charging_16.png
+SHA1-Digest: 0VR6s++w2zw5VHNfrY9vBwus/1A=
+
+Name: system/etc/charger/1080x1920/number_0.png
+SHA1-Digest: TIljs9zdXINa5ZL+9LEY+lAaJz0=
+
+Name: system/etc/charger/1080x2160/scp_charging_06.png
+SHA1-Digest: P/gTOmPSzU/vZTBa6XVFCKoMqlo=
+
+Name: system/etc/charger/1080x1920/clric_71.png
+SHA1-Digest: VC6LkJr1AEgYSXSXefCrdn9/hUE=
+
+Name: system/etc/charger/1080x2160/fcp_charging_04.png
+SHA1-Digest: tJGjUuWIBlQVGPbZkUedBDrPbIc=
+
+Name: system/etc/charger/1080x1920/battery_02.png
+SHA1-Digest: zn9s+YVj7KcJqyr4eKv1+SLwG1E=
+
+Name: system/etc/charger/1080x1920/charging_07.png
+SHA1-Digest: qf4GVuTFiun4XhCw6n/2+I2jlmM=
+
+Name: system/etc/charger/1080x1920/dcp_charging_14.png
+SHA1-Digest: ObFBktRCYk/wJHISWSwnjPstAP0=
+
+Name: media-fixes.sh
+SHA1-Digest: 75GF6D8/sUtUy7wDXmbiEmANxXY=
+
+Name: system/etc/charger/1080x1920/charging_10.png
+SHA1-Digest: kr/U5ek3tOvITq3WJBQPyndo3zw=
+
+Name: system/etc/charger/1080x2160/number_8.png
+SHA1-Digest: 5ePrqc2RcgJzu/+a91v+Ru153b0=
+
+Name: system/etc/charger/1080x2160/clric_41.png
+SHA1-Digest: fjTJ2gZuZ/Key9xTD5HHiDp0kII=
+
+Name: system/etc/charger/1080x1920/clric_42.png
+SHA1-Digest: 58+y2vaK5mdQ1yrECrfQJGTZZbM=
+
+Name: system/etc/charger/1080x2160/dcp_charging_20.png
+SHA1-Digest: gL2HyD5PFQ1bGPzJeRS5szjztlg=
+
+Name: system/etc/charger/1080x1920/number_9.png
+SHA1-Digest: bHCmvbESyf3FBRChM6PdSa4mnCQ=
+
+Name: system/etc/charger/1080x2160/clric_19.png
+SHA1-Digest: nNFucV0yFl6it8g/TH+u0iGOCyA=
+
+Name: system/etc/charger/1080x1920/fcp_charging_22.png
+SHA1-Digest: 6YMLP1MucHlnleosW8CLcchfcW8=
+
+Name: system/etc/charger/1080x1920/scp_charging_16.png
+SHA1-Digest: nAILpFNfxo/Xfv+l1NUVb4rp5ck=
+
+Name: system/etc/charger/1080x1920/clric_00.png
+SHA1-Digest: QOG+HS5w0Y2wQTa++iTuogWuqCg=
+
+Name: system/etc/charger/1080x2160/clric_35.png
+SHA1-Digest: bwTQhm0sSkN7sjOx4/WGL0BG67w=
+
+Name: system/etc/charger/1080x1920/clric_26.png
+SHA1-Digest: dE48CXLRNg0Cf6B13MM9XKNmc8g=
+
+Name: system/etc/charger/1080x2160/clric_18.png
+SHA1-Digest: CcHzgBkCdsmNnhr9+Rh63EytsKQ=
+
+Name: system/etc/charger/1080x2160/scp_charging_22.png
+SHA1-Digest: nppC2LPHtx/G1n7Vbrrufr3WiGA=
+
+Name: system/etc/charger/1080x1920/fcp_charging_15.png
+SHA1-Digest: oSDQ2LztcYNKBqRT/17Y82RvI9Q=
+
+Name: system/etc/charger/1080x1920/clric_09.png
+SHA1-Digest: HMF3fs0mENs3OEDuYlB8AJH3p3s=
+
+Name: system/etc/charger/1080x2160/clric_95.png
+SHA1-Digest: xaemT3ple1Kc/MhaeV912N+TDQ8=
+
+Name: system/etc/charger/1080x1920/clric_96.png
+SHA1-Digest: l16EqG+18vZHxPFBjzGSWVa/gNY=
+
+Name: system/etc/charger/1080x1920/clric_10.png
+SHA1-Digest: XjpQJVvpIvrR3qBl807rDzgdQg0=
+
+Name: system/etc/charger/1080x1920/clric_79.png
+SHA1-Digest: t02UTVvTj9FZ9Ql9TTQaDjBbMkI=
+
+Name: system/etc/charger/1080x1920/battery_abnormality_err_charge.png
+SHA1-Digest: TZn3g2/YqFAtmB6uUD4WzlOJKGA=
+
+Name: system/etc/charger/1080x2160/clric_80.png
+SHA1-Digest: s1J1QwBSxaGsE/MfzlE1SnlGajY=
+
+Name: system/etc/charger/1080x2160/clric_20.png
+SHA1-Digest: 4p8PomkVshWssV7A90a0GxB1F8Y=
+
+Name: system/etc/charger/1080x2160/dcp_charging_13.png
+SHA1-Digest: NUq60qFtlKVBtDAtRZz5ByxUyos=
+
+Name: system/etc/init/android.system.suspend@1.0-service.rc
+SHA1-Digest: 8XxGzf5TCuxMEKXC8mQid3o3nqQ=
+
+Name: system/etc/charger/1080x2160/clric_89.png
+SHA1-Digest: tkju/x8HasLFYDfTIDRTfzjm5BY=
+
+Name: system/etc/charger/1080x2160/scp_charging_01.png
+SHA1-Digest: mvyZhyPdQjIRZNrqr8VGRUEsB7E=
+
+Name: system/etc/charger/1080x2160/charging_02.png
+SHA1-Digest: dvlul7v3KTiwBOWozAk5h8jh+w4=
+
+Name: system/etc/charger/1080x2160/clric_03.png
+SHA1-Digest: LzyWDSTH9MP+29UdKFJH2tBkSpM=
+
+Name: system/etc/charger/1080x1920/scp_charging_01.png
+SHA1-Digest: mvyZhyPdQjIRZNrqr8VGRUEsB7E=
+
+Name: system/etc/charger/1080x1920/clric_64.png
+SHA1-Digest: Vl722tIt698YA+glv6IHv/uaQ6g=
+
+Name: system/etc/charger/1080x2160/scp_charging_16.png
+SHA1-Digest: nAILpFNfxo/Xfv+l1NUVb4rp5ck=
+
+Name: system/etc/charger/1080x1920/clric_81.png
+SHA1-Digest: seVXWvWIGBxOsiTQTsNlcz2jLFI=
+
+Name: system/etc/charger/1080x2160/charging_17.png
+SHA1-Digest: iy7IPS2fYIsIS7PWy87blg/ieW4=
+
+Name: system/etc/charger/1080x1920/clric_47.png
+SHA1-Digest: TK+QV+RT4lYSakYwGezOmuVz0vI=
+
+Name: system/etc/charger/1080x1920/clric_82.png
+SHA1-Digest: bP1aabHaKL86NwzMXXVzhLRDv+Y=
+
+Name: system/etc/charger/1080x2160/scp_charging_17.png
+SHA1-Digest: g0BBX/vKH5UEsMvpTsG4Y70kAkg=
+
+Name: system/etc/charger/1080x2160/number_7.png
+SHA1-Digest: sF/UNKIAwlAavl8PcMqamdZFczg=
+
+Name: system/etc/permissions/platform.xml
+SHA1-Digest: KTfUdhGLK17SB3bz68jgfwdvFyM=
+
+Name: system/etc/charger/1080x2160/dcp_charging_11.png
+SHA1-Digest: 9CeW0MEpR32qx60YD0G7QbzI2ys=
+
+Name: system/etc/charger/1080x2160/clric_40.png
+SHA1-Digest: e1Fk46r58OBRD8fa8ffk2ao7eXA=
+
+Name: system/etc/charger/1080x1920/number_6.png
+SHA1-Digest: ++9oj+SRCP4OexN753V6AlaIQ/I=
+
+Name: system/etc/charger/1080x2160/clric_83.png
+SHA1-Digest: rdqoYxQFRq1GZ06TeWPx8dbkD8U=
+
+Name: system/etc/charger/1080x2160/charging_23.png
+SHA1-Digest: nOv3aTqVs8nQ/i/wC3IfnLp6JtU=
+
+Name: system/etc/charger/1080x2160/charging_15.png
+SHA1-Digest: N85uoDarkgpWUNS26jmmG5oy8KI=
+
+Name: system/etc/charger/1080x1920/fcp_charging_02.png
+SHA1-Digest: oIklmCS8Zb6UrCtI11lVzkOosTs=
+
+Name: system/etc/charger/1080x2160/clric_47.png
+SHA1-Digest: TK+QV+RT4lYSakYwGezOmuVz0vI=
+
+Name: system/etc/charger/1080x1920/fcp_charging_10.png
+SHA1-Digest: /+e1zCw+3xRk0M2veath9h8Igcg=
+
+Name: system/etc/charger/1080x2160/clric_04.png
+SHA1-Digest: KaAnB7ny6E77V2z1jQ/hl3kesvU=
+
+Name: system/etc/charger/1080x2160/clric_98.png
+SHA1-Digest: zqg7cI6kl4cYUH77mniQN2cIHBk=
+
+Name: system/etc/charger/1080x2160/clric_55.png
+SHA1-Digest: ICMLr9KjY4x7MYsButrvjqVvCQk=
+
+Name: system/etc/charger/1080x2160/scp_charging_10.png
+SHA1-Digest: D3dC2E6ULlKqY4N3vMRjV5tjJmw=
+
+Name: system/etc/charger/1080x1920/scp_charging_19.png
+SHA1-Digest: D2j5h5CKjMicFgN8hWrk7DAh3yE=
+
+Name: system/etc/charger/1080x1920/dcp_charging_13.png
+SHA1-Digest: NUq60qFtlKVBtDAtRZz5ByxUyos=
+
+Name: system/etc/charger/1080x1920/charging_11.png
+SHA1-Digest: uUtzVhFH4sdjDTmkprYS3SRu+XU=
+
+Name: system/etc/charger/1080x2160/clric_12.png
+SHA1-Digest: V4eLcQE/SxLVtyUrC95L+39boqU=
+
+Name: system/etc/charger/1080x1920/clric_97.png
+SHA1-Digest: 7Sjf8+GzMd/0P/QcTOE2cCH/WRw=
+
+Name: system/etc/charger/1080x2160/battery_03.png
+SHA1-Digest: lwNH8NDgx2wIbqRR+Q3YJJSbdL0=
+
+Name: system/etc/charger/1080x1920/clric_54.png
+SHA1-Digest: s1JnQ2POq9f0UxScbW1/8EOP7Bo=
+
+Name: system/etc/charger/1080x2160/charging_07.png
+SHA1-Digest: qf4GVuTFiun4XhCw6n/2+I2jlmM=
+
+Name: system/etc/charger/1080x1920/clric_11.png
+SHA1-Digest: WCwBv6lv1EQcmWTjlfeQ+Cca0wk=
+
+Name: system/etc/charger/1080x1920/fcp_charging_17.png
+SHA1-Digest: NsjDs0hv80xQD5yTRAemBwKGaS4=
+
+Name: system/etc/charger/1080x2160/dcp_empty_charge.png
+SHA1-Digest: dq0o5pMu0UJKnFfhJeT3uYeL9Rs=
+
+Name: system/etc/charger/1080x1920/clric_07.png
+SHA1-Digest: WcOfE6DpvrMU7RdV12fSQv1q+mQ=
+
+Name: system/etc/charger/1080x1920/scp_charging_04.png
+SHA1-Digest: eA3GJ0hp8wpRJfbMxar5ydAC/Lc=
+
+Name: system/etc/charger/1080x1920/charging_06.png
+SHA1-Digest: wuWrGO0MpC+dvzQ++QcqP4qm9zk=
+
+Name: system/etc/charger/1080x2160/dcp_charging_03.png
+SHA1-Digest: wwz4XSAbQxKMfmmlJ3yKHE8wDr8=
+
+Name: system/etc/charger/1080x1920/clric_90.png
+SHA1-Digest: cYw/Ba9RmOAeyGw0tyDFXxDbL24=
+
+Name: system/etc/charger/1080x2160/percent_sign.png
+SHA1-Digest: iBewDyXIzz0ZAI+Hpyw3FlfK/OY=
+
+Name: system/etc/charger/1080x1920/dcp_empty_charge.png
+SHA1-Digest: EybEmGXqb02a9Ipu/XlvDHVq+a0=
+
+Name: system/etc/charger/1080x2160/fcp_charging_23.png
+SHA1-Digest: fJthdkaV+vrY4QoXwMlxBYjOsE0=
+
+Name: system/etc/charger/1080x1920/dcp_charging_10.png
+SHA1-Digest: JPunG7L0hJkBNdS0/z7f6/1QFuo=
+
+Name: system/etc/charger/1080x2160/fcp_charging_19.png
+SHA1-Digest: WkGpoaEGWokbIWhE4vjLOgzbzOE=
+
+Name: system/etc/charger/1080x1920/clric_78.png
+SHA1-Digest: 5jCx97EJD4y0qOj7vQkzZzQhsuY=
+
+Name: system/etc/charger/1080x1920/clric_35.png
+SHA1-Digest: bwTQhm0sSkN7sjOx4/WGL0BG67w=
+
+Name: system/product/etc/permissions/com.android.nfc_extras.xml
+SHA1-Digest: ZvocFvtXygXFd7nw2Ja+V7G7PR4=
+
+Name: system/product/etc/permissions/android.hardware.nfc.xml
+SHA1-Digest: 0sIhQL/T4Yrc+VRz7KwMMGl8BWE=
+
+Name: system/etc/charger/1080x1920/battery_05.png
+SHA1-Digest: bYhEMr6liRDh5YNPFrwkpxEqbj4=
+
+Name: system/etc/charger/1080x2160/clric_60.png
+SHA1-Digest: cWv1YdtyFezOJqk08EoSGqpU31k=
+
+Name: system/etc/charger/1080x1920/clric_27.png
+SHA1-Digest: CkAxl1YRYf/Vm3KA+8sAkJepNOs=
+
+Name: system/etc/charger/1080x1920/bg.png
+SHA1-Digest: om2vzUfgZCMDD8RL2koZ5lZWj2A=
+
+Name: system/etc/charger/1080x1920/clric_63.png
+SHA1-Digest: xVcrzYM0cf00zY2xqxp+yeMfxS0=
+
+Name: init-fixes.sh
+SHA1-Digest: cPDtq/Vy7fdP0vshzaQf5ZURtC0=
+
+Name: system/etc/charger/1080x1920/clric_20.png
+SHA1-Digest: 4p8PomkVshWssV7A90a0GxB1F8Y=
+
+Name: system/etc/charger/1080x2160/fcp_charging_03.png
+SHA1-Digest: pc6OwTBu5UAJMpOh0EVvyxJPUkw=
+
+Name: system/etc/charger/1080x1920/battery_abnormality_charging.png
+SHA1-Digest: 2PpZ/dLzAvU1T4prpjWiuDqB+QE=
+
+Name: system/etc/charger/1080x2160/charging_20.png
+SHA1-Digest: UqULv6n+oTD7XVFpXQXRWcBIaLQ=
+
+Name: system/etc/charger/1080x1920/err_charge.png
+SHA1-Digest: 1Q3tTRGWeK5BG+pZcF64wJHKz+Q=
+
+Name: system/etc/charger/1080x2160/dcp_charging_06.png
+SHA1-Digest: cv599LXefrPCsA/KqvORkazx0QY=
+
+Name: system/etc/charger/1080x2160/dcp_charging_19.png
+SHA1-Digest: nh35sh6/wyc57wVI37tn3hi+BkQ=
+
+Name: system/etc/charger/1080x2160/battery_06.png
+SHA1-Digest: /AcU/NVx+Xblh+rjthz5MAV2DH4=
+
+Name: system/etc/charger/1080x2160/clric_32.png
+SHA1-Digest: MZjVJWLHi/nOhJnzneogYqNRaO0=
+
+Name: system/etc/charger/1080x2160/clric_75.png
+SHA1-Digest: 5w+ltkgwJ2cvmSzBV5DWCcE+EWs=
+
+Name: system/etc/charger/1080x2160/scp_charging_02.png
+SHA1-Digest: XslZt+O0xXhnktyR1CJ3shy+3Yg=
+
+Name: system/etc/charger/1080x2160/clric_28.png
+SHA1-Digest: 5vrJEVSXZTCx97O5wprtFYAhxJ0=
+
+Name: system/etc/charger/1080x1920/number_7.png
+SHA1-Digest: sF/UNKIAwlAavl8PcMqamdZFczg=
+
+Name: system/etc/charger/1080x2160/charging_22.png
+SHA1-Digest: TDwGS5ItbbPUYE9PHjKkP96fias=
+
+Name: system/etc/charger/1080x1920/clric_49.png
+SHA1-Digest: 1FS5M3CJZmBuVHwl1kgZeZk3d2g=
+
+Name: system/etc/charger/1080x1920/clric_06.png
+SHA1-Digest: Vt2Qae49yzaWPHZlqCgFiHV7YnY=
+
+Name: system/etc/charger/1080x2160/scp_charging_18.png
+SHA1-Digest: ImzJSrzwHC2ID4aBo/ZemAHJ3uw=
+
+Name: system/etc/charger/1080x2160/clric_05.png
+SHA1-Digest: mAEEdiOg7wzjjxoPXmmq+NblChU=
+
+Name: system/etc/charger/1080x1920/scp_charging_03.png
+SHA1-Digest: bKF7GUj19xDTKZmjj4HX97XgzNI=
+
+Name: system/etc/charger/1080x1920/dcp_charging_06.png
+SHA1-Digest: cv599LXefrPCsA/KqvORkazx0QY=
+
+Name: system/etc/charger/1080x1920/clric_40.png
+SHA1-Digest: e1Fk46r58OBRD8fa8ffk2ao7eXA=
+
+Name: system/etc/charger/1080x2160/clric_48.png
+SHA1-Digest: 38KmYdJHHspMtzA6Sl5eXZsgpKE=
+
+Name: system/etc/charger/1080x1920/clric_83.png
+SHA1-Digest: rdqoYxQFRq1GZ06TeWPx8dbkD8U=
+
+Name: system/etc/charger/1080x2160/number_6.png
+SHA1-Digest: ++9oj+SRCP4OexN753V6AlaIQ/I=
+
+Name: system/etc/charger/1080x2160/dcp_charging_10.png
+SHA1-Digest: JPunG7L0hJkBNdS0/z7f6/1QFuo=
+
+Name: system/etc/charger/1080x1920/fcp_charging_18.png
+SHA1-Digest: yRbNQ5ksuxh6pJOBXLEgn8uXidE=
+
+Name: system/lib64/libhwbinder.so
+SHA1-Digest: pmEuPKh+siabUheVcMikn9BYPvk=
+
+Name: system/etc/charger/1080x2160/charging_14.png
+SHA1-Digest: bWArkYbG+5nGxLtCGdUX9atvPXA=
+
+Name: mount-vendor.sh
+SHA1-Digest: C7IWsbibSq+HjAHLEjoFSopQHZg=
+
+Name: system/etc/charger/1080x2160/clric_82.png
+SHA1-Digest: bP1aabHaKL86NwzMXXVzhLRDv+Y=
+
+Name: system/etc/charger/1080x1920/fcp_charging_03.png
+SHA1-Digest: pc6OwTBu5UAJMpOh0EVvyxJPUkw=
+
+Name: system/etc/charger/1080x1920/clric_98.png
+SHA1-Digest: zqg7cI6kl4cYUH77mniQN2cIHBk=
+
+Name: system/etc/charger/1080x2160/charging_08.png
+SHA1-Digest: M4znKyVBB5ntno4LoeFVUTk2Bbw=
+
+Name: system/etc/charger/1080x2160/fcp_empty_charge.png
+SHA1-Digest: jxL2Eg06fp6dwU/x/d313Q/iZUI=
+
+Name: system/etc/charger/1080x1920/charging_12.png
+SHA1-Digest: nADmNiTF7nlrv2jMUhNCOly4Duk=
+
+Name: system/etc/charger/1080x2160/dcp_charging_04.png
+SHA1-Digest: Ve/OiUeDzVusXVd2xNLMeBGsggE=
+
+Name: system/etc/charger/1080x1920/scp_charging_18.png
+SHA1-Digest: ImzJSrzwHC2ID4aBo/ZemAHJ3uw=
+
+Name: system/etc/charger/1080x2160/clric_11.png
+SHA1-Digest: WCwBv6lv1EQcmWTjlfeQ+Cca0wk=
+
+Name: system/etc/charger/1080x2160/fcp_charging_18.png
+SHA1-Digest: yRbNQ5ksuxh6pJOBXLEgn8uXidE=
+
+Name: system/etc/charger/1080x1920/clric_55.png
+SHA1-Digest: ICMLr9KjY4x7MYsButrvjqVvCQk=
+
+Name: system/etc/charger/1080x2160/clric_54.png
+SHA1-Digest: s1JnQ2POq9f0UxScbW1/8EOP7Bo=
+
+Name: display-fixes.sh
+SHA1-Digest: EbP8QTjRLnwZ8VYaVVmlc8gvcSU=
+
+Name: system/etc/charger/1080x1920/fcp_empty_charge.png
+SHA1-Digest: LeXiHqJfSX3DWTpIJQYdOWRAlDM=
+
+Name: system/etc/charger/1080x1920/clric_12.png
+SHA1-Digest: V4eLcQE/SxLVtyUrC95L+39boqU=
+
+Name: system/etc/charger/1080x2160/clric_97.png
+SHA1-Digest: 7Sjf8+GzMd/0P/QcTOE2cCH/WRw=
+
+Name: system/etc/charger/1080x1920/battery_04.png
+SHA1-Digest: fjythWD9EBrE2nz/NYC6rRfw9xI=
+
+Name: system/etc/charger/1080x2160/battery_05.png
+SHA1-Digest: bYhEMr6liRDh5YNPFrwkpxEqbj4=
+
+Name: system/etc/charger/1080x2160/clric_61.png
+SHA1-Digest: xcOOQ9mQgE32QcTaQYQVRgr3vcc=
+
+Name: system/etc/charger/1080x2160/clric_27.png
+SHA1-Digest: CkAxl1YRYf/Vm3KA+8sAkJepNOs=
+
+Name: system/etc/charger/1080x1920/clric_28.png
+SHA1-Digest: 5vrJEVSXZTCx97O5wprtFYAhxJ0=
+
+Name: system/etc/charger/1080x2160/charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x2160/scp_charging_03.png
+SHA1-Digest: bKF7GUj19xDTKZmjj4HX97XgzNI=
+
+Name: system/etc/charger/1080x1920/charging_05.png
+SHA1-Digest: oC1OT/O/XwqQtq8niBs4/R/XMys=
+
+Name: system/etc/charger/1080x2160/charging_09.png
+SHA1-Digest: MzuGLrkU5+maNf/nKIQkCvDol3M=
+
+Name: system/etc/charger/1080x1920/dcp_charging_11.png
+SHA1-Digest: 9CeW0MEpR32qx60YD0G7QbzI2ys=
+
+Name: system/etc/charger/1080x1920/clric_62.png
+SHA1-Digest: boTi2h/9xepkZjiEzq2ojPBTWGo=
+
+Name: system/lib/libaptX_encoder.so
+SHA1-Digest: mEc5oLyWjhj3XO0gVzP+P1HC1PA=
+
+Name: system/etc/charger/1080x2160/dcp_charging_05.png
+SHA1-Digest: btVQ7xzp/mEyBQIb98H0i/5O8wA=
+
+Name: system/etc/charger/1080x2160/clric_76.png
+SHA1-Digest: 0M97lhwgyvV2jt3J5PDU9veHlnQ=
+
+Name: system/etc/charger/1080x2160/clric_33.png
+SHA1-Digest: pea7868/hyNCF3QgsGmbz+Qmqzg=
+
+Name: system/etc/charger/1080x2160/full_charge.png
+SHA1-Digest: 5FL5npxWCUtPzHckAKkv3syn1Iw=
+
+Name: system/etc/charger/1080x1920/clric_34.png
+SHA1-Digest: cwAdOdwGm1QWLC8c7AINLrJhWa4=
+
+Name: system/etc/charger/1080x2160/fcp_charging_02.png
+SHA1-Digest: oIklmCS8Zb6UrCtI11lVzkOosTs=
+
+Name: system/etc/charger/1080x1920/dcp_charging_05.png
+SHA1-Digest: btVQ7xzp/mEyBQIb98H0i/5O8wA=
+
+Name: system/etc/charger/1080x2160/charging_21.png
+SHA1-Digest: Yqi1bQTAkGgxsfPLjYmvMQcTfas=
+
+Name: system/etc/charger/1080x1920/clric_77.png
+SHA1-Digest: 2wXyEFsqMSqsPbeqCqbtBJCN6ac=
+
+Name: system/etc/charger/1080x2160/clric_06.png
+SHA1-Digest: Vt2Qae49yzaWPHZlqCgFiHV7YnY=
+
+Name: system/etc/charger/1080x2160/clric_14.png
+SHA1-Digest: NV2x2eouo21bcB8060hFOVLBF64=
+
+Name: system/etc/charger/1080x1920/fcp_charging_19.png
+SHA1-Digest: WkGpoaEGWokbIWhE4vjLOgzbzOE=
+
+Name: system/etc/charger/1080x2160/charging_05.png
+SHA1-Digest: oC1OT/O/XwqQtq8niBs4/R/XMys=
+
+Name: system/etc/charger/1080x2160/charging_13.png
+SHA1-Digest: cQueIoEFhNWAPAgAFVQKpeIAR+c=
+
+Name: system/etc/charger/1080x2160/clric_22.png
+SHA1-Digest: vE683+N7jlDr1W6FLUpEgafxeBM=
+
+Name: system/etc/charger/1080x1920/clric_13.png
+SHA1-Digest: RiZetMOUUMl1obzDLfQll+xXDXk=
+
+Name: system/etc/charger/1080x2160/battery_01.png
+SHA1-Digest: +x2Wfq/JAcMy0gll6iDZGKCNLmo=
+
+Name: system/etc/charger/1080x2160/dcp_charging_01.png
+SHA1-Digest: pB88Ij5LJr8kNeigVeLptVSHo8U=
+
+Name: system/etc/charger/1080x2160/battery_08.png
+SHA1-Digest: dGH29vtJxytdJ2XXsvfNQDLJjRA=
+
+Name: system/etc/charger/1080x1920/clric_05.png
+SHA1-Digest: mAEEdiOg7wzjjxoPXmmq+NblChU=
+
+Name: system/etc/charger/1080x2160/clric_30.png
+SHA1-Digest: QEBqpo9nyXQySYjSE4sP8zOZe7Q=
+
+Name: system/etc/charger/1080x1920/full_charge.png
+SHA1-Digest: onViaDYt3M346n1nKSbsZLI6APQ=
+
+Name: system/etc/charger/1080x1920/clric_92.png
+SHA1-Digest: sYUKMusxkYrSsBpC8bv1PkuaH+w=
+
+Name: system/etc/permissions/android.hardware.nfc.hcef.xml
+SHA1-Digest: w2qm6jS49/BhYkCeA3Yo8HYypkY=
+
+Name: system/etc/charger/1080x1920/scp_charging_06.png
+SHA1-Digest: P/gTOmPSzU/vZTBa6XVFCKoMqlo=
+
+Name: system/etc/charger/1080x2160/fcp_charging_17.png
+SHA1-Digest: NsjDs0hv80xQD5yTRAemBwKGaS4=
+
+Name: system/etc/charger/1080x1920/clric_84.png
+SHA1-Digest: f2mzwxPINumvk6NrZtX577XoVM4=
+
+Name: system/etc/charger/1080x1920/fcp_charging_20.png
+SHA1-Digest: lf2KhGZbyD6mk37HsWIznM08IfU=
+
+Name: system/etc/charger/1080x2160/clric_85.png
+SHA1-Digest: SEGQ9b9uIxCclhOlbfTH323JaEk=
+
+Name: system/etc/charger/1080x2160/clric_37.png
+SHA1-Digest: QDBR+h8eOs9dZo9kA7wIVtxa/bU=
+
+Name: system/etc/charger/1080x1920/clric_99.png
+SHA1-Digest: fT5K1brWkZRiDlv2mEyFA0xrZIo=
+
+Name: system/etc/charger/1080x1920/fcp_charging_04.png
+SHA1-Digest: tJGjUuWIBlQVGPbZkUedBDrPbIc=
+
+Name: system/etc/charger/1080x2160/scp_charging_19.png
+SHA1-Digest: D2j5h5CKjMicFgN8hWrk7DAh3yE=
+
+Name: system/etc/charger/1080x1920/scp_charging_22.png
+SHA1-Digest: nppC2LPHtx/G1n7Vbrrufr3WiGA=
+
+Name: system/etc/charger/1080x2160/dcp_charging_16.png
+SHA1-Digest: fiB1Kkw+FxY+3sUlYT8iM+zmTn8=
+
+Name: system/etc/charger/1080x1920/clric_68.png
+SHA1-Digest: JfV07kjBenQgdtti7aig/gI/3io=
+
+Name: system/etc/charger/1080x2160/scp_empty_charge.png
+SHA1-Digest: 68c3saDQK4bw0LMwKGVUV6P/rgc=
+
+Name: system/etc/charger/1080x2160/fcp_charging_01.png
+SHA1-Digest: qs6p1NQT5+55MkLWt3b+Cl4CEL0=
+
+Name: system/etc/charger/1080x2160/scp_charging_04.png
+SHA1-Digest: eA3GJ0hp8wpRJfbMxar5ydAC/Lc=
+
+Name: system/etc/charger/1080x1920/clric_44.png
+SHA1-Digest: FO3g5h+p77zGpwMPWrcTGWRyxss=
+
+Name: system/etc/charger/1080x2160/dcp_charging_08.png
+SHA1-Digest: RWHpQkMWobU0TTE+WXCj3lGvMZ0=
+
+Name: system/etc/charger/1080x1920/clric_61.png
+SHA1-Digest: xcOOQ9mQgE32QcTaQYQVRgr3vcc=
+
+Name: system/etc/charger/1080x2160/clric_53.png
+SHA1-Digest: +FFKQW5SkKOyVMW+0iExdVywDIc=
+
+Name: system/etc/charger/1080x2160/clric_70.png
+SHA1-Digest: meN+0c9iHByOZxw/HeOZK9uSxYg=
+
+Name: system/etc/charger/1080x1920/dcp_charging_19.png
+SHA1-Digest: nh35sh6/wyc57wVI37tn3hi+BkQ=
+
+Name: system/etc/charger/1080x1920/clric_52.png
+SHA1-Digest: AWMjY73Ig2yi9hctD0W/GytbFZE=
+
+Name: system/etc/charger/1080x1920/charging_21.png
+SHA1-Digest: Yqi1bQTAkGgxsfPLjYmvMQcTfas=
+
+Name: system/etc/charger/1080x2160/dcp_charging_17.png
+SHA1-Digest: VvEuIUAxMT8B/8NOO/MN8l33eDg=
+
+Name: system/etc/charger/1080x1920/dcp_charging_12.png
+SHA1-Digest: B9N3AwQrOyh9SbgzDsKOYOBTDTo=
+
+Name: system/etc/charger/1080x1920/charging_13.png
+SHA1-Digest: cQueIoEFhNWAPAgAFVQKpeIAR+c=
+
+Name: system/etc/charger/1080x2160/clric_69.png
+SHA1-Digest: hENqf7MnpJjvNJ8HnTsYF7aH3pI=
+
+Name: system/etc/charger/1080x1920/charging_04.png
+SHA1-Digest: fP8xKomwNa+qQg50f+NZBXZU46M=
+
+Name: system/etc/charger/1080x1920/battery_abnormality_full_charge.png
+SHA1-Digest: k1pCsA4rfyPR/PTVD1FxSRAu6rI=
+
+Name: system/etc/charger/1080x1920/clric_76.png
+SHA1-Digest: 0M97lhwgyvV2jt3J5PDU9veHlnQ=
+
+Name: system/etc/charger/1080x1920/clric_59.png
+SHA1-Digest: eEbS/AxAOMXhnCxTOG60wPOp11o=
+
+Name: system/etc/permissions/android.hardware.nfc.hce.xml
+SHA1-Digest: Obrm4jTR6D8fqC3A3kvCxoaGc6U=
+
+Name: system/etc/charger/1080x1920/battery_07.png
+SHA1-Digest: QdXI/TkObIgtc+s6ljNGISCvREQ=
+
+Name: system/etc/charger/1080x2160/clric_77.png
+SHA1-Digest: 2wXyEFsqMSqsPbeqCqbtBJCN6ac=
+
+Name: system/etc/charger/1080x2160/number_5.png
+SHA1-Digest: nYk9yoU9Mem25X89ubTCA0XYQjM=
+
+Name: system/etc/charger/1080x1920/number_4.png
+SHA1-Digest: X0XsOiWfEDx9sRWlLhZ5WUq1kas=
+
+Name: system/etc/charger/1080x1920/dcp_charging_04.png
+SHA1-Digest: Ve/OiUeDzVusXVd2xNLMeBGsggE=
+
+Name: system/etc/charger/1080x2160/clric_62.png
+SHA1-Digest: boTi2h/9xepkZjiEzq2ojPBTWGo=
+
+Name: system/etc/charger/1080x1920/scp_charging_13.png
+SHA1-Digest: jpXH3Wbr+6uxxWWPcNWvAnx2ePk=
+
+Name: system/etc/charger/1080x2160/clric_92.png
+SHA1-Digest: sYUKMusxkYrSsBpC8bv1PkuaH+w=
+
+Name: system/etc/charger/1080x1920/clric_29.png
+SHA1-Digest: rWFQREq7M3Ns/fUAl/ipC0oW8l4=
+
+Name: system/etc/charger/1080x2160/clric_45.png
+SHA1-Digest: Rc4T+lj664LiuH3o2D8Zlhf/Aeo=
+
+Name: system/etc/charger/1080x1920/fcp_charging_12.png
+SHA1-Digest: XIJctT71m6LjHcPYfjLPg7yYZcE=
+
+Name: META-INF/com/google/android/updater-script
+SHA1-Digest: T6hdB0OFAKXGs0ZjK2pnXI9xXCg=
+
+Name: system/etc/charger/1080x1920/clric_14.png
+SHA1-Digest: NV2x2eouo21bcB8060hFOVLBF64=
+
+Name: system/etc/charger/1080x1920/clric_22.png
+SHA1-Digest: vE683+N7jlDr1W6FLUpEgafxeBM=
+
+Name: system/etc/charger/1080x2160/dcp_charging_02.png
+SHA1-Digest: f06tUlDceRAGijCsSFIUpIYEwvM=
+
+Name: system/etc/charger/1080x2160/clric_31.png
+SHA1-Digest: ZSTxLr1Y/jMWzKzT2XX69E35yFw=
+
+Name: system/etc/charger/1080x1920/clric_91.png
+SHA1-Digest: 5D/RJfSD6dL/jsRSTnbOI8tXwJQ=
+
+Name: system/etc/charger/1080x2160/clric_13.png
+SHA1-Digest: RiZetMOUUMl1obzDLfQll+xXDXk=
+
+Name: system/etc/charger/1080x1920/clric_75.png
+SHA1-Digest: 5w+ltkgwJ2cvmSzBV5DWCcE+EWs=
+
+Name: system/etc/charger/1080x2160/clric_21.png
+SHA1-Digest: daWxHC3yGndmyn4rzBaf0fSer8o=
+
+Name: system/etc/charger/1080x2160/charging_06.png
+SHA1-Digest: wuWrGO0MpC+dvzQ++QcqP4qm9zk=
+
+Name: system/etc/charger/1080x2160/fcp_charging_16.png
+SHA1-Digest: 0VR6s++w2zw5VHNfrY9vBwus/1A=
+
+Name: system/etc/charger/1080x2160/fcp_charging_08.png
+SHA1-Digest: UxYSbewFrSNd1Tuz9EY7qj7iYrI=
+
+Name: system/etc/charger/1080x2160/clric_99.png
+SHA1-Digest: fT5K1brWkZRiDlv2mEyFA0xrZIo=
+
+Name: system/etc/charger/1080x2160/clric_68.png
+SHA1-Digest: JfV07kjBenQgdtti7aig/gI/3io=
+
+Name: system/lib64/libaptX_encoder.so
+SHA1-Digest: 3xyJ168bs1gI1f40lrBLoGbBDLw=
+
+Name: system/etc/libnfc-nxp.conf
+SHA1-Digest: nkS8PxIflFLpkASgfr/98hMDEu0=
+
+Name: system/etc/charger/1080x1920/scp_charging_23.png
+SHA1-Digest: 4lLsLAuIRC6vMOfWvRJR7wElC7Y=
+
+Name: system/etc/charger/1080x1920/scp_charging_05.png
+SHA1-Digest: 2Bsy/UCchNYHOwXnTYrFvyhzyc4=
+
+Name: system/etc/charger/1080x1920/clric_37.png
+SHA1-Digest: QDBR+h8eOs9dZo9kA7wIVtxa/bU=
+
+Name: system/etc/charger/1080x1920/clric_69.png
+SHA1-Digest: hENqf7MnpJjvNJ8HnTsYF7aH3pI=
+
+Name: system/etc/charger/1080x2160/clric_07.png
+SHA1-Digest: WcOfE6DpvrMU7RdV12fSQv1q+mQ=
+
+Name: system/etc/charger/1080x2160/scp_charging_11.png
+SHA1-Digest: dcIRzjR6RunUSue2qIumcZ8y83Y=
+
+Name: system/etc/charger/1080x1920/fcp_charging_21.png
+SHA1-Digest: wU4s7d+q8eUZ/O6vSGk1oapK7Q0=
+
+Name: system/etc/charger/1080x1920/clric_85.png
+SHA1-Digest: SEGQ9b9uIxCclhOlbfTH323JaEk=
+
+Name: system/etc/charger/1080x2160/fcp_charging_10.png
+SHA1-Digest: /+e1zCw+3xRk0M2veath9h8Igcg=
+
+Name: system/etc/charger/1080x1920/clric_60.png
+SHA1-Digest: cWv1YdtyFezOJqk08EoSGqpU31k=
+
+Name: system/etc/charger/1080x2160/battery_02.png
+SHA1-Digest: zn9s+YVj7KcJqyr4eKv1+SLwG1E=
+
+Name: system/etc/charger/1080x1920/charging_19.png
+SHA1-Digest: mFWDg2Qt/RSJ/45xezZJukmNlM4=
+
+Name: system/etc/charger/1080x2160/charging_12.png
+SHA1-Digest: nADmNiTF7nlrv2jMUhNCOly4Duk=
+
+Name: system/etc/pra/libnfc_nxp_pra_L31.conf
+SHA1-Digest: nkS8PxIflFLpkASgfr/98hMDEu0=
+
+Name: system/etc/charger/1080x2160/clric_84.png
+SHA1-Digest: f2mzwxPINumvk6NrZtX577XoVM4=
+
+Name: system/etc/charger/1080x1920/charging_14.png
+SHA1-Digest: bWArkYbG+5nGxLtCGdUX9atvPXA=
+
+Name: system/etc/charger/1080x1920/clric_19.png
+SHA1-Digest: nNFucV0yFl6it8g/TH+u0iGOCyA=
+
+Name: system/etc/charger/1080x1920/fcp_charging_05.png
+SHA1-Digest: 5I6lfopl4d7o3Hf+NnVv/nutzOs=
+
+Name: system/etc/charger/1080x1920/clric_43.png
+SHA1-Digest: 2FA5dXKUA4WaAZ5Ch880aVeUr70=
+
+Name: system/etc/charger/1080x2160/scp_charging_12.png
+SHA1-Digest: ROB+nIdPy/vAGhsiNZO/5Jbvae8=
+
+Name: system/etc/charger/1080x1920/clric_70.png
+SHA1-Digest: meN+0c9iHByOZxw/HeOZK9uSxYg=
+
+Name: system/etc/charger/1080x1920/dcp_charging_03.png
+SHA1-Digest: wwz4XSAbQxKMfmmlJ3yKHE8wDr8=
+
+Name: system/etc/charger/1080x2160/fcp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x2160/scp_charging_05.png
+SHA1-Digest: 2Bsy/UCchNYHOwXnTYrFvyhzyc4=
+
+Name: system/etc/charger/1080x2160/clric_78.png
+SHA1-Digest: 5jCx97EJD4y0qOj7vQkzZzQhsuY=
+
+Name: system/system_ext/apex/com.android.media/etc/seccomp_policy/mediae
+ xtractor.policy
+SHA1-Digest: NolQM7JPMfRMkdYbFWMtSurXHCg=
+
+Name: system/etc/charger/1080x2160/clric_52.png
+SHA1-Digest: AWMjY73Ig2yi9hctD0W/GytbFZE=
+
+Name: system/etc/charger/1080x1920/clric_36.png
+SHA1-Digest: 7TwhpOvF9I5PK3/1i/UatBhb7Ik=
+
+Name: system/etc/charger/1080x1920/clric_53.png
+SHA1-Digest: +FFKQW5SkKOyVMW+0iExdVywDIc=
+
+Name: system/etc/charger/1080x2160/err_charge.png
+SHA1-Digest: DvLHhks8pxmsVkJ4wuqOXSUluxU=
+
+Name: system/etc/charger/1080x1920/dcp_charging_20.png
+SHA1-Digest: gL2HyD5PFQ1bGPzJeRS5szjztlg=
+
+Name: system/etc/charger/1080x2160/dcp_charging_18.png
+SHA1-Digest: bbIRYcCO1gTNHqRu2PSdZw58kRU=
+
+Name: system/etc/charger/1080x1920/charging_03.png
+SHA1-Digest: nQpDhjnT9cmzVjPe2X96mp8xD/s=
+
+Name: system/etc/charger/1080x1920/charging_20.png
+SHA1-Digest: UqULv6n+oTD7XVFpXQXRWcBIaLQ=
+
+Name: system/etc/charger/1080x1920/battery_06.png
+SHA1-Digest: /AcU/NVx+Xblh+rjthz5MAV2DH4=
+
+Name: system/etc/charger/1080x2160/battery_07.png
+SHA1-Digest: QdXI/TkObIgtc+s6ljNGISCvREQ=
+
+Name: system/etc/charger/1080x2160/clric_63.png
+SHA1-Digest: xVcrzYM0cf00zY2xqxp+yeMfxS0=
+
+Name: system/etc/charger/1080x2160/fcp_charging_09.png
+SHA1-Digest: rNHuavaSuctQ64UEOtr1oCdnM5M=
+
+Name: system/etc/charger/1080x2160/clric_46.png
+SHA1-Digest: aqUbKvU41xAoyeoVED9X2E3SR78=
+
+Name: system/lib64/libhidlbase.so
+SHA1-Digest: k+6GMbp9+uO8HlThIU+x0q6e2nI=
+
+Name: system/etc/charger/1080x2160/clric_29.png
+SHA1-Digest: rWFQREq7M3Ns/fUAl/ipC0oW8l4=
+
+Name: system/etc/charger/1080x1920/fcp_charging_11.png
+SHA1-Digest: aqk5HY89BUw9g+lEEkjw8faZTYo=
+
+Name: system/etc/charger/1080x1920/clric_21.png
+SHA1-Digest: daWxHC3yGndmyn4rzBaf0fSer8o=
+
+Name: system/etc/charger/1080x1920/clric_04.png
+SHA1-Digest: KaAnB7ny6E77V2z1jQ/hl3kesvU=
+
+Name: system/etc/charger/1080x2160/number_4.png
+SHA1-Digest: X0XsOiWfEDx9sRWlLhZ5WUq1kas=
+
+Name: system/etc/charger/1080x1920/dcp_charging_18.png
+SHA1-Digest: bbIRYcCO1gTNHqRu2PSdZw58kRU=
+
+Name: system/etc/charger/1080x1920/number_5.png
+SHA1-Digest: nYk9yoU9Mem25X89ubTCA0XYQjM=
+
+Name: system/etc/charger/1080x2160/dcp_charging_07.png
+SHA1-Digest: nO5qX/cCpHcaqJ8dBhHZiAoguQk=
+
+Name: system/etc/charger/1080x1920/clric_74.png
+SHA1-Digest: N2J84Up3kgDWL7HDEdWnz0BGgFI=
+
+Name: system/etc/charger/1080x2160/clric_91.png
+SHA1-Digest: 5D/RJfSD6dL/jsRSTnbOI8tXwJQ=
+
+Name: system/etc/charger/1080x1920/clric_31.png
+SHA1-Digest: ZSTxLr1Y/jMWzKzT2XX69E35yFw=
+
+Name: system/etc/charger/1080x2160/scp_charging_09.png
+SHA1-Digest: DknWsI7Xr5Vs9haGgxA2bNBHZsk=
+
+Name: system/lib/libaptXHD_encoder.so
+SHA1-Digest: l0xIbkygP6oHE1U9nf4playT4Bw=
+
+Name: system/etc/charger/1080x1920/scp_charging_20.png
+SHA1-Digest: +LG2hxCEVstc1KqOVrMXb2bXh8w=
+
+Name: system/etc/charger/1080x2160/fcp_charging_15.png
+SHA1-Digest: oSDQ2LztcYNKBqRT/17Y82RvI9Q=
+
+Name: system/lib64/libaptXHD_encoder.so
+SHA1-Digest: 4T+nDJfKqiTQYWeL3uYI64hQpp4=
+
+Name: system/etc/charger/1080x1920/scp_charging_12.png
+SHA1-Digest: ROB+nIdPy/vAGhsiNZO/5Jbvae8=
+
+Name: system/etc/charger/1080x1920/charging_18.png
+SHA1-Digest: ibInRCEPhe6gNtDCJKmPivKR3mY=
+
+Name: system/etc/charger/1080x1920/clric_15.png
+SHA1-Digest: 97r21O2qZ4WKlijOFs6tUyAVT2E=
+
+Name: system/etc/charger/1080x2160/fcp_charging_07.png
+SHA1-Digest: 4dH7lLjhUu6m319aH0wshL8eDA0=
+
+Name: system/etc/charger/1080x1920/fcp_charging_09.png
+SHA1-Digest: rNHuavaSuctQ64UEOtr1oCdnM5M=
+
+Name: system/etc/libnfc-brcm.conf
+SHA1-Digest: 74T/VfaMl1FH9hB8VL4FBBHjb/A=
+
+Name: system/etc/charger/1080x1920/clric_58.png
+SHA1-Digest: KByzkINZFPZRmCyUun2U02+lkys=
+
+Name: system/etc/charger/1080x2160/clric_39.png
+SHA1-Digest: mHlv80Hc0al1MCJK3jWjhLDKssY=
+
+Name: system/etc/charger/1080x1920/battery_01.png
+SHA1-Digest: +x2Wfq/JAcMy0gll6iDZGKCNLmo=
+
+Name: system/etc/charger/1080x1920/clric_23.png
+SHA1-Digest: TVL+i/1ozk4XWelXGCem+JxEOd4=
+
+Name: system/etc/charger/1080x2160/clric_08.png
+SHA1-Digest: +Onf2M+gSj79ez4JxLPYbneyCho=
+
+Name: system/etc/charger/1080x1920/clric_66.png
+SHA1-Digest: MOzW1r/2PaMXyIwyjQ9a8Iko68g=
+
+Name: system/etc/charger/1080x2160/number_0.png
+SHA1-Digest: TIljs9zdXINa5ZL+9LEY+lAaJz0=
+
+Name: system/etc/charger/1080x1920/clric_38.png
+SHA1-Digest: ob6Q37x/U6Dlp/sChAjInajdlUM=
+
+Name: system/etc/charger/1080x2160/fcp_charging_11.png
+SHA1-Digest: aqk5HY89BUw9g+lEEkjw8faZTYo=
+
+Name: system/etc/charger/1080x2160/charging_11.png
+SHA1-Digest: uUtzVhFH4sdjDTmkprYS3SRu+XU=
+
+Name: system/etc/charger/1080x2160/clric_67.png
+SHA1-Digest: 35I2TdvwN5RhBFQ8JkUpUSAUeUM=
+
+Name: system/etc/libnfc-nxp_RF.conf
+SHA1-Digest: jp4PNPGoXELfLPIDixlY96Nmp2c=
+
+Name: system/etc/charger/1080x1920/clric_86.png
+SHA1-Digest: k1+WkUOH/Px1c1sdrZfSZ4AQurg=
+
+Name: system/etc/charger/1080x2160/clric_24.png
+SHA1-Digest: Peg1Gz/tboF8m0l6sJw8WrwnZ6o=
+
+Name: system/etc/charger/1080x2160/clric_71.png
+SHA1-Digest: VC6LkJr1AEgYSXSXefCrdn9/hUE=
+
+Name: system/etc/charger/1080x1920/dcp_charging_09.png
+SHA1-Digest: K9rGn+ZCHqvY37db6OeHKW6M97A=
+
+Name: system/etc/charger/1080x1920/number_2.png
+SHA1-Digest: /qJT90eeYhH5dW9w3xz32dH3tm0=
+
+Name: system/etc/charger/1080x1920/dcp_charging_02.png
+SHA1-Digest: f06tUlDceRAGijCsSFIUpIYEwvM=
+
+Name: system/etc/charger/1080x2160/clric_36.png
+SHA1-Digest: 7TwhpOvF9I5PK3/1i/UatBhb7Ik=
+
+Name: system/etc/charger/1080x2160/scp_charging_21.png
+SHA1-Digest: iQUHgiOflIpdqr2HkNHHjUNIHDA=
+
+Name: system/etc/charger/1080x2160/charging_18.png
+SHA1-Digest: ibInRCEPhe6gNtDCJKmPivKR3mY=
+
+Name: system/etc/charger/1080x2160/clric_79.png
+SHA1-Digest: t02UTVvTj9FZ9Ql9TTQaDjBbMkI=
+
+Name: system/etc/libnfc-nci.conf
+SHA1-Digest: n7uUziXDHM2Ck9Ecr6r3SWgXA2Y=
+
+Name: system/etc/charger/1080x2160/clric_86.png
+SHA1-Digest: k1+WkUOH/Px1c1sdrZfSZ4AQurg=
+
+Name: system/etc/charger/1080x1920/scp_charging_07.png
+SHA1-Digest: mZGWbpw/VuqOmMx0XIUHpyuAar0=
+
+Name: system/etc/charger/1080x2160/clric_00.png
+SHA1-Digest: QOG+HS5w0Y2wQTa++iTuogWuqCg=
+
+Name: system/etc/charger/1080x2160/clric_51.png
+SHA1-Digest: S4EW53vyB9ZzlUix2gkmIkPQXpM=
+
+Name: system/etc/charger/1080x2160/dcp_charging_23.png
+SHA1-Digest: 0gUymfFG68+AjUqByUWrhSGknJU=
+
+Name: system/etc/charger/1080x1920/fcp_charging_06.png
+SHA1-Digest: IGAsb0anpCWIiIoaGHE3NwkSNc4=
+
+Name: system/etc/charger/1080x1920/clric_18.png
+SHA1-Digest: CcHzgBkCdsmNnhr9+Rh63EytsKQ=
+
+Name: system/etc/charger/1080x2160/dcp_charging_14.png
+SHA1-Digest: ObFBktRCYk/wJHISWSwnjPstAP0=
+
+Name: system/etc/charger/1080x1920/fcp_charging_14.png
+SHA1-Digest: KegNoKGityed4RUX4ET7Ob282Sg=
+
+Name: system/etc/charger/1080x2160/clric_43.png
+SHA1-Digest: 2FA5dXKUA4WaAZ5Ch880aVeUr70=
+
+Name: system/etc/charger/1080x1920/scp_charging_15.png
+SHA1-Digest: BVswK3O+EkB9gCNgWPq/jPKCCBQ=
+
+Name: system/etc/charger/1080x2160/scp_charging_13.png
+SHA1-Digest: jpXH3Wbr+6uxxWWPcNWvAnx2ePk=
+
+Name: system/etc/charger/1080x1920/dcp_charging_21.png
+SHA1-Digest: 0NnoF7qCPgRPkObcGCo1BbocmIo=
+
+Name: system/etc/charger/1080x2160/fcp_charging_20.png
+SHA1-Digest: lf2KhGZbyD6mk37HsWIznM08IfU=
+
+Name: system/etc/charger/1080x1920/clric_03.png
+SHA1-Digest: LzyWDSTH9MP+29UdKFJH2tBkSpM=
+
+Name: system/etc/charger/1080x1920/clric_89.png
+SHA1-Digest: tkju/x8HasLFYDfTIDRTfzjm5BY=
+
+Name: system/etc/charger/1080x2160/charging_03.png
+SHA1-Digest: nQpDhjnT9cmzVjPe2X96mp8xD/s=
+
+Name: system/etc/charger/1080x1920/clric_46.png
+SHA1-Digest: aqUbKvU41xAoyeoVED9X2E3SR78=
+
+Name: system/etc/charger/1080x1920/dcp_charging_17.png
+SHA1-Digest: VvEuIUAxMT8B/8NOO/MN8l33eDg=
+
+Name: system/etc/charger/1080x2160/clric_94.png
+SHA1-Digest: GfUYznjJIQAIwQBoKXOprotLEgQ=
+
+Name: system/etc/charger/1080x1920/clric_50.png
+SHA1-Digest: BABaN2hBu1KgH7dsduN4B9h1lMc=
+
+Name: system/etc/charger/1080x1920/clric_93.png
+SHA1-Digest: wv/Z/KTF5+5aK3m7+CiO36DX0EA=
+
+Name: system/etc/permissions/com.android.nfc_extras.xml
+SHA1-Digest: 4RsiltNxZIIQIjfZpY+uhrtYuGQ=
+
+Name: system/etc/charger/1080x1920/charging_15.png
+SHA1-Digest: N85uoDarkgpWUNS26jmmG5oy8KI=
+
+Name: system/etc/charger/1080x2160/number_3.png
+SHA1-Digest: cTOVOBL89S0p7z07F9N7MvFQHvg=
+
+Name: system/etc/charger/1080x2160/clric_15.png
+SHA1-Digest: 97r21O2qZ4WKlijOFs6tUyAVT2E=
+
+Name: system/etc/charger/1080x1920/scp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x1920/charging_02.png
+SHA1-Digest: dvlul7v3KTiwBOWozAk5h8jh+w4=
+
+Name: system/etc/charger/1080x2160/clric_58.png
+SHA1-Digest: KByzkINZFPZRmCyUun2U02+lkys=
+
+Name: system/etc/charger/1080x1920/battery_09.png
+SHA1-Digest: D6WQqzcvY/Pn4Fk9Pw1hR58eptc=
+
+Name: system/etc/charger/1080x2160/empty_charge.png
+SHA1-Digest: Ms0gegQYCxscJ+VpUK4KYpFm7zI=
+
+Name: system/etc/charger/1080x2160/fcp_charging_06.png
+SHA1-Digest: IGAsb0anpCWIiIoaGHE3NwkSNc4=
+
+Name: system/etc/charger/1080x2160/clric_66.png
+SHA1-Digest: MOzW1r/2PaMXyIwyjQ9a8Iko68g=
+
+Name: system/etc/charger/1080x2160/clric_23.png
+SHA1-Digest: TVL+i/1ozk4XWelXGCem+JxEOd4=
+
+Name: system/etc/charger/1080x1920/clric_30.png
+SHA1-Digest: QEBqpo9nyXQySYjSE4sP8zOZe7Q=
+
+Name: system/etc/charger/1080x1920/clric_39.png
+SHA1-Digest: mHlv80Hc0al1MCJK3jWjhLDKssY=
+
+Name: system/etc/charger/1080x1920/charging_09.png
+SHA1-Digest: MzuGLrkU5+maNf/nKIQkCvDol3M=
+
+Name: system/etc/charger/1080x2160/scp_charging_08.png
+SHA1-Digest: wFkwsJz9zbAhdm4ogd+phYTCUzc=
+
+Name: system/etc/charger/1080x2160/battery_09.png
+SHA1-Digest: D6WQqzcvY/Pn4Fk9Pw1hR58eptc=
+
+Name: system/etc/charger/1080x1920/charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x1920/dcp_charging_16.png
+SHA1-Digest: fiB1Kkw+FxY+3sUlYT8iM+zmTn8=
+
+Name: system/etc/charger/1080x1920/charging_17.png
+SHA1-Digest: iy7IPS2fYIsIS7PWy87blg/ieW4=
+
+Name: system/etc/charger/1080x2160/fcp_charging_12.png
+SHA1-Digest: XIJctT71m6LjHcPYfjLPg7yYZcE=
+
+Name: META-INF/com/google/android/update-binary
+SHA1-Digest: KHXIk0dEZqP2nKfG6s0sPufHujA=
+
+Name: system/etc/charger/1080x2160/dcp_charging_22.png
+SHA1-Digest: C2Xr+OND7rhGHkQcnULTWm0ei5E=
+
+Name: system/etc/charger/1080x2160/clric_38.png
+SHA1-Digest: ob6Q37x/U6Dlp/sChAjInajdlUM=
+
+Name: system/etc/charger/1080x1920/clric_24.png
+SHA1-Digest: Peg1Gz/tboF8m0l6sJw8WrwnZ6o=
+
+Name: system/etc/charger/1080x2160/clric_72.png
+SHA1-Digest: 2b+vRsWP/qp9SWLhIaWIBJOeE2k=
+
+Name: system/etc/charger/1080x1920/clric_67.png
+SHA1-Digest: 35I2TdvwN5RhBFQ8JkUpUSAUeUM=
+
+Name: system/etc/charger/1080x1920/dcp_charging_01.png
+SHA1-Digest: pB88Ij5LJr8kNeigVeLptVSHo8U=
+
+Name: system/etc/charger/1080x1920/scp_charging_21.png
+SHA1-Digest: iQUHgiOflIpdqr2HkNHHjUNIHDA=
+
+Name: system/etc/charger/1080x1920/charging_23.png
+SHA1-Digest: nOv3aTqVs8nQ/i/wC3IfnLp6JtU=
+
+Name: system/etc/charger/1080x1920/clric_73.png
+SHA1-Digest: 7IS6yS8OFLpzcTUzbQpcPTYthB0=
+
+Name: system/etc/charger/1080x2160/clric_01.png
+SHA1-Digest: YLhdZi3U6/cojovh4pxJLiiWVBc=
+
+Name: system/etc/charger/1080x2160/clric_87.png
+SHA1-Digest: LoL0ts/M+U1eIPowaK8I8kH3FZ0=
+
+Name: system/product/etc/libnfc-nci.conf
+SHA1-Digest: Vb3BK8FjMN+G27sJ8AivSPrUuqk=
+
+Name: system/etc/charger/1080x1920/scp_charging_08.png
+SHA1-Digest: wFkwsJz9zbAhdm4ogd+phYTCUzc=
+
+Name: system/etc/charger/1080x1920/charging_22.png
+SHA1-Digest: TDwGS5ItbbPUYE9PHjKkP96fias=
+
+Name: system/etc/charger/1080x2160/charging_19.png
+SHA1-Digest: mFWDg2Qt/RSJ/45xezZJukmNlM4=
+
+Name: system/etc/charger/1080x1920/fcp_charging_13.png
+SHA1-Digest: gI4kIpBl77S4hO3QUScFRGgM4jM=
+
+Name: system/product/etc/libnfc-brcm.conf
+SHA1-Digest: 74T/VfaMl1FH9hB8VL4FBBHjb/A=
+
+Name: system/product/etc/permissions/android.hardware.nfc.hce.xml
+SHA1-Digest: Obrm4jTR6D8fqC3A3kvCxoaGc6U=
+
+Name: system/etc/charger/1080x2160/number_2.png
+SHA1-Digest: /qJT90eeYhH5dW9w3xz32dH3tm0=
+
+Name: system/etc/charger/1080x2160/dcp_charging_15.png
+SHA1-Digest: K0+ASoLVY1gMN2oaMnHJwJu3bQ4=
+
+Name: system/etc/charger/1080x2160/clric_44.png
+SHA1-Digest: FO3g5h+p77zGpwMPWrcTGWRyxss=
+
+Name: system/etc/charger/1080x1920/clric_45.png
+SHA1-Digest: Rc4T+lj664LiuH3o2D8Zlhf/Aeo=
+
+Name: system/etc/charger/1080x1920/clric_88.png
+SHA1-Digest: w0wjD8i9PWjiiNg/O6A1uYrFKKU=
+
+Name: system/etc/charger/1080x1920/clric_02.png
+SHA1-Digest: dcs5/mMM4pv99/DfLehSNGnZ0OQ=
+
+Name: system/etc/pra/libnfc_brcm_pra_L31.conf
+SHA1-Digest: 74T/VfaMl1FH9hB8VL4FBBHjb/A=
+
+Name: system/etc/charger/1080x1920/number_3.png
+SHA1-Digest: cTOVOBL89S0p7z07F9N7MvFQHvg=
+
+Name: system/etc/charger/1080x2160/dcp_charging_09.png
+SHA1-Digest: K9rGn+ZCHqvY37db6OeHKW6M97A=
+
+Name: system/etc/charger/1080x2160/charging_10.png
+SHA1-Digest: kr/U5ek3tOvITq3WJBQPyndo3zw=
+
+Name: system/etc/charger/1080x2160/clric_50.png
+SHA1-Digest: BABaN2hBu1KgH7dsduN4B9h1lMc=
+
+Name: system/etc/charger/1080x2160/dcp_charging_00.png
+SHA1-Digest: ErszZIv2OwoLdi9UIFNWWFu0OaQ=
+
+Name: system/etc/charger/1080x2160/clric_93.png
+SHA1-Digest: wv/Z/KTF5+5aK3m7+CiO36DX0EA=
+
+Name: system/etc/charger/1080x2160/clric_16.png
+SHA1-Digest: 6SxCZZFXubVqpB+s6sWMc/LPid8=
+
+Name: system/etc/charger/1080x1920/clric_17.png
+SHA1-Digest: VlNhq+I3O1KvpUVKdtACTXtDPV0=
+
+Name: system/etc/charger/1080x1920/charging_16.png
+SHA1-Digest: pU/47efnopVhGkcgAwULb+1jChQ=
+
+Name: system/etc/charger/1080x1920/scp_charging_14.png
+SHA1-Digest: HZYwWcW2nzyNIPBw/fRBjI87iOU=
+
+Name: system/etc/charger/1080x2160/clric_59.png
+SHA1-Digest: eEbS/AxAOMXhnCxTOG60wPOp11o=
+
+Name: system/etc/charger/1080x2160/scp_charging_14.png
+SHA1-Digest: HZYwWcW2nzyNIPBw/fRBjI87iOU=
+
+Name: system/etc/charger/1080x1920/clric_94.png
+SHA1-Digest: GfUYznjJIQAIwQBoKXOprotLEgQ=
+
+Name: system/etc/charger/1080x2160/charging_04.png
+SHA1-Digest: fP8xKomwNa+qQg50f+NZBXZU46M=
+
+Name: system/etc/charger/1080x1920/dcp_charging_22.png
+SHA1-Digest: C2Xr+OND7rhGHkQcnULTWm0ei5E=
+
+Name: system/etc/charger/1080x1920/battery_08.png
+SHA1-Digest: dGH29vtJxytdJ2XXsvfNQDLJjRA=
+
+Name: system/etc/charger/1080x1920/fcp_charging_07.png
+SHA1-Digest: 4dH7lLjhUu6m319aH0wshL8eDA0=
+
+Name: system/etc/charger/1080x2160/scp_charging_20.png
+SHA1-Digest: +LG2hxCEVstc1KqOVrMXb2bXh8w=
+
+Name: system/etc/charger/1080x1920/battery_abnormality_empty_charge.png
+SHA1-Digest: p9ztMbCkNnyGDGVxh7DY/OZnaak=
+
+Name: system/etc/charger/1080x1920/clric_51.png
+SHA1-Digest: S4EW53vyB9ZzlUix2gkmIkPQXpM=
+
+Name: system/etc/charger/1080x2160/bg.png
+SHA1-Digest: TSpnFdvdf/U/3PZAuUxCufiK1yY=
+
