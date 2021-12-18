@@ -11,7 +11,6 @@ set -ex
 origin="$(readlink -f -- "$0")"
 origin="$(dirname "$origin")"
 
-[ ! -d vendor_vndk ] && git clone https://github.com/phhusson/vendor_vndk -b android-10.0
 
 targetArch=64
 srcFile="$1"
