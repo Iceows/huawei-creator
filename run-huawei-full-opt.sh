@@ -320,13 +320,14 @@ mount -o loop,rw s.img d
     	echo "ro.product.system.model=hi6250" >> etc/prop.default
     	echo "ro.product.model=$MODEL" >> etc/prop.default
     	
-    	LINEAGEV="LineageOS 18.1 LeaOS (CGMod)"
+    	#VERSION="LineageOS 18.1 LeaOS (CGMod)"
+    	VERSION="crDRom v314 - Mod Iceows"
     	sed -i "/ro.lineage.version/d" etc/prop.default;
     	sed -i "/ro.lineage.display.version/d" etc/prop.default;
     	sed -i "/ro.modversion/d" etc/prop.default;
-    	echo "ro.lineage.version=$LINEAGEV" >> etc/prop.default;
-    	echo "ro.lineage.display.version=$LINEAGEV" >> etc/prop.default;
-    	echo "ro.modversion=$LINEAGEV" >> etc/prop.default;
+    	echo "ro.lineage.version=$VERSION" >> etc/prop.default;
+    	echo "ro.lineage.display.version=$VERSION" >> etc/prop.default;
+    	echo "ro.modversion=$VERSION" >> etc/prop.default;
 	 
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> etc/prop.default
     	echo "sys.usb.config=mtp" >> etc/prop.default
