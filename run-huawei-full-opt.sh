@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei.sh [/path/to/system.img]
+#sudo bash run-huawei.sh [/path/to/system.img] [version]
 
 #cleanups
 umount d
@@ -15,6 +15,7 @@ origin="$(dirname "$origin")"
 
 targetArch=64
 srcFile="$1"
+versionNumber="$2"
 
 
 if [ ! -f "$srcFile" ];then
@@ -263,11 +264,6 @@ mount -o loop,rw s.img d
 	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
 	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 	
-
-	# Medias permission
-	cp "$origin/files-patch/system/etc/permissions/platform.xml" etc/permissions/platform.xml 
-	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/platform.xml 
-	
 	# Codec bluetooth 32 bits
 	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libaptX_encoder.so
@@ -321,7 +317,11 @@ mount -o loop,rw s.img d
     	echo "ro.product.model=$MODEL" >> etc/prop.default
     	
     	#VERSION="LineageOS 18.1 LeaOS (CGMod)"
-    	VERSION="crDRom v314 - Mod Iceows"
+    	#VERSION="crDRom v314 - Mod Iceows"
+    	#VERSION="LiR v314 - Mod Iceows"
+    	#VERSION="dotOS-R 5.2 - Mod Iceows"
+    	VERSION=$versionNumber
+    	
     	sed -i "/ro.lineage.version/d" etc/prop.default;
     	sed -i "/ro.lineage.display.version/d" etc/prop.default;
     	sed -i "/ro.modversion/d" etc/prop.default;
@@ -365,15 +365,26 @@ mount -o loop,rw s.img d
 	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 
 		
-	# Check if FUSE is enabled in build.prop file
-	if grep -qs 'ro.sys.sdcardfs=true' build.prop; then
-		sed -i 's/^ro.sys.sdcardfs=true/ro.sys.sdcardfs=false/' build.prop
+	# Force FUSE usage for emulated storage
+	# ro.sys.sdcardfs=false
+	# persist.fuse_sdcard=true
+	# persist.esdfs_sdcard=false
+	# persist.sys.sdcardfs=force_off
+
+	# Force sdcardfs usage for emulated storage
+	# Enabled sdcardfs, disabled esdfs_sdcard
+	if grep -qs 'persist.sys.sdcardfs' etc/prop.default; then
+		sed -i 's/^persist.sys.sdcardfs=force_off/persist.sys.sdcardfs=force_on/' etc/prop.default
 	fi
-	if grep -qs 'persist.esdfs_sdcard=true' build.prop; then
-		sed -i 's/^persist.esdfs_sdcard=false' build.prop
+	
+	# Fallback device, use sdcardfs on Huawei
+	if grep -qs 'ro.sys.sdcardfs' etc/prop.default; then
+		sed -i 's/^ro.sys.sdcardfs=false/ro.sys.sdcardfs=true/' etc/prop.default
+		sed -i 's/^ro.sys.sdcardfs=0/ro.sys.sdcardfs=true/' etc/prop.default
 	fi
-	if grep -qs 'persist.sys.sdcardfs' build.prop; then
-		sed -i 's/^persist.sys.sdcardfs=true/persist.sys.sdcardfs=false/' build.prop
+
+	if grep -qs 'persist.esdfs_sdcard=true' etc/prop.default; then
+		sed -i 's/^persist.esdfs_sdcard=false' etc/prop.default
 	fi
 	
 	
