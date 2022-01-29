@@ -41,6 +41,7 @@ mount -o loop,rw s.img d
 	mv system/* .
 	rmdir system
 
+	# remove apex v29
 	rm -Rf system_ext/apex/com.android.vndk.v29
 	rm -Rf apex/*.apex
 	rm -Rf system_ext/apex/*.apex
@@ -358,12 +359,58 @@ mount -o loop,rw s.img d
 	# Add allow  for displayengine-hal-1.0
 	# echo "(allow hal_displayengine_default displayengine_hwservice (hwservice_manager (add find)))" >> /vendor/etc/selinux/nonplat_sepolicy.cil
 
-	# Add allow vendor.lineage.livedisplay
+	# Fix hwservice_manager
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 
+	# Add system_server
+	#echo "(allow system_server system_data_root_file (dir (write)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow system_server unlabeled (dir (remove_name create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow system_server unlabeled (file (create unlink read write)))" >> etc/selinux/plat_sepolicy.cil
+	
+	
+	# Add installd
+	#echo "(allow installd unlabeled (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow installd unlabeled (file (create unlink read write)))" >> etc/selinux/plat_sepolicy.cil
+				
+	# Add zygote
+	#echo "(allow zygote unlabeled (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Add gatekeeperd
+	#echo "(allow gatekeeperd unlabeled (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+
+
+	# Add credstore,keystore,netd
+	#echo "(allow netd unlabeled (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow credstore unlabeled (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow keystore unlabeled (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	
+
+	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
+	#echo "(allow vold system_data_root_file (file (create unlink read write)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vold unlabeled (dir (create write add_name)))" >> etc/selinux/plat_sepolicy.cil
+	
+	#echo "(allow vold_prepare_subdirs system_data_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vold_prepare_subdirs unlabeled (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vold_prepare_subdirs vold_prepare_subdirs (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vold_prepare_subdirs system_data_root_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+
+
+	# Fix init
+	#echo "(allow init system_file (dir (relabelfrom setattr write read)))" >> etc/selinux/plat_sepolicy.cil;
+	#echo "(allow init system_file (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil;
+	#echo "(allow init sysfs_zram_uevent (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil;
+	#echo "(allow init cust_block_device (lnk_file (relabelto)))" >> etc/selinux/plat_sepolicy.cil;
+	
+	# e2fsck
+	#echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil;
+	
+	# Cust
+	#echo "(allow cust rootfs (file (execute)))" >> etc/selinux/plat_sepolicy.cil;
+
+	
 		
 	# Force FUSE usage for emulated storage
 	# ro.sys.sdcardfs=false
@@ -371,13 +418,13 @@ mount -o loop,rw s.img d
 	# persist.esdfs_sdcard=false
 	# persist.sys.sdcardfs=force_off
 
-	# Force sdcardfs usage for emulated storage
+	# Force sdcardfs usage for emulated storage (Huawei)
 	# Enabled sdcardfs, disabled esdfs_sdcard
 	if grep -qs 'persist.sys.sdcardfs' etc/prop.default; then
 		sed -i 's/^persist.sys.sdcardfs=force_off/persist.sys.sdcardfs=force_on/' etc/prop.default
 	fi
 	
-	# Fallback device, use sdcardfs on Huawei
+	# Fallback device
 	if grep -qs 'ro.sys.sdcardfs' etc/prop.default; then
 		sed -i 's/^ro.sys.sdcardfs=false/ro.sys.sdcardfs=true/' etc/prop.default
 		sed -i 's/^ro.sys.sdcardfs=0/ro.sys.sdcardfs=true/' etc/prop.default
