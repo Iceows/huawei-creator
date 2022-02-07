@@ -45,6 +45,8 @@ mount -o loop,rw s.img d
 	rm -Rf system_ext/apex/com.android.vndk.v29
 	rm -Rf apex/*.apex
 	rm -Rf system_ext/apex/*.apex
+	
+	
 
 	sed -i \
 	    -e '/ro.radio.noril/d' \
@@ -297,11 +299,19 @@ mount -o loop,rw s.img d
     	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
     	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
     	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
+
+
+
+
+   	echo "debug.sf.latch_unsignaled=1" >> build.prop
+	echo "ro.surface_flinger.running_without_sync_framework=true" >> build.prop;
+
+		
 	# Dirty hack to show build properties
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
 	MODEL="PRA-LX1"
+
 
 	echo "#" >> etc/prop.default
     	echo "## Adding build props" >> etc/prop.default
@@ -311,6 +321,10 @@ mount -o loop,rw s.img d
 	echo "#" >> etc/prop.default
 	echo "## Adding hi6250 props" >> etc/prop.default
     	echo "#" >> etc/prop.default
+
+	# adb root by default    	
+    	#sed -i 's/^ro.secure=1/ro.secure=0/' etc/prop.default
+    		
     	sed -i "/ro.product.model/d" etc/prop.default
     	sed -i "/ro.product.system.model/d" etc/prop.default
     	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
@@ -338,8 +352,10 @@ mount -o loop,rw s.img d
    	echo "sys.usb.ffs.ready=0" >> etc/prop.default
 	echo "sys.usb.ffs_hdb.ready=0" >> etc/prop.default
    	echo "sys.usb.state=mtp" >> etc/prop.default
-   	echo "debug.sf.latch_unsignaled=1" >> build.prop
-	echo "ro.surface_flinger.running_without_sync_framework=true" >> build.prop;
+   	
+
+	#echo "ro.secure=0" >> etc/prop.default
+	
 	echo "persist.sys.sf.native_mode=1" >> etc/prop.default
 	echo "persist.sys.sf.color_mode=1.0" >> etc/prop.default
 	echo "persist.sys.sf.color_saturation=1.1" >> etc/prop.default
@@ -433,6 +449,8 @@ mount -o loop,rw s.img d
 	if grep -qs 'persist.esdfs_sdcard=true' etc/prop.default; then
 		sed -i 's/^persist.esdfs_sdcard=false' etc/prop.default
 	fi
+	
+
 	
 	
 )
