@@ -394,11 +394,12 @@ mount -o loop,rw s.img d
 	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	
 	# Misc
-	echo "(allow hi110x_daemon self (fifo_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
+	# avc: denied { ioctl } for path="pipe:[23197]" dev="pipefs" ino=23197 ioctlcmd=5413 scontext=u:r:hi110x_daemon:s0 tcontext=u:r:hi110x_daemon:s0 tclass=fifo_file permissive=0
+	# echo "(allow hi110x_daemon self (fifo_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow bootanim userspace_reboot_exported_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vndservicemanager device (file (open getattr write read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vndservicemanager device (chr_file (open write read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hw_ueventd kmsg_device (chr_file (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vndservicemanager device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hw_ueventd kmsg_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow logd device (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
 	
 
@@ -410,13 +411,17 @@ mount -o loop,rw s.img d
 		
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon dmd_device (chr_file (setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon dmd_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# resize2fs: avc: denied { ioctl } for path="/system" dev="mmcblk0p51" ino=2 ioctlcmd=6610 scontext=u:r:phhsu_daemon:s0 tcontext=u:object_r:rootfs:s0 tclass=dir permissive=1
+	# echo "(allow phhsu_daemon rootfs (dir (ioctl create setattr search write read)))" >> etc/selinux/plat_sepolicy.cil
+	
 	
 	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
 	echo "(allow vold block_device (blk_file (open read write)))" >> etc/selinux/plat_sepolicy.cil
@@ -429,7 +434,7 @@ mount -o loop,rw s.img d
 	
 
 	# Fix init
-	echo "(allow init device (chr_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	#not allow adb 
 	#echo "(allow init rootfs (file (mounton)))" >> etc/selinux/plat_sepolicy.cil
@@ -438,6 +443,7 @@ mount -o loop,rw s.img d
 	echo "(allow init sysfs_zram_uevent (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init cust_block_device (lnk_file (relabelto)))" >> etc/selinux/plat_sepolicy.cil
 	
+
 	# e2fsck
 	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
 	
