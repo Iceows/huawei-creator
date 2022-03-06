@@ -394,14 +394,14 @@ mount -o loop,rw s.img d
 	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	
 	# Misc
-	echo "(allow hi110x_daemon self (fifo_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon self (fifo_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow bootanim userspace_reboot_exported_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vndservicemanager device (file (open write read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vndservicemanager device (file (open getattr write read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vndservicemanager device (chr_file (open write read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hw_ueventd kmsg_device (chr_file (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow logd device (file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow logd device (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
 	
-	
+
 	# Specific zygote
 	echo "(allow zygote exported_camera_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
 		
@@ -412,11 +412,11 @@ mount -o loop,rw s.img d
 	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon dmd_device (chr_file (setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
 	echo "(allow vold block_device (blk_file (open read write)))" >> etc/selinux/plat_sepolicy.cil
