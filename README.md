@@ -5,7 +5,8 @@ Generate ARM64 A-only from ARM64 AB (target image name is s.img):
 
     sudo bash run.sh 64 systemAB.img
 
-Generate ARM64 A-only (Huawei device) from ARM64 A-only:
+Generate ARM64 A-only (Huawei device) from ARM64 A-only and include patchs and optimisations :
 
-    sudo bash run-huawei.sh system-AOnly.img
+    sudo ./run-huawei-full-opt.sh systemAB.img "LeaOS"
+
 
