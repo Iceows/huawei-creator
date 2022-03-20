@@ -365,6 +365,10 @@ mount -o loop,rw s.img d
 	
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >> etc/prop.default
+	
+	# disable audio effect
+	echo "persist.sys.phh.disable_audio_effects=1" >> etc/prop.default
+	 	 
 
 	# Add type and mapping for displayengine-hal-1.0
 	echo "(typeattributeset hwservice_manager_type (displayengine_hwservice))" >> etc/selinux/plat_sepolicy.cil
