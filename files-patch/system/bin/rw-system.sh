@@ -60,7 +60,12 @@ if [ "$vndk" = 26 ];then
 fi
 
 setprop sys.usb.ffs.aio_compat true
-setprop persist.adb.nonblocking_ffs false
+
+if getprop ro.vendor.build.fingerprint | grep -q -i -e Blackview/BV9500Plus;then
+    setprop persist.adb.nonblocking_ffs true
+else
+    setprop persist.adb.nonblocking_ffs false
+fi
 
 # Redmi Note 9S/Pro/Max props
 if getprop ro.vendor.build.fingerprint |grep -qi -e redmi/curtana -e redmi/joyeuse -e redmi/excalibur; then
@@ -82,8 +87,12 @@ fixSPL() {
     if [ -n "$img" ]; then
         #Rewrite SPL/Android version if needed
         Arelease="$(getSPL "$img" android)"
+        spl="$(getSPL "$img" spl)"
         setprop ro.keymaster.xxx.release "$Arelease"
-        setprop ro.keymaster.xxx.security_patch "$(getSPL "$img" spl)"
+        setprop ro.keymaster.xxx.security_patch "$spl"
+	if [ -z "$Arelease" ] || [ -z "$spl" ];then
+		return 0
+	fi
         setprop ro.keymaster.brn Android
 
         if getprop ro.vendor.build.fingerprint |grep -qiE 'samsung.*star.*lte';then
@@ -127,33 +136,32 @@ fixSPL() {
 }
 
 changeKeylayout() {
-    cp -a /system/usr/keylayout /mnt/phh/keylayout
+    mpk="/mnt/phh/keylayout"
+    cp -a /system/usr/keylayout ${mpk}
     changed=false
     if grep -q vendor.huawei.hardware.biometrics.fingerprint /vendor/etc/vintf/manifest.xml; then
+        cp /system/phh/huawei/fingerprint.kl ${mpk}/fingerprint.kl
+        chmod 0644 ${mpk}/fingerprint.kl
         changed=true
-        cp /system/phh/huawei/fingerprint.kl /mnt/phh/keylayout/fingerprint.kl
-        chmod 0644 /mnt/phh/keylayout/fingerprint.kl
     fi
 
     if getprop ro.vendor.build.fingerprint |
         grep -qE -e "^samsung"; then
+        cp /system/phh/samsung-gpio_keys.kl ${mpk}/gpio_keys.kl
+        cp /system/phh/samsung-sec_touchscreen.kl ${mpk}/sec_touchscreen.kl
+        cp /system/phh/samsung-sec_touchkey.kl ${mpk}/sec_touchkey.kl
+        chmod 0644 ${mpk}/gpio_keys.kl ${mpk}/sec_touchscreen.kl
         changed=true
-
-        cp /system/phh/samsung-gpio_keys.kl /mnt/phh/keylayout/gpio_keys.kl
-        cp /system/phh/samsung-sec_touchscreen.kl /mnt/phh/keylayout/sec_touchscreen.kl
-        cp /system/phh/samsung-sec_touchkey.kl /mnt/phh/keylayout/sec_touchkey.kl
-        chmod 0644 /mnt/phh/keylayout/gpio_keys.kl /mnt/phh/keylayout/sec_touchscreen.kl
     fi
 
     if getprop ro.vendor.build.fingerprint | grep -iq -e xiaomi/daisy; then
-        mpk="/mnt/phh/keylayout"
         cp /system/phh/daisy-buttonJack.kl ${mpk}/msm8953-snd-card-mtp_Button_Jack.kl
         changed=true
-        if [ ! -f /mnt/phh/keylayout/uinput-goodix.kl ]; then
+        if [ ! -f ${mpk}/uinput-goodix.kl ]; then
            cp /system/phh/daisy-uinput-goodix.kl ${mpk}/uinput-goodix.kl
            changed=true
         fi
-        if [ ! -f /mnt/phh/keylayout/uinput-fpc.kl ]; then
+        if [ ! -f ${mpk}/uinput-fpc.kl ]; then
            cp /system/phh/daisy-uinput-fpc.kl ${mpk}/uinput-fpc.kl
            changed=true
         fi
@@ -162,49 +170,55 @@ changeKeylayout() {
 
     if getprop ro.vendor.build.fingerprint | grep -iq \
         -e poco/ -e redmi/ -e xiaomi/ ; then
-        if [ ! -f /mnt/phh/keylayout/uinput-goodix.kl ]; then
-          cp /system/phh/empty /mnt/phh/keylayout/uinput-goodix.kl
-          chmod 0644 /mnt/phh/keylayout/uinput-goodix.kl
+        if [ ! -f ${mpk}/uinput-goodix.kl ]; then
+          cp /system/phh/empty ${mpk}/uinput-goodix.kl
+          chmod 0644 ${mpk}/uinput-goodix.kl
           changed=true
         fi
-        if [ ! -f /mnt/phh/keylayout/uinput-fpc.kl ]; then
-          cp /system/phh/empty /mnt/phh/keylayout/uinput-fpc.kl
-          chmod 0644 /mnt/phh/keylayout/uinput-fpc.kl
+        if [ ! -f ${mpk}/uinput-fpc.kl ]; then
+          cp /system/phh/empty ${mpk}/uinput-fpc.kl
+          chmod 0644 ${mpk}/uinput-fpc.kl
           changed=true
         fi
     fi
 
+    if getprop ro.vendor.build.fingerprint | grep -iq -e xiaomi/renoir; then
+        cp /system/phh/daisy-buttonJack.kl ${mpk}/lahaina-shimaidp-snd-card_Button_Jack.kl
+        chmod 0644 ${mpk}/lahaina-shimaidp-snd-card_Button_Jack.kl
+        changed=true
+    fi
+
     if getprop ro.vendor.build.fingerprint | grep -qi oneplus/oneplus6/oneplus6; then
-        cp /system/phh/oneplus6-synaptics_s3320.kl /mnt/phh/keylayout/synaptics_s3320.kl
-        chmod 0644 /mnt/phh/keylayout/synaptics_s3320.kl
+        cp /system/phh/oneplus6-synaptics_s3320.kl ${mpk}/synaptics_s3320.kl
+        chmod 0644 ${mpk}/synaptics_s3320.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint | grep -iq -e iaomi/perseus -e iaomi/cepheus; then
-        cp /system/phh/mimix3-gpio-keys.kl /mnt/phh/keylayout/gpio-keys.kl
-        chmod 0644 /mnt/phh/keylayout/gpio-keys.kl
+        cp /system/phh/mimix3-gpio-keys.kl ${mpk}/gpio-keys.kl
+        chmod 0644 ${mpk}/gpio-keys.kl
         changed=true
     fi
 
-    if getprop ro.vendor.build.fingerprint | grep -iq -E -e '^Sony/G834'; then
-        cp /system/phh/sony-gpio-keys.kl /mnt/phh/keylayout/gpio-keys.kl
-        chmod 0644 /mnt/phh/keylayout/gpio-keys.kl
+    if getprop ro.vendor.build.fingerprint | grep -iq -E -e '^Sony/'; then
+        cp /system/phh/sony-gpio-keys.kl ${mpk}/gpio-keys.kl
+        chmod 0644 ${mpk}/gpio-keys.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint |grep -iq -E -e '^Nokia/Panther';then
-        cp /system/phh/nokia-soc_gpio_keys.kl /mnt/phh/keylayout/soc_gpio_keys.kl
-        chmod 0644 /mnt/phh/keylayout/soc_gpio_keys.kl
+        cp /system/phh/nokia-soc_gpio_keys.kl ${mpk}/soc_gpio_keys.kl
+        chmod 0644 ${mpk}/soc_gpio_keys.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint |grep -iq -E -e '^Lenovo/' && [ -f /sys/devices/virtual/touch/tp_dev/gesture_on ];then
-        cp /system/phh/lenovo-synaptics_dsx.kl /mnt/phh/keylayout/synaptics_dsx.kl
-        chmod 0644 /mnt/phh/keylayout/synaptics_dsx.kl
+        cp /system/phh/lenovo-synaptics_dsx.kl ${mpk}/synaptics_dsx.kl
+        chmod 0644 ${mpk}/synaptics_dsx.kl
         changed=true
         if ! getprop ro.vendor.build.fingerprint |grep -iq -E -e '^Lenovo/jd20'; then
-          cp /system/phh/lenovo-synaptics_dsx.kl /mnt/phh/keylayout/fts_ts.kl
-          chmod 0644 /mnt/phh/keylayout/fts_ts.kl
+          cp /system/phh/lenovo-synaptics_dsx.kl ${mpk}/fts_ts.kl
+          chmod 0644 ${mpk}/fts_ts.kl
           changed=true
         fi
     fi
@@ -212,61 +226,87 @@ changeKeylayout() {
     if ( getprop ro.build.overlay.deviceid |grep -q -e RMX1931 -e RMX1941 -e CPH1859 -e CPH1861 -e RMX2185) ||
 	    ( grep -q OnePlus /odm/etc/$(getprop ro.boot.prjname)/*.prop);then
 	echo 1 > /proc/touchpanel/double_tap_enable
-        cp /system/phh/oppo-touchpanel.kl /mnt/phh/keylayout/touchpanel.kl
-	cp /system/phh/oppo-touchpanel.kl /mnt/phh/keylayout/mtk-tpd.kl
-        chmod 0644 /mnt/phh/keylayout/touchpanel.kl
-	chmod 0644 /mnt/phh/keylayout/mtk-tpd.kl
+        cp /system/phh/oppo-touchpanel.kl ${mpk}/touchpanel.kl
+	cp /system/phh/oppo-touchpanel.kl ${mpk}/mtk-tpd.kl
+        chmod 0644 ${mpk}/touchpanel.kl
+	chmod 0644 ${mpk}/mtk-tpd.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint |grep -q -e google/;then
-        cp /system/phh/google-uinput-fpc.kl /mnt/phh/keylayout/uinput-fpc.kl
-        chmod 0644 /mnt/phh/keylayout/uinput-fpc.kl
+        cp /system/phh/google-uinput-fpc.kl ${mpk}/uinput-fpc.kl
+        chmod 0644 ${mpk}/uinput-fpc.kl
         changed=true
     fi
 
     if getprop ro.product.vendor.manufacturer |grep -q -e motorola;then
-        cp /system/phh/moto-uinput-egis.kl /mnt/phh/keylayout/uinput-egis.kl
-        cp /system/phh/moto-uinput-egis.kl /mnt/phh/keylayout/uinput-fpc.kl
-        chmod 0644 /mnt/phh/keylayout/uinput-egis.kl
-        chmod 0644 /mnt/phh/keylayout/uinput-fpc.kl
+        cp /system/phh/moto-uinput-egis.kl ${mpk}/uinput-egis.kl
+        cp /system/phh/moto-uinput-egis.kl ${mpk}/uinput-fpc.kl
+        chmod 0644 ${mpk}/uinput-egis.kl
+        chmod 0644 ${mpk}/uinput-fpc.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint |grep -q -e nubia/NX659;then
-        cp /system/phh/nubia-nubia_synaptics_dsx.kl /mnt/phh/keylayout/nubia_synaptics_dsx.kl
-        chmod 0644 /mnt/phh/keylayout/nubia_synaptics_dsx.kl
+        cp /system/phh/nubia-nubia_synaptics_dsx.kl ${mpk}/nubia_synaptics_dsx.kl
+        chmod 0644 ${mpk}/nubia_synaptics_dsx.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint |grep -q -i -e Teracube/Teracube_2e;then
-        cp /system/phh/teracube2e-mtk-kpd.kl /mnt/phh/keylayout/mtk-kpd.kl
-        chmod 0644 /mnt/phh/keylayout/mtk-kpd.kl
+        cp /system/phh/teracube2e-mtk-kpd.kl ${mpk}/mtk-kpd.kl
+        chmod 0644 ${mpk}/mtk-kpd.kl
         changed=true
     fi
 
     if getprop ro.vendor.asus.build.fp |grep -q ASUS_I01WD;then
-        cp /system/phh/zf6-goodixfp.kl /mnt/phh/keylayout/goodixfp.kl
-        cp /system/phh/zf6-googlekey_input.kl /mnt/phh/keylayout/googlekey_input.kl
-        chmod 0644 /mnt/phh/keylayout/goodixfp.kl
-        chmod 0644 /mnt/phh/keylayout/googlekey_input.kl
+        cp /system/phh/zf6-goodixfp.kl ${mpk}/goodixfp.kl
+        cp /system/phh/zf6-googlekey_input.kl ${mpk}/googlekey_input.kl
+        chmod 0644 ${mpk}/goodixfp.kl
+        chmod 0644 ${mpk}/googlekey_input.kl
         changed=true
     fi
 
     if getprop ro.vendor.build.fingerprint | grep -q -e Unihertz/;then
-        cp /system/phh/unihertz-mtk-kpd.kl /mnt/phh/keylayout/mtk-kpd.kl
-        cp /system/phh/unihertz-mtk-tpd.kl /mnt/phh/keylayout/mtk-tpd.kl
-        cp /system/phh/unihertz-mtk-tpd-kpd.kl /mnt/phh/keylayout/mtk-tpd-kpd.kl
-        cp /system/phh/unihertz-fingerprint_key.kl /mnt/phh/keylayout/fingerprint_key.kl
-        chmod 0644 /mnt/phh/keylayout/mtk-kpd.kl
-        chmod 0644 /mnt/phh/keylayout/mtk-tpd.kl
-        chmod 0644 /mnt/phh/keylayout/mtk-tpd-kpd.kl
-        chmod 0644 /mnt/phh/keylayout/fingerprint_key.kl
+        cp /system/phh/unihertz-mtk-kpd.kl ${mpk}/mtk-kpd.kl
+        cp /system/phh/unihertz-mtk-tpd.kl ${mpk}/mtk-tpd.kl
+        cp /system/phh/unihertz-mtk-tpd-kpd.kl ${mpk}/mtk-tpd-kpd.kl
+        cp /system/phh/unihertz-fingerprint_key.kl ${mpk}/fingerprint_key.kl
+        chmod 0644 ${mpk}/mtk-kpd.kl
+        chmod 0644 ${mpk}/mtk-tpd.kl
+        chmod 0644 ${mpk}/mtk-tpd-kpd.kl
+        chmod 0644 ${mpk}/fingerprint_key.kl
         changed=true
     fi
 
+    if getprop ro.product.vendor.device |grep -qi -e mfh505glm -e fh50lm; then
+        cp /system/phh/empty ${mpk}/uinput-fpc.kl
+        chmod 0644 ${mpk}/uinput-fpc.kl
+        changed=true
+    fi
+
+    if getprop ro.vendor.build.fingerprint | grep -q -i -e Blackview/BV9500Plus;then
+        cp /system/phh/bv9500plus-mtk-kpd.kl ${mpk}/mtk-kpd.kl
+        chmod 0644 ${mpk}/mtk-kpd.kl
+        changed=true
+    fi
+
+    if getprop ro.vendor.build.fingerprint | grep -iq -e motorola/liber; then
+      if [ ! -f ${mpk}/uinput_nav.kl ]; then
+        cp /system/phh/empty ${mpk}/uinput_nav.kl
+        chmod 0644 ${mpk}/uinput_nav.kl
+        changed=true
+      fi
+    fi
+
+    if getprop ro.vendor.build.fingerprint | grep -iq DOOGEE/S88Pro;then
+          cp /system/phh/empty /mnt/phh/keylayout/sf-keys.kl
+          chmod 0644 /mnt/phh/keylayout/sf-keys.kl
+          changed=true
+    fi
+
     if [ "$changed" = true ]; then
-        mount -o bind /mnt/phh/keylayout /system/usr/keylayout
+        mount -o bind ${mpk} /system/usr/keylayout
         restorecon -R /system/usr/keylayout
     fi
 }
@@ -279,6 +319,11 @@ if [ "$(getprop ro.product.vendor.manufacturer)" = motorola ] && getprop ro.vend
     done
     setprop persist.sys.overlay.devinputjack true
 fi
+
+#experimental
+blockdev --setrw /dev/block/mapper/system
+blockdev --setrw /dev/block/by-name/system_a
+blockdev --setrw /dev/block/by-name/system_b
 
 if mount -o remount,rw /system; then
     resize2fs "$(grep ' /system ' /proc/mounts | cut -d ' ' -f 1)" || true
@@ -318,14 +363,13 @@ if grep vendor.huawei.hardware.biometrics.fingerprint /vendor/manifest.xml; then
 fi
 
 foundFingerprint=false
-for manifest in /vendor/manifest.xml /vendor/etc/vintf/manifest.xml /odm/etc/vintf/manifest.xml;do
+for manifest in /vendor/manifest.xml /vendor/etc/vintf /odm/etc/vintf; do
     if grep -q \
-            -e android.hardware.biometrics.fingerprint \
-            -e vendor.oppo.hardware.biometrics.fingerprint \
-            -e vendor.oplus.hardware.biometrics.fingerprint \
-            $manifest;
-        then
-        foundFingerprint=true
+      -e android.hardware.biometrics.fingerprint \
+      -e vendor.oppo.hardware.biometrics.fingerprint \
+      -e vendor.oplus.hardware.biometrics.fingerprint \
+      -r $manifest; then
+      foundFingerprint=true
     fi
 done
 
@@ -333,6 +377,7 @@ if [ "$foundFingerprint" = false ];then
     mount -o bind system/phh/empty /system/etc/permissions/android.hardware.fingerprint.xml
 fi
 
+# Disable vibrator (Huawei device)
 if ! getprop ro.vendor.build.fingerprint | grep -qE 'meizu_18'; then
     mount -o bind system/phh/empty /system/bin/hw/android.hardware.vibrator@1.3-service.meizu
     mount -o bind system/phh/empty /system/etc/init/android.hardware.vibrator@1.3-service.meizu.rc
@@ -425,7 +470,8 @@ if getprop ro.build.overlay.deviceid |grep -q -e CPH1859 -e CPH1861 -e RMX1811 -
     setprop persist.sys.qcom-brightness "$(cat /sys/class/leds/lcd-backlight/max_brightness)"
 fi
 
-if getprop ro.build.overlay.deviceid |grep -iq -e RMX2020 -e RMX2027 -e RMX2040 -e RMX2193 -e RMX2191;then	
+if getprop ro.build.overlay.deviceid |grep -iq -e RMX2020 -e RMX2027 -e RMX2040 \
+    -e RMX2193 -e RMX2191 -e RMX2195; then
     setprop persist.sys.qcom-brightness 2047
     setprop persist.sys.overlay.devinputjack true
     setprop persist.sys.phh.fingerprint.nocleanup true
@@ -439,7 +485,6 @@ if getprop ro.vendor.build.fingerprint | grep -iq \
     -e motorola/hannah -e motorola/james -e motorola/pettyl -e xiaomi/cepheus \
     -e xiaomi/grus -e xiaomi/cereus -e xiaomi/cactus -e xiaomi/raphael -e xiaomi/davinci \
     -e xiaomi/ginkgo -e xiaomi/willow -e xiaomi/laurel_sprout -e xiaomi/andromeda \
-    -e iaomi/renoir \
     -e redmi/curtana -e -e redmi/joyeuse -e redmi/excalibur -e redmi/picasso \
     -e bq/Aquaris_M10 ; then
     mount -o bind /mnt/phh/empty_dir /vendor/lib64/soundfx
@@ -560,7 +605,6 @@ if getprop ro.vendor.build.fingerprint | grep -iq -e xiaomi/daisy; then
     setprop ro.telephony.default_network 9,9
     setprop persist.vendor.radio.block_allow_data 0
     setprop telephony.lteOnGsmDevice 1
-    setprop debug.sf.enable_hwc_vds 1
 fi
 
 if getprop ro.vendor.build.fingerprint | grep -iq -e xiaomi/lavender; then
@@ -575,6 +619,20 @@ if getprop ro.vendor.build.fingerprint | grep -iq -e Redmi/merlin; then
     setprop debug.sf.latch_unsignaled 1
     setprop debug.sf.enable_hwc_vds 0
 fi
+
+# Iceows patch specific Huawei device (NFC conf is set by run-huawei-aonly.sh"
+if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getprop persist.sys.overlay.huawei | grep -iq -E -e 'true'; then
+
+    # Set proper /sdcard permissions to avoid dead storage
+   chown media_rw:media_rw /data/media/0
+   chmod 0770 /data/media/0
+
+    # Disable this watchlss extension to fix logspams and dead gps
+    mount -o bind /system/phh/empty /vendor/bin/gnss_watchlssd_thirdparty
+
+fi
+
+
 
 if getprop ro.vendor.build.fingerprint | grep -qE -e ".*(crown|star)[q2]*lte.*" -e ".*(SC-0[23]K|SCV3[89]).*" && [ "$vndk" -lt 28 ]; then
     for f in /vendor/lib/libfloatingfeature.so /vendor/lib64/libfloatingfeature.so; do
@@ -611,6 +669,10 @@ if getprop ro.vendor.build.fingerprint | grep -qiE '^samsung'; then
             setprop persist.sys.phh.sdk_override /vendor/bin/hw/rild=27
         fi
     fi
+fi
+
+if getprop ro.vendor.build.fingerprint | grep -qiE '^samsung/j4lteub'; then
+    setprop vendor.camera.hal1.packagelist com.whatsapp,org.telegram.messenger
 fi
 
 if getprop ro.vendor.build.fingerprint | grep -qE '^xiaomi/wayne/wayne.*'; then
@@ -840,18 +902,6 @@ for part in odm vendor;do
     fi
 done
 
-
-# Iceows patch specific Huawei device
-if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getprop persist.sys.overlay.huawei | grep -iq -E -e 'true'; then
-	# Set proper /sdcard permissions to avoid dead storage
-	chown media_rw:media_rw /data/media/0
-	chmod 0770 /data/media/0
-
-	# Disable this watchlss extension to fix logspams and dead gps
-	mount -o bind /system/phh/empty /vendor/bin/gnss_watchlssd_thirdparty
-fi
-
-
 # Fix sprd adf for surfaceflinger to start
 # Somehow the names of the device nodes are incorrect on Android 10; fix them by mknod
 if [ -e /dev/sprd-adf-dev ];then
@@ -897,7 +947,9 @@ fi
 
 echo 1 >  /proc/tfa98xx/oppo_tfa98xx_fw_update
 if ! grep -q -E -e '.*#write .*tp_fw_update' /vendor/etc/init/hw/*touch*;then
-	echo 1 > /proc/touchpanel/tp_fw_update
+  if ! getprop ro.build.overlay.deviceid |grep -iq -e RMX2061 -e RMX2063; then
+    echo 1 > /proc/touchpanel/tp_fw_update
+  fi
 fi
 
 if getprop ro.build.overlay.deviceid |grep -qE '^RMX';then
@@ -954,7 +1006,7 @@ if getprop ro.build.overlay.deviceid |grep -qiE -e '^RMX' -e '^CPH';then
     setprop persist.sys.phh.fod.bbk true
 fi
 
-if getprop ro.build.overlay.deviceid |grep -iq -e RMX1941 -e RMX1945 -e RMX1943 -e RMX1942;then	
+if getprop ro.build.overlay.deviceid |grep -iq -e RMX1941 -e RMX1945 -e RMX1943 -e RMX1942;then
     setprop persist.sys.qcom-brightness "$(cat /sys/class/leds/lcd-backlight/max_brightness)"
     setprop persist.sys.phh.mainkeys 0
 fi
@@ -965,12 +1017,18 @@ fi
 
 resetprop_phh ro.bluetooth.library_name libbluetooth.so
 
-if getprop ro.vendor.build.fingerprint |grep -iq xiaomi/cepheus;then
+if getprop ro.vendor.build.fingerprint |grep -iq xiaomi/cepheus -e xiaomi/nabu;then
     setprop ro.netflix.bsp_rev Q855-16947-1
 fi
 
 if getprop ro.vendor.build.fingerprint |grep -qi redmi/curtana -e redmi/joyeuse -e redmi/excalibur; then
     setprop ro.netflix.bsp_rev Q6250-19132-1
+fi
+
+if getprop ro.vendor.build.fingerprint |grep -iq xiaomi/renoir;then
+    setprop ro.netflix.bsp_rev Q875-32774-1
+    resetprop_phh ro.config.media_vol_steps 25
+    resetprop_phh ro.config.media_vol_default 15
 fi
 
 # Set props for Vsmart Live's fod
@@ -999,9 +1057,7 @@ if [ "$vndk" -le 27 ];then
     setprop persist.sys.phh.no_present_or_validate true
 fi
 
-if grep -q /mnt/vendor/persist /vendor/etc/fstab.qcom;then
-    mount /mnt/vendor/persist /persist
-fi
+[ -d /mnt/vendor/persist ] && mount /mnt/vendor/persist /persist
 
 for f in $(find /sys -name fts_gesture_mode);do
     setprop persist.sys.phh.focaltech_node "$f"
@@ -1013,3 +1069,56 @@ fi
 
 # Disable secondary watchdogs
 echo -n V > /dev/watchdog1
+
+# Disable ODM display overlay for some OPlus devices, which is annoyingly hard to override
+if getprop ro.boot.prjname |grep -qi -e 20846 -e 20847 -e 2084A -e 21615;then
+    mount -o bind /system/phh/empty /odm/overlay/android_framework_res_overlay.display.product.*.apk
+fi
+
+if [ "$(stat -c '%U'  /dev/nxp_smartpa_dev)" == "root" ] &&
+	[ "$(stat -c '%G' /dev/nxp_smartpa_dev)" == "root" ];then
+    chown root:audio /dev/nxp_smartpa_dev
+    chmod 0660 /dev/nxp_smartpa_dev
+fi
+if getprop ro.odm.build.fingerprint |grep -q Huawei/Chicago/Chicago_VTR;then
+    setprop ctl.stop aptouch
+fi
+
+if getprop ro.vendor.build.fingerprint | grep -iq -e GOME/GOME_U9; then
+    cp -a /system/etc/smartpa_params /mnt/phh/smartpa_params
+    cp /system/phh/gome/fs16xx_01s_left.preset /mnt/phh/smartpa_params/fs16xx_01s_left.preset
+    cp /system/phh/gome/fs16xx_01s_mono.preset /mnt/phh/smartpa_params/fs16xx_01s_mono.preset
+    cp /system/phh/gome/fs16xx_01s_right.preset /mnt/phh/smartpa_params/fs16xx_01s_right.preset
+    chmod 0644 /mnt/phh/smartpa_params/fs16xx_01s_left.preset
+    chmod 0644 /mnt/phh/smartpa_params/fs16xx_01s_mono.preset
+    chmod 0644 /mnt/phh/smartpa_params/fs16xx_01s_right.preset
+    mount -o bind /mnt/phh/smartpa_params /system/etc/smartpa_params
+    restorecon -R /system/etc/smartpa_params
+fi
+
+if getprop ro.vendor.build.fingerprint | grep -iq -e UMIDIGI/UMIDIGI_X; then
+    cp -a /system/etc/smartpa_params /mnt/phh/smartpa_params
+    cp /system/phh/umidigi/fs16xx_01s_mono.preset /mnt/phh/smartpa_params/fs16xx_01s_mono.preset
+    chmod 0644 /mnt/phh/smartpa_params/fs16xx_01s_mono.preset
+    mount -o bind /mnt/phh/smartpa_params /system/etc/smartpa_params
+    restorecon -R /system/etc/smartpa_params
+fi
+
+if getprop ro.vendor.build.fingerprint |grep -iq motorola/kane;then
+	setprop persist.sys.bt.esco_transport_unit_size 16
+fi
+
+if getprop ro.vendor.build.fingerprint | grep -iq -e motorola/liber; then
+  cp /vendor/etc/audio_policy_configuration.xml /mnt/phh/
+  sed -i '/r_submix_audio_policy_configuration/a \t<xi:include href="/vendor/etc/a2dp_audio_policy_configuration.xml"/>' /mnt/phh/audio_policy_configuration.xml
+  mount -o bind /mnt/phh/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml
+  chcon -h u:object_r:vendor_configs_file:s0 /vendor/etc/audio_policy_configuration.xml
+  chmod 644 /vendor/etc/audio_policy_configuration.xml
+fi
+
+mount /system/phh/empty /vendor/etc/permissions/samsung.hardware.uwb.xml
+mount /system/phh/empty /vendor/bin/install-recovery.sh
+
+if getprop ro.vendor.radio.default_network |grep -qE '[0-9]';then
+  setprop ro.telephony.default_network $(getprop ro.vendor.radio.default_network)
+fi
