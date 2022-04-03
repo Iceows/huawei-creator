@@ -42,12 +42,8 @@ mount -o loop,rw s-aonly.img d
 	rmdir system
 
 
-	# remove apex v28
+	# remove apex v28, v29
 	rm -Rf system_ext/apex/com.android.vndk.v28
-	rm -Rf apex/*.apex
-	rm -Rf system_ext/apex/*.apex
-
-	# remove apex v29
 	rm -Rf system_ext/apex/com.android.vndk.v29
 	rm -Rf apex/*.apex
 	rm -Rf system_ext/apex/*.apex
@@ -208,8 +204,13 @@ mount -o loop,rw s-aonly.img d
 	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-sp-26
 	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
 	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
-	fi
 
+	rm -rf lib64/vndk-28
+	rm -rf lib64/vndk-29
+	rm -rf lib64/vndk-sp-28
+	rm -rf lib64/vndk-sp-29	
+	
+	fi
 
 
 	#-----------------------------------------------------------------------------------	
@@ -219,6 +220,19 @@ mount -o loop,rw s-aonly.img d
 	# rw-system custom for Huawei device
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	
+	# Add SafetyNet and Pixel Sppof script
+	cp "$origin/files-patch/system/bin/phh-on-data.sh" bin/phh-on-data.sh
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/phh-on-data.sh
+	cp "$origin/files-patch/system/bin/phh-prop-handler.sh" bin/phh-prop-handler.sh
+	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-prop-handler.sh		
+	cp "$origin/files-patch/system/bin/phh-securize.sh" bin/phh-securize.sh
+	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-securize.sh	
+	cp "$origin/files-patch/system/bin/phh-remotectl.sh" bin/phh-remotectl.sh
+	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-remotectl.sh
+	cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
+		
+
 
 	# ?
 	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
@@ -317,6 +331,8 @@ mount -o loop,rw s-aonly.img d
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
 	MODEL="PRA-LX1"
+	
+	
 
 
 	echo "#" >> etc/prop.default
@@ -337,9 +353,9 @@ mount -o loop,rw s-aonly.img d
     	echo "ro.product.system.model=hi6250" >> etc/prop.default
     	echo "ro.product.model=$MODEL" >> etc/prop.default
     	
-    	#VERSION="LineageOS 18.1 LeaOS (CGMod)"
-    	#VERSION="crDRom v314 - Mod Iceows"
-    	#VERSION="LiR v314 - Mod Iceows"
+    	#VERSION="LeaOS"
+    	#VERSION="crDRom v316 - Mod Iceows"
+    	#VERSION="LiR v316 - Mod Iceows"
     	#VERSION="dotOS-R 5.2 - Mod Iceows"
     	VERSION=$versionNumber
     	
@@ -372,8 +388,25 @@ mount -o loop,rw s-aonly.img d
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >> etc/prop.default
 	
-	# disable audio effect
-	# echo "persist.sys.phh.disable_audio_effects=1" >> etc/prop.default
+	# Set default phh properties
+	echo "persist.sys.phh.autorun=false" >> etc/prop.default
+	echo "persist.sys.phh.backlight.scale=0" >> etc/prop.default
+	echo "persist.sys.phh.camera.force_timestampsource=-1" >> etc/prop.default
+	echo "persist.sys.phh.disable_a2dp_offload=false" >> etc/prop.default
+	echo "persist.sys.phh.disable_audio_effects=0" >> etc/prop.default
+	echo "persist.sys.phh.disable_buttons_light=false" >> etc/prop.default
+	echo "persist.sys.phh.include_all_cameras=false" >> etc/prop.default
+	echo "persist.sys.phh.linear_brightness=false" >> etc/prop.default
+	echo "persist.sys.phh.mainkeys=0" >> etc/prop.default
+	echo "persist.sys.phh.no_cutout=false" >> etc/prop.default
+	echo "persist.sys.phh.no_present_or_validate=true" >> etc/prop.default
+	echo "persist.sys.phh.no_stock_apps=false" >> etc/prop.default
+	echo "persist.sys.phh.nolog=false" >> etc/prop.default
+	echo "persist.sys.phh.pixelprops=false" >> etc/prop.default
+	echo "persist.sys.phh.remote=false" >> etc/prop.default
+	echo "persist.sys.phh.restart_ril=false" >> etc/prop.default
+	echo "persist.sys.phh.root=false" >> etc/prop.default
+	echo "persist.sys.phh.safetynet=false" >> etc/prop.default
 
 
 	# Add type and mapping for displayengine-hal-1.0
