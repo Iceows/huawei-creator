@@ -32,57 +32,15 @@ resize2fs s-ab.img 4500M
 e2fsck -E unshare_blocks -y -f s-ab.img
 mount -o loop,rw s-ab.img d
 (
-	cd d
+	cd d/system
 		
 
-	cp init.environ.rc "$origin"/tmp
-
-	find -maxdepth 1 -not -name system -not -name . -not -name .. -exec rm -Rf '{}' +
-	mv system/* .
-	rmdir system
-
-	# remove apex v29
-	rm -Rf system_ext/apex/com.android.vndk.v29
-	rm -Rf apex/*.apex
-	rm -Rf system_ext/apex/*.apex
-	
-	
-
-	sed -i \
-	    -e '/ro.radio.noril/d' \
-	    -e '/sys.usb.config/d' \
-	    -e '/ro.build.fingerprint/d' \
-	    -e '/persist.sys.theme/d' \
-	    -e '/ro.opengles.version/d' \
-	    -e '/ro.sf.lcd_density/d' \
-	    -e '/sys.usb.controller/d' \
-	    -e '/persist.dbg.volte_avail_ovr/d' \
-	    -e '/persist.dbg.wfc_avail_ovr/d' \
-	    -e '/persist.radio.multisim.config/d' \
-	    -e /persist.dbg.vt_avail_ovr/d \
-	    -e /ro.build.description/d \
-	    -e /ro.build.display.id/d \
-	    -e /ro.build.version.base_os/d \
-	    -e /ro.com.android.dataroaming/d \
-	    -e /ro.telephony.default_network/d \
-	    -e /ro.vendor.build.fingerprint/d \
-	    etc/selinux/plat_property_contexts
-
-	xattr -w security.selinux u:object_r:property_contexts_file:s0 etc/selinux/plat_property_contexts
-
-
-
 	#-----------------------------------------------------------------------------------	
-	
-	
+		
 	
 	# rw-system custom for Huawei device
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-
-	# ?
-	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
-	xattr -w security.selinux u:object_r:system_file:s0 etc/init/android.system.suspend@1.0-service.rc
 
 	# offline charging
 	for img in $(cd "$origin/files-patch/system/etc/charger/1080x1920"; echo *);do
