@@ -28,7 +28,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-aonly.img
-resize2fs s-aonly.img 4500M
+resize2fs s-aonly.img 3500M
 e2fsck -E unshare_blocks -y -f s-aonly.img
 mount -o loop,rw s-aonly.img d
 (
@@ -47,6 +47,11 @@ mount -o loop,rw s-aonly.img d
 	rm -Rf system_ext/apex/com.android.vndk.v29
 	rm -Rf apex/*.apex
 	rm -Rf system_ext/apex/*.apex
+	
+	rm -rf lib64/vndk-28
+	rm -rf lib64/vndk-29
+	rm -rf lib64/vndk-sp-28
+	rm -rf lib64/vndk-sp-29	
 	
 	
 
@@ -209,10 +214,7 @@ mount -o loop,rw s-aonly.img d
 	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
 	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
 
-	rm -rf lib64/vndk-28
-	rm -rf lib64/vndk-29
-	rm -rf lib64/vndk-sp-28
-	rm -rf lib64/vndk-sp-29	
+
 	
 	fi
 
@@ -277,8 +279,34 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/etc/libnfc-nxp.conf" product/etc/libnfc-nxp.conf
 	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf	
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	
+	# Remove Sound
+	rm -rf product/media/* 
+	
+	# Remove Overlay
+	rm -rf product/overlay/treble-overlay-infinix-*
+	rm -rf product/overlay/treble-overlay-lenovo-*
+	rm -rf product/overlay/treble-overlay-lge-*
+	rm -rf product/overlay/treble-overlay-asus-*
+	rm -rf product/overlay/treble-overlay-xiaomi-*
+	rm -rf product/overlay/treble-overlay-samsung-*
+	rm -rf product/overlay/treble-overlay-sony-*	
+	rm -rf product/overlay/treble-overlay-tecno-*
+	rm -rf product/overlay/treble-overlay-realme-*
+	rm -rf product/overlay/treble-overlay-oppo-*
+	rm -rf product/overlay/treble-overlay-nokia-*
+	rm -rf product/overlay/treble-overlay-oneplus-*	
+	rm -rf product/overlay/treble-overlay-nubia-*		
+	rm -rf product/overlay/treble-overlay-moto-*	
+	rm -rf product/overlay/treble-overlay-lg-*
+	rm -rf product/overlay/treble-overlay-htc-*
+	rm -rf product/overlay/treble-overlay-blackview-*
+	rm -rf product/overlay/treble-overlay-vivo-*
+	rm -rf product/overlay/treble-overlay-vsmart-*
+	rm -rf product/overlay/treble-overlay-razer-*
+	rm -rf product/overlay/treble-overlay-sharp-*
+				
 	# NFC permission
 	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
 	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
@@ -341,7 +369,7 @@ mount -o loop,rw s-aonly.img d
 	# Dirty hack to show build properties
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
-	MODEL=$model
+
 	
 	# build
     	sed -i "/ro.system.build.type/d" build.prop 
@@ -365,20 +393,19 @@ mount -o loop,rw s-aonly.img d
     	sed -i "/ro.product.system.model/d" etc/prop.default
     	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
     	echo "ro.product.system.model=hi6250" >> etc/prop.default
-    	echo "ro.product.model=$MODEL" >> etc/prop.default
+    	echo "ro.product.model=$model" >> etc/prop.default
     	
     	#VERSION="LeaOS"
     	#VERSION="crDRom v316 - Mod Iceows"
     	#VERSION="LiR v316 - Mod Iceows"
     	#VERSION="dotOS-R 5.2 - Mod Iceows"
-    	VERSION=$versionNumber
     	
     	sed -i "/ro.lineage.version/d" etc/prop.default;
     	sed -i "/ro.lineage.display.version/d" etc/prop.default;
     	sed -i "/ro.modversion/d" etc/prop.default;
-    	echo "ro.lineage.version=$VERSION" >> etc/prop.default;
-    	echo "ro.lineage.display.version=$VERSION" >> etc/prop.default;
-    	echo "ro.modversion=$VERSION" >> etc/prop.default;
+    	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
+    	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
+    	echo "ro.modversion=$versionNumber" >> etc/prop.default;
 	 
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> etc/prop.default
     	echo "sys.usb.config=mtp" >> etc/prop.default
