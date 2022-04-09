@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei.sh [/path/to/system.img] [version]
+#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version]
 
 #cleanups
 umount d
@@ -16,10 +16,10 @@ origin="$(dirname "$origin")"
 targetArch=64
 srcFile="$1"
 versionNumber="$2"
-
+model="$3"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei.sh [/path/to/system.img]"
+	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] "
 	exit 1
 fi
 
@@ -51,24 +51,28 @@ mount -o loop,rw s-aonly.img d
 	
 
 	sed -i \
-	    -e '/ro.radio.noril/d' \
 	    -e '/sys.usb.config/d' \
-	    -e '/ro.build.fingerprint/d' \
 	    -e '/persist.sys.theme/d' \
 	    -e '/ro.opengles.version/d' \
 	    -e '/ro.sf.lcd_density/d' \
 	    -e '/sys.usb.controller/d' \
-	    -e '/persist.dbg.volte_avail_ovr/d' \
 	    -e '/persist.dbg.wfc_avail_ovr/d' \
-	    -e '/persist.radio.multisim.config/d' \
-	    -e /persist.dbg.vt_avail_ovr/d \
-	    -e /ro.build.description/d \
-	    -e /ro.build.display.id/d \
-	    -e /ro.build.version.base_os/d \
-	    -e /ro.com.android.dataroaming/d \
-	    -e /ro.telephony.default_network/d \
-	    -e /ro.vendor.build.fingerprint/d \
-	    etc/selinux/plat_property_contexts
+	    -e '/persist.dbg.vt_avail_ovr/d' \
+	    -e '/persist.dbg.volte_avail_ovr/d' \
+	    -e '/ro.build.fingerprint/d' \
+	    -e '/ro.vendor.build.fingerprint/d' \
+	 etc/selinux/plat_property_contexts
+
+#5	    -e '/ro.build.fingerprint/d' \
+#4	    -e '/persist.dbg.volte_avail_ovr/d' \
+
+#7	    -e /ro.com.android.dataroaming/d \
+#6	    -e '/ro.radio.noril/d' \
+#3	    -e '/persist.radio.multisim.config/d' \
+#2	    -e /ro.build.display.id/d \
+#2	    -e /ro.build.version.base_os/d \
+#1	    -e /ro.telephony.default_network/d \
+#0	    -e /ro.build.description/d \
 
 	xattr -w security.selinux u:object_r:property_contexts_file:s0 etc/selinux/plat_property_contexts
 
@@ -222,15 +226,15 @@ mount -o loop,rw s-aonly.img d
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 	
 	# Add SafetyNet and Pixel Sppof script
-	cp "$origin/files-patch/system/bin/phh-on-data.sh" bin/phh-on-data.sh
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/phh-on-data.sh
-	cp "$origin/files-patch/system/bin/phh-prop-handler.sh" bin/phh-prop-handler.sh
-	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-prop-handler.sh		
-	cp "$origin/files-patch/system/bin/phh-securize.sh" bin/phh-securize.sh
-	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-securize.sh	
-	cp "$origin/files-patch/system/bin/phh-remotectl.sh" bin/phh-remotectl.sh
-	xattr -w security.selinux u:object_r:system_file:s0 bin/phh-remotectl.sh
-	cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
+	# cp "$origin/files-patch/system/bin/phh-on-data.sh" bin/phh-on-data.sh
+	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/phh-on-data.sh
+	# cp "$origin/files-patch/system/bin/phh-prop-handler.sh" bin/phh-prop-handler.sh
+	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-prop-handler.sh		
+	# cp "$origin/files-patch/system/bin/phh-securize.sh" bin/phh-securize.sh
+	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-securize.sh	
+	# cp "$origin/files-patch/system/bin/phh-remotectl.sh" bin/phh-remotectl.sh
+	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-remotectl.sh
+	# cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
 		
 
 
@@ -239,14 +243,22 @@ mount -o loop,rw s-aonly.img d
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/android.system.suspend@1.0-service.rc
 
 	# offline charging
-	for img in $(cd "$origin/files-patch/system/etc/charger/1080x1920"; echo *);do
-		cp "$origin/files-patch/system/etc/charger/1080x1920/$img" etc/charger/1080x1920/$img
-		xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x1920/$img
-	done
-	for img in $(cd "$origin/files-patch/system/etc/charger/1080x2160"; echo *);do
-		cp "$origin/files-patch/system/etc/charger/1080x2160/$img" etc/charger/1080x2160/$img
-		xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2160/$img
-	done
+	# PRA - Huawei P8/P9 Lite 2017
+	if [ "$model" == "PRA-LX1" ];then
+		for img in $(cd "$origin/files-patch/system/etc/charger/1080x1920"; echo *);do
+			cp "$origin/files-patch/system/etc/charger/1080x1920/$img" etc/charger/1080x1920/$img
+			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x1920/$img
+		done
+	fi
+
+	
+	# FIG - Huawei P Smart
+	if [ "$model" == "FIG-LX1" ];then
+		for img in $(cd "$origin/files-patch/system/etc/charger/1080x2160"; echo *);do
+			cp "$origin/files-patch/system/etc/charger/1080x2160/$img" etc/charger/1080x2160/$img
+			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2160/$img
+		done
+	fi
 	
 	# NFC 
 	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" etc/libnfc-brcm.conf
@@ -322,7 +334,6 @@ mount -o loop,rw s-aonly.img d
 
 
 
-
    	echo "debug.sf.latch_unsignaled=1" >> build.prop
 	echo "ro.surface_flinger.running_without_sync_framework=true" >> build.prop;
 
@@ -330,11 +341,14 @@ mount -o loop,rw s-aonly.img d
 	# Dirty hack to show build properties
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
-	MODEL="PRA-LX1"
+	MODEL=$model
 	
+	# build
+    	sed -i "/ro.system.build.type/d" build.prop 
+    	sed -i "/ro.build.type/d" build.prop 	
+	echo "ro.system.build.type=user" >> build.prop
+	echo "ro.build.type=user" >> build.prop
 	
-
-
 	echo "#" >> etc/prop.default
     	echo "## Adding build props" >> etc/prop.default
     	echo "#" >> etc/prop.default
