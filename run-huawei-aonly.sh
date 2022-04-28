@@ -20,6 +20,7 @@ model="$3"
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] "
+	echo "VERSION=LeaOS , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
 	exit 1
 fi
 
@@ -28,7 +29,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-aonly.img
-resize2fs s-aonly.img 3500M
+resize2fs s-aonly.img 3000M
 e2fsck -E unshare_blocks -y -f s-aonly.img
 mount -o loop,rw s-aonly.img d
 (
@@ -306,6 +307,10 @@ mount -o loop,rw s-aonly.img d
 	rm -rf product/overlay/treble-overlay-vsmart-*
 	rm -rf product/overlay/treble-overlay-razer-*
 	rm -rf product/overlay/treble-overlay-sharp-*
+	
+	# Add Volte IMS
+	#chmod 755 app/HuaweiIMS/HuaweiIMS.apk
+	#xattr -w security.selinux u:object_r:system_file:s0 a app/HuaweiIMS/HuaweiIMS.apk
 				
 	# NFC permission
 	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
@@ -395,10 +400,7 @@ mount -o loop,rw s-aonly.img d
     	echo "ro.product.system.model=hi6250" >> etc/prop.default
     	echo "ro.product.model=$model" >> etc/prop.default
     	
-    	#VERSION="LeaOS"
-    	#VERSION="crDRom v316 - Mod Iceows"
-    	#VERSION="LiR v316 - Mod Iceows"
-    	#VERSION="dotOS-R 5.2 - Mod Iceows"
+
     	
     	sed -i "/ro.lineage.version/d" etc/prop.default;
     	sed -i "/ro.lineage.display.version/d" etc/prop.default;
