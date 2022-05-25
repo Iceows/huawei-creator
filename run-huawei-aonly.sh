@@ -29,7 +29,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-aonly.img
-resize2fs s-aonly.img 3000M
+resize2fs s-aonly.img 3500M
 e2fsck -E unshare_blocks -y -f s-aonly.img
 mount -o loop,rw s-aonly.img d
 (
@@ -628,5 +628,9 @@ sleep 1
 umount d
 
 e2fsck -f -y s-aonly.img || true
-resize2fs -M s-aonly.img
+resize2fs -M s-aonly.img 
+
+
+
+
 
