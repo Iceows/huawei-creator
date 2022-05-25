@@ -282,8 +282,59 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
 	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	
-	# Remove Sound
-	rm -rf product/media/* 
+	# Copy media sound (only ui for the moment)
+	#mkdir media/audio/
+	#chmod 777 media/audio
+	#chown root:root media/audio
+	#xattr -w security.selinux u:object_r:system_file:s0 media/audio
+
+	#mkdir media/audio/ringtones
+	#chmod 777 media/audio/ringtones
+	#chown root:root media/audio/ringtones
+	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/ringtones
+	
+	#mkdir media/audio/alarms
+	#chmod 777 media/audio/alarms
+	#chown root:root media/audio/alarms
+	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/alarms
+
+	#mkdir media/audio/notifications
+	#chmod 777 media/audio/notifications
+	#chown root:root media/audio/notifications
+	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/notifications
+	
+	#mkdir media/audio/ui
+	#chmod 777 media/audio/ui
+	#chown root:root media/audio/ui
+	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/ui
+
+	# for snd in $(cd "$origin/files-patch/media/audio/ringtones/"; echo *);do
+	# 	cp "$origin/files-patch/media/audio/ringtones/$snd" "media/audio/ringtones/$snd"
+	# 	chmod 666 "media/audio/ringtones/$snd"
+	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/ringtones/$snd"
+	# done
+	# for snd in $(cd "$origin/files-patch/media/audio/alarms/"; echo *);do
+	# 	cp "$origin/files-patch/media/audio/alarms/$snd" "media/audio/alarms/$snd"
+	# 	chmod 666 "media/audio/alarms/$snd"
+	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/alarms/$snd"
+	# done
+	# for snd in $(cd "$origin/files-patch/media/audio/notifications/"; echo *);do
+	# 	cp "$origin/files-patch/media/audio/notifications/$snd" "media/audio/notifications/$snd"
+	# 	chmod 666 "media/audio/notifications/$snd"
+	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/notifications/$snd"
+	# done
+	
+	#for snd in $(cd "$origin/files-patch/media/audio/ui/"; echo *);do
+	#	cp "$origin/files-patch/media/audio/ui/$snd" "media/audio/ui/$snd"
+	#	chmod 666 "media/audio/ui/$snd"
+	#	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/ui/$snd"
+	#done
+	
+	# remove product audio to keep more Ko (keep only ui audio)
+	rm -rf product/media/audio/ringtones/*
+	rm -rf product/media/audio/alarms/*
+	rm -rf product/media/audio/notifications/*
+		
 	
 	# Remove Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
@@ -364,7 +415,7 @@ mount -o loop,rw s-aonly.img d
     	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
     	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
     	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-
+    	echo "(allow gmscore_app modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 
 
    	echo "debug.sf.latch_unsignaled=1" >> build.prop
@@ -399,6 +450,11 @@ mount -o loop,rw s-aonly.img d
     	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
     	echo "ro.product.system.model=hi6250" >> etc/prop.default
     	echo "ro.product.model=$model" >> etc/prop.default
+    	
+    	# set default sound
+    	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
+    	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
+    	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
     	
 
     	
@@ -474,10 +530,13 @@ mount -o loop,rw s-aonly.img d
 	# SELinux to allow disk operation and camera
 	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server sysfs (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vfat (dir (open read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server system_data_root_file (dir (create add_name write)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server userspace_reboot_exported_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+		
 	
 	# Misc
 	# avc: denied { ioctl } for path="pipe:[23197]" dev="pipefs" ino=23197 ioctlcmd=5413 scontext=u:r:hi110x_daemon:s0 tcontext=u:r:hi110x_daemon:s0 tclass=fifo_file permissive=0
