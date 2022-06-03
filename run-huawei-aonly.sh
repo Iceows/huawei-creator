@@ -228,7 +228,7 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 	
-	# Add SafetyNet and Pixel Sppof script
+	# Add SafetyNet and Pixel Spoof script
 	# cp "$origin/files-patch/system/bin/phh-on-data.sh" bin/phh-on-data.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/phh-on-data.sh
 	# cp "$origin/files-patch/system/bin/phh-prop-handler.sh" bin/phh-prop-handler.sh
@@ -282,11 +282,31 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
 	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	
+	# Copy bootanimation.zip
+	mkdir media
+	chmod 777 media
+	chown root:root media
+	xattr -w security.selinux u:object_r:system_file:s0 media
+	
+	mkdir media/audio/
+	chmod 777 media/audio
+	chown root:root media/audio
+	xattr -w security.selinux u:object_r:system_file:s0 media/audio
+	
+	cp "$origin/files-patch/media/bootanimation.zip" "media/audio/bootanimation.zip"
+	chmod 644 "media/audio/bootanimation.zip"
+	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/bootanimation.zip"
+	
+	mkdir media/audio/animationsounds/
+	chmod 777 media/audio/animationsounds/
+	chown root:root media/audio/animationsounds/
+	
+	cp "$origin/files-patch/media/audio/animationsounds/bootSound.ogg" "media/audio/animationsounds/bootSound.ogg" 
+	chmod 644 "media/audio/animationsounds/bootSound.ogg" 
+	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/animationsounds/bootSound.ogg" 
+	
+
 	# Copy media sound (only ui for the moment)
-	#mkdir media/audio/
-	#chmod 777 media/audio
-	#chown root:root media/audio
-	#xattr -w security.selinux u:object_r:system_file:s0 media/audio
 
 	#mkdir media/audio/ringtones
 	#chmod 777 media/audio/ringtones
@@ -308,11 +328,11 @@ mount -o loop,rw s-aonly.img d
 	#chown root:root media/audio/ui
 	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/ui
 
-	# for snd in $(cd "$origin/files-patch/media/audio/ringtones/"; echo *);do
+	#for snd in $(cd "$origin/files-patch/media/audio/ringtones/"; echo *);do
 	# 	cp "$origin/files-patch/media/audio/ringtones/$snd" "media/audio/ringtones/$snd"
 	# 	chmod 666 "media/audio/ringtones/$snd"
 	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/ringtones/$snd"
-	# done
+	#done
 	# for snd in $(cd "$origin/files-patch/media/audio/alarms/"; echo *);do
 	# 	cp "$origin/files-patch/media/audio/alarms/$snd" "media/audio/alarms/$snd"
 	# 	chmod 666 "media/audio/alarms/$snd"
@@ -331,9 +351,9 @@ mount -o loop,rw s-aonly.img d
 	#done
 	
 	# remove product audio to keep more Ko (keep only ui audio)
-	rm -rf product/media/audio/ringtones/*
-	rm -rf product/media/audio/alarms/*
-	rm -rf product/media/audio/notifications/*
+	#rm -rf product/media/audio/ringtones/*
+	#rm -rf product/media/audio/alarms/*
+	#rm -rf product/media/audio/notifications/*
 		
 	
 	# Remove Overlay
