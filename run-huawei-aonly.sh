@@ -293,9 +293,9 @@ mount -o loop,rw s-aonly.img d
 	chown root:root media/audio
 	xattr -w security.selinux u:object_r:system_file:s0 media/audio
 	
-	cp "$origin/files-patch/media/bootanimation.zip" "media/audio/bootanimation.zip"
-	chmod 644 "media/audio/bootanimation.zip"
-	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/bootanimation.zip"
+	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
+	chmod 644 "media/bootanimation.zip"
+	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
 	
 	mkdir media/audio/animationsounds/
 	chmod 777 media/audio/animationsounds/
@@ -354,7 +354,11 @@ mount -o loop,rw s-aonly.img d
 	#rm -rf product/media/audio/ringtones/*
 	#rm -rf product/media/audio/alarms/*
 	#rm -rf product/media/audio/notifications/*
-		
+	
+	# duplicate media audio
+	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
+	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
+	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
 	
 	# Remove Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
