@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version]
+#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version] [device]
 
 #cleanups
 umount d
@@ -228,19 +228,6 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 	
-	# Add SafetyNet and Pixel Spoof script
-	# cp "$origin/files-patch/system/bin/phh-on-data.sh" bin/phh-on-data.sh
-	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/phh-on-data.sh
-	# cp "$origin/files-patch/system/bin/phh-prop-handler.sh" bin/phh-prop-handler.sh
-	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-prop-handler.sh		
-	# cp "$origin/files-patch/system/bin/phh-securize.sh" bin/phh-securize.sh
-	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-securize.sh	
-	# cp "$origin/files-patch/system/bin/phh-remotectl.sh" bin/phh-remotectl.sh
-	# xattr -w security.selinux u:object_r:system_file:s0 bin/phh-remotectl.sh
-	# cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
-		
-
-
 	# ?
 	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/android.system.suspend@1.0-service.rc
@@ -263,24 +250,6 @@ mount -o loop,rw s-aonly.img d
 		done
 	fi
 	
-	# NFC 
-	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" etc/libnfc-brcm.conf
-	xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-	cp "$origin/files-patch/system/etc/libnfc-nci.conf" etc/libnfc-nci.conf
-	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-	cp "$origin/files-patch/system/etc/libnfc-nxp.conf" etc/libnfc-nxp.conf
-	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" etc/libnfc-nxp_RF.conf
-	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
-	
-	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" product/etc/libnfc-brcm.conf
-	xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-	cp "$origin/files-patch/system/etc/libnfc-nci.conf" product/etc/libnfc-nci.conf
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-	cp "$origin/files-patch/system/etc/libnfc-nxp.conf" product/etc/libnfc-nxp.conf
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	
 	# Copy bootanimation.zip
 	mkdir media
@@ -622,11 +591,6 @@ mount -o loop,rw s-aonly.img d
 	
 		
 	# Force FUSE usage for emulated storage
-	# ro.sys.sdcardfs=false
-	# persist.fuse_sdcard=true
-	# persist.esdfs_sdcard=false
-	# persist.sys.sdcardfs=force_off
-
 	# Force sdcardfs usage for emulated storage (Huawei)
 	# Enabled sdcardfs, disabled esdfs_sdcard
 	if grep -qs 'persist.sys.sdcardfs' etc/prop.default; then
@@ -654,6 +618,8 @@ umount d
 e2fsck -f -y s-aonly.img || true
 resize2fs -M s-aonly.img 
 
+
+xz -c s-aonly.img -T0 > s-aonly-vanilla.xz
 
 
 
