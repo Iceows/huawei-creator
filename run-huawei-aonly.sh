@@ -20,7 +20,8 @@ model="$3"
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] "
-	echo "VERSION=LeaOS , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
+	echo "VERSION=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
+	echo "model=PRA-LX1 , FIG-LX1"
 	exit 1
 fi
 
@@ -33,8 +34,12 @@ resize2fs s-aonly.img 3500M
 e2fsck -E unshare_blocks -y -f s-aonly.img
 mount -o loop,rw s-aonly.img d
 (
+
+
+	#----------------------------- Make a-only image ------------------------------------------------------	
+	
 	cd d
-		
+	
 
 	cp init.environ.rc "$origin"/tmp
 
@@ -54,8 +59,6 @@ mount -o loop,rw s-aonly.img d
 	rm -rf lib64/vndk-sp-28
 	rm -rf lib64/vndk-sp-29	
 	
-	
-
 	sed -i \
 	    -e '/sys.usb.config/d' \
 	    -e '/persist.sys.theme/d' \
@@ -69,16 +72,6 @@ mount -o loop,rw s-aonly.img d
 	    -e '/ro.vendor.build.fingerprint/d' \
 	 etc/selinux/plat_property_contexts
 
-#5	    -e '/ro.build.fingerprint/d' \
-#4	    -e '/persist.dbg.volte_avail_ovr/d' \
-
-#7	    -e /ro.com.android.dataroaming/d \
-#6	    -e '/ro.radio.noril/d' \
-#3	    -e '/persist.radio.multisim.config/d' \
-#2	    -e /ro.build.display.id/d \
-#2	    -e /ro.build.version.base_os/d \
-#1	    -e /ro.telephony.default_network/d \
-#0	    -e /ro.build.description/d \
 
 	xattr -w security.selinux u:object_r:property_contexts_file:s0 etc/selinux/plat_property_contexts
 
@@ -126,13 +119,13 @@ mount -o loop,rw s-aonly.img d
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/adbd.rc
 
 	if [ -f system_ext/apex/com.android.adbd/lib64/libadb_protos.so ];then
-	cp system_ext/apex/com.android.adbd/lib64/libadb_protos.so lib64/libadb_protos.so
-	xattr -w security.selinux u:object_r:system_file:s0 lib64/libadb_protos.so
+		cp system_ext/apex/com.android.adbd/lib64/libadb_protos.so lib64/libadb_protos.so
+		xattr -w security.selinux u:object_r:system_file:s0 lib64/libadb_protos.so
 	fi
 
 	if [ -f system_ext/apex/com.android.adbd/lib/libadb_protos.so ];then
-	cp system_ext/apex/com.android.adbd/lib/libadb_protos.so lib/libadb_protos.so
-	xattr -w security.selinux u:object_r:system_file:s0 lib/libadb_protos.so
+		cp system_ext/apex/com.android.adbd/lib/libadb_protos.so lib/libadb_protos.so
+		xattr -w security.selinux u:object_r:system_file:s0 lib/libadb_protos.so
 	fi
 
 	sed -i s/ro.iorapd.enable=true/ro.iorapd.enable=false/g etc/prop.default
@@ -210,17 +203,14 @@ mount -o loop,rw s-aonly.img d
 	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib/vndk-26
 
 	if [ -d lib64 ];then
-	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-sp-26
-	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-sp-26
-	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
-	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
-
-
-	
+		ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-sp-26
+		xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-sp-26
+		ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
+		xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
 	fi
 
 
-	#-----------------------------------------------------------------------------------	
+	#-----------------------------File copy -----------------------------------------------------	
 	
 	
 	
@@ -266,70 +256,13 @@ mount -o loop,rw s-aonly.img d
 	chmod 644 "media/bootanimation.zip"
 	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
 	
-	mkdir media/audio/animationsounds/
-	chmod 777 media/audio/animationsounds/
-	chown root:root media/audio/animationsounds/
 	
-	cp "$origin/files-patch/media/audio/animationsounds/bootSound.ogg" "media/audio/animationsounds/bootSound.ogg" 
-	chmod 644 "media/audio/animationsounds/bootSound.ogg" 
-	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/animationsounds/bootSound.ogg" 
-	
-
-	# Copy media sound (only ui for the moment)
-
-	#mkdir media/audio/ringtones
-	#chmod 777 media/audio/ringtones
-	#chown root:root media/audio/ringtones
-	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/ringtones
-	
-	#mkdir media/audio/alarms
-	#chmod 777 media/audio/alarms
-	#chown root:root media/audio/alarms
-	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/alarms
-
-	#mkdir media/audio/notifications
-	#chmod 777 media/audio/notifications
-	#chown root:root media/audio/notifications
-	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/notifications
-	
-	#mkdir media/audio/ui
-	#chmod 777 media/audio/ui
-	#chown root:root media/audio/ui
-	#xattr -w security.selinux u:object_r:system_file:s0 media/audio/ui
-
-	#for snd in $(cd "$origin/files-patch/media/audio/ringtones/"; echo *);do
-	# 	cp "$origin/files-patch/media/audio/ringtones/$snd" "media/audio/ringtones/$snd"
-	# 	chmod 666 "media/audio/ringtones/$snd"
-	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/ringtones/$snd"
-	#done
-	# for snd in $(cd "$origin/files-patch/media/audio/alarms/"; echo *);do
-	# 	cp "$origin/files-patch/media/audio/alarms/$snd" "media/audio/alarms/$snd"
-	# 	chmod 666 "media/audio/alarms/$snd"
-	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/alarms/$snd"
-	# done
-	# for snd in $(cd "$origin/files-patch/media/audio/notifications/"; echo *);do
-	# 	cp "$origin/files-patch/media/audio/notifications/$snd" "media/audio/notifications/$snd"
-	# 	chmod 666 "media/audio/notifications/$snd"
-	# 	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/notifications/$snd"
-	# done
-	
-	#for snd in $(cd "$origin/files-patch/media/audio/ui/"; echo *);do
-	#	cp "$origin/files-patch/media/audio/ui/$snd" "media/audio/ui/$snd"
-	#	chmod 666 "media/audio/ui/$snd"
-	#	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/ui/$snd"
-	#done
-	
-	# remove product audio to keep more Ko (keep only ui audio)
-	#rm -rf product/media/audio/ringtones/*
-	#rm -rf product/media/audio/alarms/*
-	#rm -rf product/media/audio/notifications/*
-	
-	# duplicate media audio
+	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
 	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
 	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
 	
-	# Remove Overlay
+	# Remove non huawei Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
 	rm -rf product/overlay/treble-overlay-lenovo-*
 	rm -rf product/overlay/treble-overlay-lge-*
@@ -396,80 +329,156 @@ mount -o loop,rw s-aonly.img d
 	# getdents64: 1
 	# rt_sigprocmask: 1	
 	
+	
+	#----------------------------- SELinux rules -----------------------------------------------------	
+		
+	
 	# Fix app crashes
 	echo "(allow appdomain vendor_file (file (read getattr execute open)))" >> etc/selinux/plat_sepolicy.cil
 
 	# Fix instagram denied 
-    	echo "(allow untrusted_app dalvikcache_data_file (file (execmod)))" >> etc/selinux/plat_sepolicy.cil
-    	echo "(allow untrusted_app proc_zoneinfo (file (read open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow untrusted_app dalvikcache_data_file (file (execmod)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow untrusted_app proc_zoneinfo (file (read open)))" >> etc/selinux/plat_sepolicy.cil
 
 	# Fix Google GMS denied 
-    	echo "(allow gmscore_app splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-    	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-    	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-    	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-    	echo "(allow gmscore_app modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 
+	# Add type and mapping for displayengine-hal-1.0
+	echo "(typeattributeset hwservice_manager_type (displayengine_hwservice))" >> etc/selinux/plat_sepolicy.cil
+	echo "(type displayengine_hwservice)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r displayengine_hwservice)" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset displayengine_hwservice_26_0 (displayengine_hwservice))" >> etc/selinux/mapping/26.0.cil
 
-   	echo "debug.sf.latch_unsignaled=1" >> build.prop
-	echo "ro.surface_flinger.running_without_sync_framework=true" >> build.prop;
+	# Fix hwservice_manager
+	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 
+	# SELinux radio
+	echo "(allow hal_audio_default hal_broadcastradio_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_audio_default audioserver (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
 		
+	# SELinux to allow disk operation and camera
+	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server sysfs (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vfat (dir (open read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server system_data_root_file (dir (create add_name write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server userspace_reboot_exported_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Misc
+	echo "(allow bootanim userspace_reboot_exported_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vndservicemanager device (file (open getattr write read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vndservicemanager device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hw_ueventd kmsg_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow logd device (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
+	
+
+	# Specific zygote
+	echo "(allow zygote exported_camera_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
+		
+	# Specific Honor 8x
+	echo "(allow credstore self (capability (sys_resource)))" >> etc/selinux/plat_sepolicy.cil
+		
+	# PHH SU Daemon
+	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon dmd_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
+	echo "(allow vold block_device (blk_file (open read write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold dm_device (blk_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold system_data_root_file (file (create unlink read write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold_prepare_subdirs kernel (system (module_request)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow vold_prepare_subdirs system_data_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold_prepare_subdirs vold_prepare_subdirs (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold_prepare_subdirs system_data_root_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
+
+	# Fix init
+	echo "(allow init device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init system_file (dir (relabelfrom setattr write read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init system_file (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sysfs_zram_uevent (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init cust_block_device (lnk_file (relabelto)))" >> etc/selinux/plat_sepolicy.cil
+
+	# e2fsck
+	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Cust
+	echo "(allow cust rootfs (file (execute)))" >> etc/selinux/plat_sepolicy.cil
+
+
+	
+	#---------------------------------Setting properties -------------------------------------------------
+		
+
 	# Dirty hack to show build properties
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
 
 	
-	# build
-    	sed -i "/ro.system.build.type/d" build.prop 
-    	sed -i "/ro.build.type/d" build.prop 	
+	# build.prop 
+   	echo "debug.sf.latch_unsignaled=1" >> build.prop
+	echo "ro.surface_flinger.running_without_sync_framework=true" >> build.prop;
+		
+	sed -i "/ro.system.build.type/d" build.prop 
+	sed -i "/ro.build.type/d" build.prop 	
 	echo "ro.system.build.type=user" >> build.prop
 	echo "ro.build.type=user" >> build.prop
 	
 	echo "#" >> etc/prop.default
-    	echo "## Adding build props" >> etc/prop.default
-    	echo "#" >> etc/prop.default
-    	cat build.prop | grep "." >> etc/prop.default
+	echo "## Adding build props" >> etc/prop.default
+	echo "#" >> etc/prop.default
+	cat build.prop | grep "." >> etc/prop.default
     
 	echo "#" >> etc/prop.default
 	echo "## Adding hi6250 props" >> etc/prop.default
-    	echo "#" >> etc/prop.default
+   	echo "#" >> etc/prop.default
 
-	# adb root by default    	
-    	#sed -i 's/^ro.secure=1/ro.secure=0/' etc/prop.default
-    		
-    	sed -i "/ro.product.model/d" etc/prop.default
-    	sed -i "/ro.product.system.model/d" etc/prop.default
-    	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-    	echo "ro.product.system.model=hi6250" >> etc/prop.default
-    	echo "ro.product.model=$model" >> etc/prop.default
-    	
-    	# set default sound
-    	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
-    	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
-    	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
-    	
 
-    	
-    	sed -i "/ro.lineage.version/d" etc/prop.default;
-    	sed -i "/ro.lineage.display.version/d" etc/prop.default;
-    	sed -i "/ro.modversion/d" etc/prop.default;
-    	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
-    	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
-    	echo "ro.modversion=$versionNumber" >> etc/prop.default;
-	 
+	# change product		
+	sed -i "/ro.product.model/d" etc/prop.default
+	sed -i "/ro.product.system.model/d" etc/prop.default
+	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
+	echo "ro.product.system.model=hi6250" >> etc/prop.default
+	echo "ro.product.model=$model" >> etc/prop.default
+	
+	# set default sound
+	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
+	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
+	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
+	
+	# set lineage version number for lineage build    	
+	sed -i "/ro.lineage.version/d" etc/prop.default;
+	sed -i "/ro.lineage.display.version/d" etc/prop.default;
+	sed -i "/ro.modversion/d" etc/prop.default;
+	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
+	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
+	echo "ro.modversion=$versionNumber" >> etc/prop.default;
+
+	
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> etc/prop.default
-    	echo "sys.usb.config=mtp" >> etc/prop.default
+	echo "sys.usb.config=mtp" >> etc/prop.default
 	echo "sys.usb.configfs=1" >> etc/prop.default
 	echo "sys.usb.controller=hisi-usb-otg" >> etc/prop.default
 	echo "sys.usb.ffs.aio_compat=true" >> etc/prop.default
-   	echo "sys.usb.ffs.ready=0" >> etc/prop.default
+	echo "sys.usb.ffs.ready=0" >> etc/prop.default
 	echo "sys.usb.ffs_hdb.ready=0" >> etc/prop.default
-   	echo "sys.usb.state=mtp" >> etc/prop.default
+	echo "sys.usb.state=mtp" >> etc/prop.default
    	
-
-	#echo "ro.secure=0" >> etc/prop.default
-	
+	# Color
 	echo "persist.sys.sf.native_mode=1" >> etc/prop.default
 	echo "persist.sys.sf.color_mode=1.0" >> etc/prop.default
 	echo "persist.sys.sf.color_saturation=1.1" >> etc/prop.default
@@ -501,94 +510,6 @@ mount -o loop,rw s-aonly.img d
 	echo "persist.sys.phh.safetynet=false" >> etc/prop.default
 
 
-	# Add type and mapping for displayengine-hal-1.0
-	echo "(typeattributeset hwservice_manager_type (displayengine_hwservice))" >> etc/selinux/plat_sepolicy.cil
-	echo "(type displayengine_hwservice)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r displayengine_hwservice)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset displayengine_hwservice_26_0 (displayengine_hwservice))" >> etc/selinux/mapping/26.0.cil
-
-	# Add allow  for displayengine-hal-1.0
-	# echo "(allow hal_displayengine_default displayengine_hwservice (hwservice_manager (add find)))" >> /vendor/etc/selinux/nonplat_sepolicy.cil
-
-	# Fix hwservice_manager
-	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-
-	# SELinux radio
-	echo "(allow hal_audio_default hal_broadcastradio_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hal_audio_default audioserver (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
-		
-	# SELinux to allow disk operation and camera
-	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server sysfs (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vfat (dir (open read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server system_data_root_file (dir (create add_name write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server userspace_reboot_exported_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server userspace_reboot_config_prop (file (open read write getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-		
-	
-	# Misc
-	# avc: denied { ioctl } for path="pipe:[23197]" dev="pipefs" ino=23197 ioctlcmd=5413 scontext=u:r:hi110x_daemon:s0 tcontext=u:r:hi110x_daemon:s0 tclass=fifo_file permissive=0
-	# echo "(allow hi110x_daemon self (fifo_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow bootanim userspace_reboot_exported_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vndservicemanager device (file (open getattr write read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vndservicemanager device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hw_ueventd kmsg_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow logd device (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
-	
-
-	# Specific zygote
-	echo "(allow zygote exported_camera_prop (file (open getattr read write)))" >> etc/selinux/plat_sepolicy.cil
-		
-	# Specific Honor 8x
-	echo "(allow credstore self (capability (sys_resource)))" >> etc/selinux/plat_sepolicy.cil
-		
-	# PHH SU Daemon
-	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon dmd_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-	# resize2fs: avc: denied { ioctl } for path="/system" dev="mmcblk0p51" ino=2 ioctlcmd=6610 scontext=u:r:phhsu_daemon:s0 tcontext=u:object_r:rootfs:s0 tclass=dir permissive=1
-	# echo "(allow phhsu_daemon rootfs (dir (ioctl create setattr search write read)))" >> etc/selinux/plat_sepolicy.cil
-	
-	
-	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
-	echo "(allow vold block_device (blk_file (open read write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vold dm_device (blk_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vold system_data_root_file (file (create unlink read write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vold_prepare_subdirs kernel (system (module_request)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow vold_prepare_subdirs system_data_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vold_prepare_subdirs vold_prepare_subdirs (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vold_prepare_subdirs system_data_root_file (dir (create setattr search write read add_name)))" >> etc/selinux/plat_sepolicy.cil
-	
-
-	# Fix init
-	echo "(allow init device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	#not allow adb 
-	#echo "(allow init rootfs (file (mounton)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init system_file (dir (relabelfrom setattr write read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init system_file (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init sysfs_zram_uevent (file (relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init cust_block_device (lnk_file (relabelto)))" >> etc/selinux/plat_sepolicy.cil
-	
-
-	# e2fsck
-	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	
-	# Cust
-	echo "(allow cust rootfs (file (execute)))" >> etc/selinux/plat_sepolicy.cil
-
-	
 		
 	# Force FUSE usage for emulated storage
 	# Force sdcardfs usage for emulated storage (Huawei)
@@ -606,8 +527,6 @@ mount -o loop,rw s-aonly.img d
 	if grep -qs 'persist.esdfs_sdcard=true' etc/prop.default; then
 		sed -i 's/^persist.esdfs_sdcard=false' etc/prop.default
 	fi
-	
-
 	
 	
 )
