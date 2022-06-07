@@ -20,7 +20,8 @@ model="$3"
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] "
-	echo "VERSION=LeaOS , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
+	echo "version=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
+	echo "model=ANE-LX1"
 	exit 1
 fi
 
@@ -36,44 +37,48 @@ mount -o loop,rw s-ab-raw.img d
 	cd d/system
 		
 		
-		
-	#----------------------------------------------------------------------------------
+	#---------------------------------Setting properties -------------------------------------------------
+	
+	# Dirty hack to show build properties
+	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
+	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
+
 	
 	# build - change type to user
-    	sed -i "/ro.system.build.type/d" build.prop 
-    	sed -i "/ro.build.type/d" build.prop 	
+	sed -i "/ro.system.build.type/d" build.prop 
+	sed -i "/ro.build.type/d" build.prop 	
 	echo "ro.system.build.type=user" >> build.prop
 	echo "ro.build.type=user" >> build.prop
-	
+
 	echo "#" >> etc/prop.default
-    	echo "## Adding build props" >> etc/prop.default
-    	echo "#" >> etc/prop.default
-    	cat build.prop | grep "." >> etc/prop.default
-    
+	echo "## Adding build props" >> etc/prop.default
+	echo "#" >> etc/prop.default
+	cat build.prop | grep "." >> etc/prop.default
+
 	echo "#" >> etc/prop.default
 	echo "## Adding hi6250 props" >> etc/prop.default
-    	echo "#" >> etc/prop.default
+	echo "#" >> etc/prop.default
 
-    	# change product
-    	sed -i "/ro.product.model/d" etc/prop.default
-    	sed -i "/ro.product.system.model/d" etc/prop.default
-    	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-    	echo "ro.product.system.model=hi6250" >> etc/prop.default
-    	echo "ro.product.model=$model" >> etc/prop.default
-    	
-    	# set default sound
-    	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
-    	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
-    	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
+	# change product
+	sed -i "/ro.product.model/d" etc/prop.default
+	sed -i "/ro.product.system.model/d" etc/prop.default
+	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
+	echo "ro.product.system.model=hi6250" >> etc/prop.default
+	echo "ro.product.model=$model" >> etc/prop.default
 
-    	# set lineage version number
-    	sed -i "/ro.lineage.version/d" etc/prop.default;
-    	sed -i "/ro.lineage.display.version/d" etc/prop.default;
-    	sed -i "/ro.modversion/d" etc/prop.default;
-    	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
-    	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
-    	echo "ro.modversion=$versionNumber" >> etc/prop.default;
-    	
+	# set default sound
+	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
+	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
+	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
+
+	# set lineage version number for lineage build
+	sed -i "/ro.lineage.version/d" etc/prop.default;
+	sed -i "/ro.lineage.display.version/d" etc/prop.default;
+	sed -i "/ro.modversion/d" etc/prop.default;
+	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
+	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
+	echo "ro.modversion=$versionNumber" >> etc/prop.default;
+
 
 	# Force FUSE usage for emulated storage
 	# Force sdcardfs usage for emulated storage (Huawei)
@@ -93,7 +98,7 @@ mount -o loop,rw s-ab-raw.img d
 	fi
 	 
 	 
-	# LMK - for Android Kernel that support it
+	# LMK - for Android Kernel that support it - e
 	echo "ro.lmk.debug=true" >> etc/prop.default
 	
 	# Enable wireless display (Cast/Miracast)
@@ -120,57 +125,94 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.phh.safetynet=false" >> etc/prop.default
 
 
-
-	
-	#
-	# from device/huawei/anne/system.prop
-	#
-
-	#Disable debugging strict mode toasts
+	# From device/huawei/anne/system.prop
+	# Disable debugging strict mode toasts
 	echo "persist.sys.strictmode.disable=true" >> etc/prop.default
 	echo "persist.sys.max_profiles=10" >> etc/prop.default
 	echo "persist.sys.overlay.nightmode=true" >> etc/prop.default
 	echo "fw.max_users=10" >> etc/prop.default	
 
 
-	# ANE-LX1 special prop
+	# DarkJoker ANE-LX1 special prop
 	# Audio
-	# setprop audio.deep_buffer.media true
-	# setprop ro.config.media_vol_steps 25
-	# setprop ro.config.vc_call_vol_steps 7
+	echo "audio.deep_buffer.media=true" >> etc/prop.default
+	echo "ro.config.media_vol_steps=25" >> etc/prop.default
+	echo "ro.config.vc_call_vol_steps=7" >> etc/prop.default
 
 	# Display
-	# setprop ro.surface_flinger.running_without_sync_framework true
+	echo "ro.surface_flinger.running_without_sync_framework=true" >> etc/prop.default
 
 	# Graphics
-	# setprop debug.egl.hw 1
-	# setprop debug.egl.profiler 1
-	# setprop debug.hwui.use_buffer_age false
-	# setprop debug.performance.tuning 1
-	# setprop debug.sf.enable_hwc_vds 0
-	# setprop debug.sf.hw 1
-	# setprop hwui.disable_vsync true
-	# setprop ro.config.enable.hw_accel true
-	# setprop video.accelerate.hw 1
-	# setprop debug.sf.latch_unsignaled 1
-	# setprop ro.surface_flinger.max_frame_buffer_acquired_buffers 3
-	# setprop debug.cpurend.vsync false
-	# setprop ro.hardware.egl mali
-	# setprop ro.hardware.vulkan mali
+	echo "debug.egl.hw=1" >> etc/prop.default
+	echo "debug.egl.profiler=1" >> etc/prop.default
+	echo "debug.hwui.use_buffer_age=false" >> etc/prop.default
+	echo "debug.performance.tuning=1" >> etc/prop.default
+	echo "debug.sf.enable_hwc_vds=0" >> etc/prop.default
+	echo "debug.sf.hw=1" >> etc/prop.default
+	echo "hwui.disable_vsync=true" >> etc/prop.default
+	echo "ro.config.enable.hw_accel=true" >> etc/prop.default
+	echo "video.accelerate.hw=1" >> etc/prop.default
+	echo "debug.sf.latch_unsignaled=1" >> etc/prop.default
+	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> etc/prop.default
+	echo "debug.cpurend.vsync=false" >> etc/prop.default
+	echo "ro.hardware.egl=mali" >> etc/prop.default
+	echo "ro.hardware.vulkan=mali" >> etc/prop.default
 
 	# Usb
-	# setprop persist.sys.usb.config hisuite,mtp,mass_storage
-	# setprop sys.usb.config mtp
-	# setprop sys.usb.configfs 1
-	# setprop sys.usb.controller hisi-usb-otg
-	# setprop sys.usb.ffs.aio_compat true
-	# setprop sys.usb.ffs.ready 0
-	# setprop sys.usb.ffs_hdb.ready 0
-	# setprop sys.usb.state mtp,adb
+	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> etc/prop.default 
+	echo "sys.usb.config=mtp" >> etc/prop.default
+	echo "sys.usb.configfs=1" >> etc/prop.default
+	echo "sys.usb.controller=hisi-usb-otg" >> etc/prop.default
+	echo "sys.usb.ffs.aio_compat=true" >> etc/prop.default
+	echo "sys.usb.ffs.ready=0" >> etc/prop.default
+	echo "sys.usb.ffs_hdb.ready=0" >> etc/prop.default
+	echo "sys.usb.state=mtp,adb" >> etc/prop.default
 	
 
-	#----------------------------------------------------------------------------------
-		
+	#-----------------------------File copy -----------------------------------------------------
+
+	# Copy bootanimation.zip
+	mkdir media
+	chmod 777 media
+	chown root:root media
+	xattr -w security.selinux u:object_r:system_file:s0 media
+	
+	mkdir media/audio/
+	chmod 777 media/audio
+	chown root:root media/audio
+	xattr -w security.selinux u:object_r:system_file:s0 media/audio
+	
+	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
+	chmod 644 "media/bootanimation.zip"
+	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
+	
+	# Remove duplicate media audio
+	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
+	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
+	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
+	
+	# Remove non huawei Overlay
+	rm -rf product/overlay/treble-overlay-infinix-*
+	rm -rf product/overlay/treble-overlay-lenovo-*
+	rm -rf product/overlay/treble-overlay-lge-*
+	rm -rf product/overlay/treble-overlay-asus-*
+	rm -rf product/overlay/treble-overlay-xiaomi-*
+	rm -rf product/overlay/treble-overlay-samsung-*
+	rm -rf product/overlay/treble-overlay-sony-*	
+	rm -rf product/overlay/treble-overlay-tecno-*
+	rm -rf product/overlay/treble-overlay-realme-*
+	rm -rf product/overlay/treble-overlay-oppo-*
+	rm -rf product/overlay/treble-overlay-nokia-*
+	rm -rf product/overlay/treble-overlay-oneplus-*	
+	rm -rf product/overlay/treble-overlay-nubia-*		
+	rm -rf product/overlay/treble-overlay-moto-*	
+	rm -rf product/overlay/treble-overlay-lg-*
+	rm -rf product/overlay/treble-overlay-htc-*
+	rm -rf product/overlay/treble-overlay-blackview-*
+	rm -rf product/overlay/treble-overlay-vivo-*
+	rm -rf product/overlay/treble-overlay-vsmart-*
+	rm -rf product/overlay/treble-overlay-razer-*
+	rm -rf product/overlay/treble-overlay-sharp-*
 	
 	# NFC 
 	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" etc/libnfc-brcm.conf
@@ -211,34 +253,18 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
 	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 	
+	# Codec bluetooth 32 bits
+	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libaptX_encoder.so
+	cp "$origin/files-patch/system/lib/libaptXHD_encoder.so" lib/libaptXHD_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libaptXHD_encoder.so
+	
+	# Codec bluetooth 64 bits
+	cp "$origin/files-patch/system/lib64/libaptX_encoder.so" lib64/libaptX_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptX_encoder.so
+	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
 		
-	# Dirty hack to show build properties
-	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
-	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
-
-	# Copy bootanimation.zip
-	mkdir media
-	chmod 777 media
-	chown root:root media
-	xattr -w security.selinux u:object_r:system_file:s0 media
-	
-	mkdir media/audio/
-	chmod 777 media/audio
-	chown root:root media/audio
-	xattr -w security.selinux u:object_r:system_file:s0 media/audio
-	
-	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
-	chmod 644 "media/bootanimation.zip"
-	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
-	
-	mkdir media/audio/animationsounds/
-	chmod 777 media/audio/animationsounds/
-	chown root:root media/audio/animationsounds/
-	
-	cp "$origin/files-patch/media/audio/animationsounds/bootSound.ogg" "media/audio/animationsounds/bootSound.ogg" 
-	chmod 644 "media/audio/animationsounds/bootSound.ogg" 
-	xattr -w security.selinux u:object_r:system_file:s0 "media/audio/animationsounds/bootSound.ogg" 
-
 
 )
 sleep 1
@@ -250,6 +276,7 @@ resize2fs -M s-ab-raw.img
 
 # Make android spare image
 img2simg s-ab-raw.img s-ab.img
+
 
 
 
