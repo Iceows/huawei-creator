@@ -11,4 +11,4 @@ Generate ARM64 A-only (Huawei device) from ARM64 A-only and include patchs and o
 
 Generate ARM64 AB VNDKLite (Huawei device) from ARM64 AB and include patchs and optimisations (target image name is s-vndklite.img):
 
-    sudo ./run-huawei-ab.sh systemAB.img "LeaOS" "ANE-LX1"
+    sudo ./lite-adapter.sh 64 s-ab.img 
