@@ -285,11 +285,6 @@ mount -o loop,rw s-aonly.img d
 	
 	
 	# Copy bootanimation.zip
-	mkdir media
-	chmod 777 media
-	chown root:root media
-	xattr -w security.selinux u:object_r:system_file:s0 media
-	
 	mkdir media/audio/
 	chmod 777 media/audio
 	chown root:root media/audio
