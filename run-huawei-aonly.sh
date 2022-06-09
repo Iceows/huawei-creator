@@ -576,7 +576,7 @@ e2fsck -f -y s-aonly.img || true
 resize2fs -M s-aonly.img 
 
 
-xz -c s-aonly.img -T0 > s-aonly-vanilla.xz
+#xz -c s-aonly.img -T0 > s-aonly-vanilla.xz
 
 
 

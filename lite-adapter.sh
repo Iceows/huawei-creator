@@ -72,3 +72,6 @@ resize2fs -M s.img
 
 mv s.img s-vndklite.img
 
+#xz -c s-vndklite.img -T0
+
+
