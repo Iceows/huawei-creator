@@ -69,3 +69,6 @@ umount d
 
 e2fsck -f -y s.img || true
 resize2fs -M s.img
+
+mv s.img s-vndklite.img
+

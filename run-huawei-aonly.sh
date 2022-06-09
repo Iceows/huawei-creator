@@ -215,8 +215,51 @@ mount -o loop,rw s-aonly.img d
 	
 	
 	# rw-system custom for Huawei device
-	#cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	#xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	
+	
+	# NFC 
+	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" etc/libnfc-brcm.conf
+	xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+	cp "$origin/files-patch/system/etc/libnfc-nci.conf" etc/libnfc-nci.conf
+	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+	cp "$origin/files-patch/system/etc/libnfc-nxp.conf" etc/libnfc-nxp.conf
+	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" etc/libnfc-nxp_RF.conf
+	xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+	
+	cp "$origin/files-patch/system/etc/libnfc-brcm.conf" product/etc/libnfc-brcm.conf
+	xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+	cp "$origin/files-patch/system/etc/libnfc-nci.conf" product/etc/libnfc-nci.conf
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+	cp "$origin/files-patch/system/etc/libnfc-nxp.conf" product/etc/libnfc-nxp.conf
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+	cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf	
+	
+	# NFC permission
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+
+	# NFC product permission
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
+	
+
+	
 	
 	# ?
 	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
