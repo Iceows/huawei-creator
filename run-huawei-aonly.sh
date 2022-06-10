@@ -260,7 +260,6 @@ mount -o loop,rw s-aonly.img d
 	
 
 	
-	
 	# ?
 	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/android.system.suspend@1.0-service.rc
@@ -285,10 +284,10 @@ mount -o loop,rw s-aonly.img d
 	
 	
 	# Copy bootanimation.zip
-	mkdir media/audio/
-	chmod 777 media/audio
-	chown root:root media/audio
-	xattr -w security.selinux u:object_r:system_file:s0 media/audio
+	mkdir media
+	chmod 777 media
+	chown root:root media
+	xattr -w security.selinux u:object_r:system_file:s0 media
 	
 	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
 	chmod 644 "media/bootanimation.zip"

@@ -176,11 +176,11 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 
 	# Copy bootanimation.zip
-	mkdir media/audio/
-	chmod 777 media/audio
-	chown root:root media/audio
-	xattr -w security.selinux u:object_r:system_file:s0 media/audio
-	
+	mkdir media
+	chmod 777 media
+	chown root:root media
+	xattr -w security.selinux u:object_r:system_file:s0 media	
+
 	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
 	chmod 644 "media/bootanimation.zip"
 	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
