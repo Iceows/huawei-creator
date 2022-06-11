@@ -264,13 +264,33 @@ mount -o loop,rw s-aonly.img d
 	cp "$origin/files-patch/system/etc/init/android.system.suspend@1.0-service.rc" etc/init/android.system.suspend@1.0-service.rc
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/android.system.suspend@1.0-service.rc
 
-	# offline charging
+	# offline charging - NFC
 	# PRA - Huawei P8/P9 Lite 2017
 	if [ "$model" == "PRA-LX1" ];then
 		for img in $(cd "$origin/files-patch/system/etc/charger/1080x1920"; echo *);do
 			cp "$origin/files-patch/system/etc/charger/1080x1920/$img" etc/charger/1080x1920/$img
 			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x1920/$img
 		done
+		
+		# NFC 
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_pra_L31.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/libnfc-nci.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_pra_L31.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_venus_L31.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/libnfc-nci.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_venus_L31.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+		
 	fi
 
 	
