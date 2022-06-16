@@ -17,6 +17,7 @@ targetArch=64
 srcFile="$1"
 versionNumber="$2"
 model="$3"
+bootanim="$4"
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] "
@@ -175,15 +176,17 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 
-	# Copy bootanimation.zip
-	mkdir media
-	chmod 777 media
-	chown root:root media
-	xattr -w security.selinux u:object_r:system_file:s0 media	
-
-	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
-	chmod 644 "media/bootanimation.zip"
-	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
+	# Copy bootanimation.zip	
+	if [ "$bootanim" == "Y" ];then
+		mkdir media
+		chmod 777 media
+		chown root:root media
+		xattr -w security.selinux u:object_r:system_file:s0 media
+		
+		cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
+		chmod 644 "media/bootanimation.zip"
+		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
+	fi
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
@@ -218,22 +221,22 @@ mount -o loop,rw s-ab-raw.img d
 	if [ "$model" == "ANE-LX1" ];then
 	
 		# NFC 
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_venus_L31.conf" etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/libnfc-nci.conf" etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_venus_L31.conf" etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 		
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_venus_L31.conf" product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" product/etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/libnfc-nci.conf" product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" product/etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_venus_L31.conf" product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" product/etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	fi	
 	

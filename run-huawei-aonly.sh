@@ -17,9 +17,10 @@ targetArch=64
 srcFile="$1"
 versionNumber="$2"
 model="$3"
+bootanim="$4"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] "
+	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] [bootanim : Y/N]"
 	echo "VERSION=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
 	echo "model=PRA-LX1 , FIG-LX1"
 	exit 1
@@ -301,18 +302,18 @@ mount -o loop,rw s-aonly.img d
 			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2160/$img
 		done
 	fi
-	
-	
-	# Copy bootanimation.zip
-	mkdir media
-	chmod 777 media
-	chown root:root media
-	xattr -w security.selinux u:object_r:system_file:s0 media
-	
-	cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
-	chmod 644 "media/bootanimation.zip"
-	xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
-	
+
+	# Copy bootanimation.zip	
+	if [ "$bootanim" == "Y" ];then
+		mkdir media
+		chmod 777 media
+		chown root:root media
+		xattr -w security.selinux u:object_r:system_file:s0 media
+		
+		cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
+		chmod 644 "media/bootanimation.zip"
+		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
+	fi
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
