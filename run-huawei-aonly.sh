@@ -404,6 +404,8 @@ mount -o loop,rw s-aonly.img d
 	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app mnt_modem_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow gmscore_app mnt_media_rw_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 
 	# Add type and mapping for displayengine-hal-1.0
 	echo "(typeattributeset hwservice_manager_type (displayengine_hwservice))" >> etc/selinux/plat_sepolicy.cil
@@ -411,7 +413,8 @@ mount -o loop,rw s-aonly.img d
 	echo "(roletype object_r displayengine_hwservice)" >> etc/selinux/plat_sepolicy.cil
 	echo "(typeattributeset displayengine_hwservice_26_0 (displayengine_hwservice))" >> etc/selinux/mapping/26.0.cil
 
-	# Fix hwservice_manager
+	# Fix hwservice_manager, service_manager
+	echo "(allow platform_app nfc_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
@@ -510,7 +513,7 @@ mount -o loop,rw s-aonly.img d
 	sed -i "/ro.product.model/d" etc/prop.default
 	sed -i "/ro.product.system.model/d" etc/prop.default
 	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-	echo "ro.product.system.model=hi6250" >> etc/prop.default
+	echo "ro.product.system.model=$model" >> etc/prop.default
 	echo "ro.product.model=$model" >> etc/prop.default
 	
 	# set default sound

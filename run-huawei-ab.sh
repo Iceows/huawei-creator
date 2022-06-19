@@ -20,7 +20,7 @@ model="$3"
 bootanim="$4"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] "
+	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] [Y/N]"
 	echo "version=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
 	echo "model=ANE-LX1"
 	exit 1
@@ -272,7 +272,33 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
 		
+	#----------------------------- SELinux rules -----------------------------------------------------	
+	
+	# Fix hwservice_manager, service_manager
+	echo "(allow platform_app nfc_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# SELinux to allow disk operation and camera
+	echo "(allow oeminfo_nvm block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow oeminfo_nvm device (chr_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	
+	# SELinux radio
+	echo "(allow hal_audio_default hal_broadcastradio_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_audio_default audioserver (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Fix Google GMS denied 
+	echo "(allow gmscore_app mnt_modem_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow gmscore_app mnt_media_rw_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 
+	# Fix WPA suppliant	(cust_conn)
+	echo "(allow wpa_hisi hi110x_cust_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# PHH SU Daemon
+	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
+	
 )
 sleep 1
 
