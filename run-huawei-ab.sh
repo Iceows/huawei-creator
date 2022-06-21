@@ -63,9 +63,13 @@ mount -o loop,rw s-ab-raw.img d
 	# change product
 	sed -i "/ro.product.model/d" etc/prop.default
 	sed -i "/ro.product.system.model/d" etc/prop.default
+	sed -i "/ro.product.manufacturer/d" etc/prop.default
 	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-	echo "ro.product.system.model=hi6250" >> etc/prop.default
+	echo "ro.product.system.model=$model" >> etc/prop.default
 	echo "ro.product.model=$model" >> etc/prop.default
+	
+	# echo "ro.product.name
+	# echo "ro.product.device
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default

@@ -404,8 +404,8 @@ mount -o loop,rw s-aonly.img d
 	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow gmscore_app mnt_modem_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow gmscore_app mnt_media_rw_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow gmscore_app mnt_modem_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil	
+	# echo "(allow gmscore_app mnt_media_rw_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 
 	# Add type and mapping for displayengine-hal-1.0
 	echo "(typeattributeset hwservice_manager_type (displayengine_hwservice))" >> etc/selinux/plat_sepolicy.cil
@@ -414,7 +414,7 @@ mount -o loop,rw s-aonly.img d
 	echo "(typeattributeset displayengine_hwservice_26_0 (displayengine_hwservice))" >> etc/selinux/mapping/26.0.cil
 
 	# Fix hwservice_manager, service_manager
-	echo "(allow platform_app nfc_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow platform_app nfc_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
@@ -476,6 +476,8 @@ mount -o loop,rw s-aonly.img d
 
 	# e2fsck
 	echo "(allow fsck block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck tmpfs (lnk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow installd tmpfs (lnk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Cust
 	echo "(allow cust rootfs (file (execute)))" >> etc/selinux/plat_sepolicy.cil
@@ -513,7 +515,7 @@ mount -o loop,rw s-aonly.img d
 	sed -i "/ro.product.model/d" etc/prop.default
 	sed -i "/ro.product.system.model/d" etc/prop.default
 	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-	echo "ro.product.system.model=$model" >> etc/prop.default
+	echo "ro.product.system.model=hi6250" >> etc/prop.default
 	echo "ro.product.model=$model" >> etc/prop.default
 	
 	# set default sound
