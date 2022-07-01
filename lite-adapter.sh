@@ -41,6 +41,7 @@ e2fsck -E unshare_blocks -y -f s.img
 mount -o loop,rw s.img d
 (
 cd d
+find -name \*.capex -or -name \*.apex -type f -delete
 for vndk in 28 29;do
     for arch in 32 64;do
         d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
