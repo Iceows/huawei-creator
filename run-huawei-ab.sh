@@ -325,7 +325,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow gpsdaemon default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow oeminfo_nvm default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-		
+	echo "(allow hal_camera_default default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
 	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init device (chr_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck block_device (blk_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
@@ -335,6 +336,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
 	
+
 
 sleep 1
 
