@@ -303,7 +303,39 @@ mount -o loop,rw s-ab-raw.img d
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	
-)
+	# --------------- A12 --------------------
+	echo "(allow system_server platform_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server radio (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server bluetooth (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server audioserver (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server cameraserver (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server storaged (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server mediametrics (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+
+	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger bootanim (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow surfaceflinger system_server (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger system_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger platform_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow oeminfo_nvm default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+		
+	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init device (chr_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck block_device (blk_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	echo "(allow init sys_dev_block (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow vold sys_block_mmcblk0 (file (read open write)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
+	
+
 sleep 1
 
 umount d
