@@ -51,127 +51,77 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.system.build.type=user" >> build.prop
 	echo "ro.build.type=user" >> build.prop
 
-	echo "#" >> etc/prop.default
-	echo "## Adding build props" >> etc/prop.default
-	echo "#" >> etc/prop.default
-	cat build.prop | grep "." >> etc/prop.default
-
-	echo "#" >> etc/prop.default
-	echo "## Adding hi6250 props" >> etc/prop.default
-	echo "#" >> etc/prop.default
+	
+	echo "#" >> build.prop
+	echo "## Adding hi6250 props" >> build.prop
+	echo "#" >> build.prop
+	
 
 	# change product
-	sed -i "/ro.product.model/d" etc/prop.default
-	sed -i "/ro.product.system.model/d" etc/prop.default
-	sed -i "/ro.product.manufacturer/d" etc/prop.default
-	echo "ro.product.manufacturer=HUAWEI" >> etc/prop.default
-	echo "ro.product.system.model=$model" >> etc/prop.default
-	echo "ro.product.model=$model" >> etc/prop.default
+	sed -i "/ro.product.model/d" build.prop
+	sed -i "/ro.product.system.model/d" build.prop
+	sed -i "/ro.product.manufacturer/d" build.prop
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
+	echo "ro.product.system.model=ANE-LX1" >> build.prop
+	echo "ro.product.model=ANE-LX1" >> build.prop
 	
 	# echo "ro.product.name
 	# echo "ro.product.device
 
 	# set default sound
-	echo "ro.config.ringtone=Ring_Synth_04.ogg" >> etc/prop.default
-	echo "ro.config.notification_sound=OnTheHunt.ogg">> etc/prop.default
-	echo "ro.config.alarm_alert=Alarm_Classic.ogg">> etc/prop.default
+	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
+	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
+	echo "ro.config.alarm_alert=Alarm_Classic.ogg">>  build.prop
 
 	# set lineage version number for lineage build
-	sed -i "/ro.lineage.version/d" etc/prop.default;
-	sed -i "/ro.lineage.display.version/d" etc/prop.default;
-	sed -i "/ro.modversion/d" etc/prop.default;
-	echo "ro.lineage.version=$versionNumber" >> etc/prop.default;
-	echo "ro.lineage.display.version=$versionNumber" >> etc/prop.default;
-	echo "ro.modversion=$versionNumber" >> etc/prop.default;
+	sed -i "/ro.lineage.version/d"  build.prop
+	sed -i "/ro.lineage.display.version/d"  build.prop
+	sed -i "/ro.modversion/d"  build.prop
+	echo "ro.lineage.version=$versionNumber" >>  build.prop
+	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
+	echo "ro.modversion=$versionNumber" >>  build.prop
 
-
-	# Force FUSE usage for emulated storage
-	# Force sdcardfs usage for emulated storage (Huawei)
-	# Enabled sdcardfs, disabled esdfs_sdcard
-	if grep -qs 'persist.sys.sdcardfs' etc/prop.default; then
-		sed -i 's/^persist.sys.sdcardfs=force_off/persist.sys.sdcardfs=force_on/' etc/prop.default
-	fi
-	
-	# Fallback device
-	if grep -qs 'ro.sys.sdcardfs' etc/prop.default; then
-		sed -i 's/^ro.sys.sdcardfs=false/ro.sys.sdcardfs=true/' etc/prop.default
-		sed -i 's/^ro.sys.sdcardfs=0/ro.sys.sdcardfs=true/' etc/prop.default
-	fi
-
-	if grep -qs 'persist.esdfs_sdcard=true' etc/prop.default; then
-		sed -i 's/^persist.esdfs_sdcard=false' etc/prop.default
-	fi
-	 
-	 
+ 
 	# LMK - for Android Kernel that support it - e
-	echo "ro.lmk.debug=true" >> etc/prop.default
+	echo "ro.lmk.debug=true" >>  build.prop
 	
 	# Enable wireless display (Cast/Miracast)
-	echo "persist.debug.wfd.enable=1" >> etc/prop.default
+	echo "persist.debug.wfd.enable=1" >>  build.prop
 	
-	# Set default phh properties
-	echo "persist.sys.phh.autorun=false" >> etc/prop.default
-	echo "persist.sys.phh.backlight.scale=0" >> etc/prop.default
-	echo "persist.sys.phh.camera.force_timestampsource=-1" >> etc/prop.default
-	echo "persist.sys.phh.disable_a2dp_offload=false" >> etc/prop.default
-	echo "persist.sys.phh.disable_audio_effects=0" >> etc/prop.default
-	echo "persist.sys.phh.disable_buttons_light=false" >> etc/prop.default
-	echo "persist.sys.phh.include_all_cameras=false" >> etc/prop.default
-	echo "persist.sys.phh.linear_brightness=false" >> etc/prop.default
-	echo "persist.sys.phh.mainkeys=0" >> etc/prop.default
-	echo "persist.sys.phh.no_cutout=false" >> etc/prop.default
-	echo "persist.sys.phh.no_present_or_validate=true" >> etc/prop.default
-	echo "persist.sys.phh.no_stock_apps=false" >> etc/prop.default
-	echo "persist.sys.phh.nolog=false" >> etc/prop.default
-	echo "persist.sys.phh.pixelprops=false" >> etc/prop.default
-	echo "persist.sys.phh.remote=false" >> etc/prop.default
-	echo "persist.sys.phh.restart_ril=false" >> etc/prop.default
-	echo "persist.sys.phh.root=false" >> etc/prop.default
-	echo "persist.sys.phh.safetynet=false" >> etc/prop.default
-
-
-	# From device/huawei/anne/system.prop
-	# Disable debugging strict mode toasts
-	echo "persist.sys.strictmode.disable=true" >> etc/prop.default
-	echo "persist.sys.max_profiles=10" >> etc/prop.default
-	echo "persist.sys.overlay.nightmode=true" >> etc/prop.default
-	echo "fw.max_users=10" >> etc/prop.default	
-
-
 	# DarkJoker ANE-LX1 special prop
 	# Audio
-	echo "audio.deep_buffer.media=true" >> etc/prop.default
-	echo "ro.config.media_vol_steps=25" >> etc/prop.default
-	echo "ro.config.vc_call_vol_steps=7" >> etc/prop.default
+	echo "audio.deep_buffer.media=true" >>  build.prop
+	echo "ro.config.media_vol_steps=25" >>  build.prop
+	echo "ro.config.vc_call_vol_steps=7" >>  build.prop
 
 	# Display
-	echo "ro.surface_flinger.running_without_sync_framework=true" >> etc/prop.default
+	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
 
 	# Graphics
-	echo "debug.egl.hw=1" >> etc/prop.default
-	echo "debug.egl.profiler=1" >> etc/prop.default
-	echo "debug.hwui.use_buffer_age=false" >> etc/prop.default
-	echo "debug.performance.tuning=1" >> etc/prop.default
-	echo "debug.sf.enable_hwc_vds=0" >> etc/prop.default
-	echo "debug.sf.hw=1" >> etc/prop.default
-	echo "hwui.disable_vsync=true" >> etc/prop.default
-	echo "ro.config.enable.hw_accel=true" >> etc/prop.default
-	echo "video.accelerate.hw=1" >> etc/prop.default
-	echo "debug.sf.latch_unsignaled=1" >> etc/prop.default
-	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> etc/prop.default
-	echo "debug.cpurend.vsync=false" >> etc/prop.default
-	echo "ro.hardware.egl=mali" >> etc/prop.default
-	echo "ro.hardware.vulkan=mali" >> etc/prop.default
+	echo "debug.egl.hw=1" >>  build.prop
+	echo "debug.egl.profiler=1" >>  build.prop
+	echo "debug.hwui.use_buffer_age=false" >>  build.prop
+	echo "debug.performance.tuning=1" >>  build.prop
+	echo "debug.sf.enable_hwc_vds=0" >>  build.prop
+	echo "debug.sf.hw=1" >>  build.prop
+	echo "hwui.disable_vsync=true" >>  build.prop
+	echo "ro.config.enable.hw_accel=true" >>  build.prop
+	echo "video.accelerate.hw=1" >>  build.prop
+	echo "debug.sf.latch_unsignaled=1" >>  build.prop
+	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
+	echo "debug.cpurend.vsync=false" >> build.prop
+	echo "ro.hardware.egl=mali" >> build.prop
+	echo "ro.hardware.vulkan=mali" >> build.prop
 
 	# Usb
-	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> etc/prop.default 
-	echo "sys.usb.config=mtp" >> etc/prop.default
-	echo "sys.usb.configfs=1" >> etc/prop.default
-	echo "sys.usb.controller=hisi-usb-otg" >> etc/prop.default
-	echo "sys.usb.ffs.aio_compat=true" >> etc/prop.default
-	echo "sys.usb.ffs.ready=0" >> etc/prop.default
-	echo "sys.usb.ffs_hdb.ready=0" >> etc/prop.default
-	echo "sys.usb.state=mtp,adb" >> etc/prop.default
+	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
+	echo "sys.usb.config=mtp" >> build.prop
+	echo "sys.usb.configfs=1" >> build.prop
+	echo "sys.usb.controller=hisi-usb-otg" >> build.prop
+	echo "sys.usb.ffs.aio_compat=true" >> build.prop
+	echo "sys.usb.ffs.ready=0" >> build.prop
+	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
+	echo "sys.usb.state=mtp,adb" >> build.prop
 	
 
 	#-----------------------------File copy -----------------------------------------------------
@@ -303,6 +253,9 @@ mount -o loop,rw s-ab-raw.img d
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	
+	
+	
+	
 	# --------------- A12 --------------------
 	echo "(allow system_server platform_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server radio (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
@@ -311,14 +264,35 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server cameraserver (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server storaged (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server mediametrics (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
-
+	echo "(allow system_server gmscore_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server priv_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server untrusted_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server permissioncontroller_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server system_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server mediaextractor (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server statsd (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server shared_relro (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server network_stack (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server secure_element (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server nfc (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server mediaprovider_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server untrusted_app_29 (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server traceur_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server mediaprovider (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vold (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server shell (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger bootanim (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	
+	echo "(allow surfaceflinger bootanim (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger system_server (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger system_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger platform_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger priv_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger untrusted_app_29 (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger untrusted_app (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
@@ -326,17 +300,55 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow oeminfo_nvm default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_camera_default default_prop (file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	
 	
 	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel device (chr_file (create open write read getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel self (capability (mknod)))" >> /system/etc/selinux/plat_sepolicy.cil
+
 	echo "(allow vendor_init device (chr_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck block_device (blk_file (open write read ioctl getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
 
 	echo "(allow init sys_dev_block (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil
 	echo "(allow vold sys_block_mmcblk0 (file (read open write)))" >> /system/etc/selinux/plat_sepolicy.cil
-
-	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
 	
+	echo "(allow isolated_app content_capture_service (service_manager (find)))" >> /system/etc/selinux/plat_sepolicy.cil
 
+	echo "(allow init teecd_data_file (dir (mounton)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow init cust_data_file (file (read open write getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow vendor_init teecd_data_file_system (dir (relabelto create search read open write getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow vendor_init system_data_file (dir (relabelto create search read open write getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	echo "(allow vold vdc (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow vold system_server  (process (getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow vold sysfs_zram (file (create read open write getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow hi110x_daemon default_prop (file (read open write getattr setattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	# To allow /data/hisi_logs
+	echo "(allow kernel self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_root_file (dir (add_name create search read open write setattr getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_root_file (file (create read open write getattr setattr append)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow hal_audio_default default_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_audio_default config_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow hal_nfc_default system_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_health_default default_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_drm_widevine default_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil	
+
+	echo "(allow rild system_data_file (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon system_data_file (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	echo "(allow hal_camera_default system_data_file (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil	
+	echo "(allow hal_camera_default config_prop (file (open read getattr)))" >> /system/etc/selinux/plat_sepolicy.cil
+
+	echo "(allow system_server sysfs_zram (lnk_file (read)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow netutils_wrapper hinetmanager (fd (use)))" >> /system/etc/selinux/plat_sepolicy.cil
+	
 
 sleep 1
 
