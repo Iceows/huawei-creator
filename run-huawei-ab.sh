@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version] [device]
+#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version] [model device] [huawei animation] [android 12]
 
 #cleanups
 umount d
@@ -21,9 +21,11 @@ bootanim="$4"
 A12="$5"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] [Y/N]"
+	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] [bootanimation] [Y/N]"
 	echo "version=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
 	echo "model=ANE-LX1"
+	echo "bootanimation=Y or N"
+	echo "android 12 image=Y or N"
 	exit 1
 fi
 
