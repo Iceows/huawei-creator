@@ -18,7 +18,7 @@ srcFile="$1"
 versionNumber="$2"
 model="$3"
 bootanim="$4"
-A12="$5"
+
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model device] [bootanimation]"
