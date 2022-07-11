@@ -141,6 +141,18 @@ mount -o loop,rw s-ab-raw.img d
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
+	
+	# CPU
+	echo "persist.sys.boost.byeachfling=true" >> build.prop
+	echo "persist.sys.boost.skipframe=3" >> build.prop
+	echo "persist.sys.boost.durationms=1000" >> build.prop		
+	echo "persist.sys.cpuset.enable=1" >> build.prop
+	echo "persist.sys.performance=true" >> build.prop
+	
+	# Debug Huawei Off
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
+	
 
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
