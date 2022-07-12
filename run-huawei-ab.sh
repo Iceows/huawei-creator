@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version] [model device] [Y/N]
+#sudo bash run-huawei-aonly.sh  [/path/to/system.img] [version] [model device] [huawei animation]
 
 #cleanups
 umount d
@@ -19,11 +19,12 @@ versionNumber="$2"
 model="$3"
 bootanim="$4"
 
+
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model device] [bootanimation]"
+	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model] [bootanimation]"
 	echo "version=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
-	echo "device=ANE-LX1"
-	echo "bootanimation=[Y/N]"
+	echo "model=ANE-LX1"
+	echo "bootanimation=Y or N"
 	exit 1
 fi
 
@@ -139,6 +140,18 @@ mount -o loop,rw s-ab-raw.img d
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
+	
+	# CPU
+	echo "persist.sys.boost.byeachfling=true" >> build.prop
+	echo "persist.sys.boost.skipframe=3" >> build.prop
+	echo "persist.sys.boost.durationms=1000" >> build.prop		
+	echo "persist.sys.cpuset.enable=1" >> build.prop
+	echo "persist.sys.performance=true" >> build.prop
+	
+	# Debug Huawei Off
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
+	
 
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
@@ -154,8 +167,8 @@ mount -o loop,rw s-ab-raw.img d
 	#-----------------------------File copy -----------------------------------------------------
 	
 	# rw-system custom for Huawei device
-	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
+	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -305,7 +318,15 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server mediaprovider (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vold (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server shell (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
+	echo "(allow system_server netd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server surfaceflinger (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+		
+
+	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app priv_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow kernel sysfs_devices_system_cpu (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
 	
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -318,14 +339,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow surfaceflinger untrusted_app_29 (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger untrusted_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
-	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow gpsdaemon default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow oeminfo_nvm default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hal_camera_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
-			
+
 	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
@@ -349,7 +364,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vold system_server  (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vold sysfs_zram (file (create read open write getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
-	echo "(allow hi110x_daemon default_prop (file (read open write getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 	# To allow /data/hisi_logs
 	echo "(allow kernel self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
@@ -357,21 +371,34 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow kernel system_data_root_file (file (create read open write getattr setattr append)))" >> etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow hal_audio_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hal_audio_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow hal_audio_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_audio_default system_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_nfc_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_nfc_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_nfc_default system_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon default_prop (file (read open write getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_health_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hal_drm_widevine default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
-
+	echo "(allow hal_drm_widevine default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow oeminfo_nvm default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_camera_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_camera_default system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow hal_camera_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil		
+	echo "(allow audioserver vendor_default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	
 	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gpsdaemon system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 
-	echo "(allow hal_camera_default system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow hal_camera_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+
 
 	echo "(allow system_server sysfs_zram (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow netutils_wrapper hinetmanager (fd (use)))" >> etc/selinux/plat_sepolicy.cil
-
+	
 )
 
 sleep 1
