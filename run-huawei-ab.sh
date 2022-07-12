@@ -320,7 +320,9 @@ mount -o loop,rw s-ab-raw.img d
 		echo "(allow system_server mediaprovider (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 		echo "(allow system_server vold (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 		echo "(allow system_server shell (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-
+		echo "(allow system_server netd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+		echo "(allow system_server surfaceflinger (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+			
 
 		echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 		echo "(allow gmscore_app priv_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
