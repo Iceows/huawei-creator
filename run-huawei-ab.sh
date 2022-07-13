@@ -377,6 +377,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow kernel self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel system_data_root_file (dir (add_name create search read open write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel system_data_root_file (file (create read open write getattr setattr append)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_file (dir (add_name create search read open write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_file (file (create read open write getattr setattr append)))" >> etc/selinux/plat_sepolicy.cil	
+		
 	
 	echo "(allow hal_audio_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_audio_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -405,6 +408,17 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server sysfs_zram (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow netutils_wrapper hinetmanager (fd (use)))" >> etc/selinux/plat_sepolicy.cil
 	
+	echo "(allow fsck modem_secure_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck modem_fw_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hwemerffu_service proc (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow hal_health_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	
+
+	avc: denied { getattr } for path="/data/hisi_logs/history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+ avc: denied { read append } for name="history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+		
+		
 
 )
 
