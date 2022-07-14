@@ -414,12 +414,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow hal_health_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	
-
-	avc: denied { getattr } for path="/data/hisi_logs/history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
- avc: denied { read append } for name="history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
-		
-		
-
 )
 
 sleep 1
