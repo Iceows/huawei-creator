@@ -387,11 +387,19 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow isolated_app content_capture_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 
 	
-	echo "(allow vendor_init teecd_data_file_system (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow vendor_init system_data_file (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vendor_init teecd_data_file (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	# Set encryption policy on dirs in /data
+	# allowxperm vendor_init teecd_data_file_type:dir ioctl {
+	#   FS_IOC_GET_ENCRYPTION_POLICY
+	#   FS_IOC_SET_ENCRYPTION_POLICY
+	# };
 	
+	echo "(allow vendor_init teecd_data_file_system (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init teecd_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init system_data_file (lnk_file (create getattr setattr relabelfrom unlink)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
+
 
  
 	echo "(allow vold vdc (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
