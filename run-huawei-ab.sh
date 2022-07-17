@@ -289,6 +289,13 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Fix WPA suppliant	(cust_conn)
 	echo "(allow wpa_hisi hi110x_cust_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow wpa_hisi default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow wpa_hisi config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow vendor_init default_prop (file (open read write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow aptouch_daemon system_prop (file (open read write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow hisecd default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow hisecd config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
@@ -320,11 +327,20 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server shell (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server netd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server surfaceflinger (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server keystore (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow priv_app gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 	
 	echo "(allow tee hal_keymaster_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow tee hal_gatekeeper_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	
 	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app priv_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app priv_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+
 
 	echo "(allow kernel sysfs_devices_system_cpu (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
@@ -410,15 +426,33 @@ mount -o loop,rw s-ab-raw.img d
 	
 	echo "(allow fsck modem_secure_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck modem_fw_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck modem_nv_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow hwemerffu_service proc (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow hal_health_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	
+	--------
+	echo "(allow phhsu_daemon modem_secure_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon device (blk_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon dmd_device (chr_file (setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	
+	echo "(allow netutils_wrapper hinetmanager (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hinetmanager self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel unlabeled (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon self (fifo_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil	
 
-	avc: denied { getattr } for path="/data/hisi_logs/history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
- avc: denied { read append } for name="history.log" dev="mmcblk0p59" ino=332 scontext=u:r:kernel:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
-		
-		
+	echo "(allow bootanim system_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_usb_default self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow installd self (capability (sys_ptrace)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow installd system_server (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow installd system_server (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow installd system_server (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
+
 
 )
 
