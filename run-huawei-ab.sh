@@ -390,7 +390,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vendor_init teecd_data_file_system (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
 	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow vendor_init system_data_file (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vendor_init teecd_data_file (dir (relabelto relabelfrom create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init teecd_data_file (dir (relabelto create search read open write getattr setattr ioctl)))" >> etc/selinux/plat_sepolicy.cil
 	
 
  
@@ -454,6 +454,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow hinetmanager self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel unlabeled (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hi110x_daemon self (fifo_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil	
+	
 
 	echo "(allow bootanim system_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hal_usb_default self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
@@ -462,6 +463,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow installd system_server (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow installd system_server (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow installd system_server (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil	
 
 
 )
