@@ -389,7 +389,9 @@ mount -o loop,rw s-aonly.img d
 	
 	
 	#----------------------------- SELinux rules -----------------------------------------------------	
-		
+	
+	# Fix ls ioctl cmd	: 0x5413=TIOCGWINSZ 
+	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> /system/etc/selinux/plat_sepolicy.cil 
 	
 	# Fix app crashes
 	echo "(allow appdomain vendor_file (file (read getattr execute open)))" >> etc/selinux/plat_sepolicy.cil
