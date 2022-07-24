@@ -342,8 +342,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow gmscore_app priv_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow gmscore_app priv_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-
 
 	echo "(allow kernel sysfs_devices_system_cpu (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
@@ -392,6 +390,8 @@ mount -o loop,rw s-ab-raw.img d
 	#   FS_IOC_GET_ENCRYPTION_POLICY
 	#   FS_IOC_SET_ENCRYPTION_POLICY
 	# };
+	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
+	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
 	
 	echo "(allow vendor_init teecd_data_file_system (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
@@ -399,7 +399,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vendor_init system_data_file (lnk_file (create getattr setattr relabelfrom unlink)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
-
 
  
 	echo "(allow vold vdc (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -471,8 +470,15 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow installd system_server (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow installd system_server (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow installd system_server (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil	
-
+	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow hal_audio_default odm_etc_audio_algorithm (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server gatekeeperd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow gmscore_app modem_secure_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 
 )
 
