@@ -281,10 +281,11 @@ mount -o loop,rw s-ab-raw.img d
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	
-	# Fix ls ioctl cmd	: 0x6613
+	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
 	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
 	
-
+	# Fix ls ioctl cmd	: 0x5413 : TIOCGWINSZ 
+	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> etc/selinux/plat_sepolicy.cil 
 	
 )
 

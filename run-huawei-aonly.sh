@@ -393,6 +393,9 @@ mount -o loop,rw s-aonly.img d
 	# Fix ls ioctl cmd	: 0x5413=TIOCGWINSZ 
 	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> /system/etc/selinux/plat_sepolicy.cil 
 	
+	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
+	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
+	
 	# Fix app crashes
 	echo "(allow appdomain vendor_file (file (read getattr execute open)))" >> etc/selinux/plat_sepolicy.cil
 
