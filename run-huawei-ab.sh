@@ -334,7 +334,7 @@ mount -o loop,rw s-ab-raw.img d
 	# kernel
 	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel self (capability (mknod fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow fsck modem_secure_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck modem_fw_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -424,8 +424,17 @@ mount -o loop,rw s-ab-raw.img d
 
 	echo "(allowx phhsu_daemon device (ioctl blk_file (0x127c)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
-		
-		
+
+	echo "(allow su splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow su splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+	
+	
+	echo "(allow system_server userspace_reboot_exported_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow bootanim userspace_reboot_exported_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server userspace_reboot_config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 )
 
 sleep 1
