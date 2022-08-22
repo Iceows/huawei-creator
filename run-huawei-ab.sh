@@ -370,8 +370,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow hinetmanager self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow mac_addr_normalization self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow blkcginit self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-		
-
+	echo "(allow fsverity_init self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow netutils_wrapper self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	
 	echo "(allow init splash2_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow phhsu_daemon teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow phhsu_daemon modem_secure_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
@@ -413,15 +414,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow rootfs labeledfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow installd splash2_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil	
 
+	echo "(allow ueventd unlabeled (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow netutils_wrapper hinetmanager (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
 
-
-allow phhsu_daemon device:blk_file { ioctl };
-allow ueventd unlabeled:lnk_file { read };
-allow fsverity_init self:capability { sys_admin };
-allow netutils_wrapper hinetmanager:fifo_file { write };
-allow netutils_wrapper self:capability { sys_admin };
-allow hinetmanager self:capability { dac_override };
-allow kernel self:capability { dac_override };
 
 )
 
