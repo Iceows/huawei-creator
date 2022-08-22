@@ -37,11 +37,22 @@ mount -o loop,rw s-aonly.img d
 (
 
 
-	#----------------------------- Make a-only image ------------------------------------------------------	
-	
+	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
 	cd d
 	
+	mkdir splash2
+	chown root:root splash2
+	chmod 777 splash2
+	xattr -w security.selinux u:object_r:rootfs:s0 splash2
+	
+	mkdir modem_log
+	chown root:root modem_log
+	chmod 777 modem_log
+	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
+	
 
+	#----------------------------- Make a-only image ------------------------------------------------------	
+	
 	cp init.environ.rc "$origin"/tmp
 
 	find -maxdepth 1 -not -name system -not -name . -not -name .. -exec rm -Rf '{}' +
