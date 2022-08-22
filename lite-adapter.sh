@@ -36,7 +36,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s.img
-resize2fs s.img 3500M
+resize2fs s.img 5000M
 e2fsck -E unshare_blocks -y -f s.img
 mount -o loop,rw s.img d
 (

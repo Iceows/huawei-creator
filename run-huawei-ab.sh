@@ -33,7 +33,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-ab-raw.img
-resize2fs s-ab-raw.img 4500M
+resize2fs s-ab-raw.img 5000M
 e2fsck -E unshare_blocks -y -f s-ab-raw.img
 mount -o loop,rw s-ab-raw.img d
 (
