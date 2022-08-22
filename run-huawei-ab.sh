@@ -340,7 +340,88 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow fsck modem_log_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow migrate_legacy_obb_data self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_usb_default self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold_prepare_subdirs self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil	
+
+	echo "(allow system_server sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel sysfs_devices_system_cpu (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow blkid_untrusted self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck_untrusted self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow oeminfo_nvm self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow modprobe self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow tee self (capability (sys_ptrace)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vdc self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow otapreopt_slot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow update_verifier self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow healthd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_usb_default self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_hwhiview_default self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow boringssl_self_test self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow unrmd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow usbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hinetmanager self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow mac_addr_normalization self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow blkcginit self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 		
+
+	echo "(allow init splash2_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_secure_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_log_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_fw_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_nv_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow rootfs sysfs_zram (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+
+	echo "(allow vold sysfs_zram (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel unlabeled (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hwemerffu_service proc (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow tee hal_keymaster_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow tee hal_gatekeeper_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
+
+
+	echo "(allow phhsu_daemon device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow phhsu_daemon dmd_device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow ueventd unlabeled (lnk_file (create getattr setattr relabelfrom unlink)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow netutils_wrapper hinetmanager (fd (use)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow splash2_data_file splash2_data_file (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server sysfs (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	
+	echo "(allow init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+ 	echo "(allow vendor_init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+ 	echo "(allow phhsu_daemon splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_secure_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil	
+
+	echo "(allow rootfs labeledfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow installd splash2_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil	
+
+
+
+allow phhsu_daemon device:blk_file { ioctl };
+allow ueventd unlabeled:lnk_file { read };
+allow fsverity_init self:capability { sys_admin };
+allow netutils_wrapper hinetmanager:fifo_file { write };
+allow netutils_wrapper self:capability { sys_admin };
+allow hinetmanager self:capability { dac_override };
+allow kernel self:capability { dac_override };
 
 )
 
