@@ -37,7 +37,21 @@ resize2fs s-ab-raw.img 4500M
 e2fsck -E unshare_blocks -y -f s-ab-raw.img
 mount -o loop,rw s-ab-raw.img d
 (
-	cd d/system
+
+	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
+	cd d
+	
+	mkdir splash2
+	chown root:root splash2
+	chmod 755 splash2
+	xattr -w security.selinux u:object_r:rootfs:s0 splash2
+	
+	mkdir modem_log
+	chown root:root modem_log
+	chmod 755 modem_log
+	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
+	
+	cd system
 		
 		
 	#---------------------------------Setting properties -------------------------------------------------
@@ -265,6 +279,8 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptX_encoder.so
 	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
+	
+
 		
 	#----------------------------- SELinux rules -----------------------------------------------------	
 	
@@ -484,6 +500,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server gatekeeperd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
 
 	echo "(allow rootfs labeledfs (filesystem (relabelto relabelfrom associate mount )))" >> etc/selinux/plat_sepolicy.cil
+	
+	
 
 
 )
