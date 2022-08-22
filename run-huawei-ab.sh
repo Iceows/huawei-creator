@@ -294,12 +294,52 @@ mount -o loop,rw s-ab-raw.img d
 	# PHH SU Daemon
 	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
 	
+
+	# Fix ls ioctl cmd	: 0x5413 : TIOCGWINSZ 
+	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# FSCK
+	echo "(allow fsck block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+		
+	echo "(allow vold sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Vendor Init
+	echo "(allow vendor_init device (chr_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init teecd_data_file_system (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init teecd_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init system_data_file (lnk_file (create getattr setattr relabelfrom unlink)))" >> etc/selinux/plat_sepolicy.cil
 	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
 	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
 	
-	# Fix ls ioctl cmd	: 0x5413 : TIOCGWINSZ 
-	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> etc/selinux/plat_sepolicy.cil 
+		
+	# Init
+	echo "(allow init sys_dev_block (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sysfs_led (file (setattr read open write)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow init cust_data_file (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init teecd_data_file (dir (mounton)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 	
+	# Teecd
+	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
+
+	
+	# kernel
+	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel self (capability (mknod)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow fsck modem_secure_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck modem_fw_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck modem_nv_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck modem_log_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil
+		
+
 )
 
 sleep 1
