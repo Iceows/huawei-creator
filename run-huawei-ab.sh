@@ -325,7 +325,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# Teecd
 	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
-
+	
+	# Fix ls ioctl cmd	: 0x5413 : TIOCGWINSZ 
+	echo "(allowx hi110x_daemon hi110x_daemon (ioctl fifo_file (0x5413)))" >> etc/selinux/plat_sepolicy.cil 
 	
 	# kernel
 	echo "(allow kernel device (dir (search read open write getattr add_name)))" >> etc/selinux/plat_sepolicy.cil
