@@ -314,6 +314,8 @@ mount -o loop,rw s-ab-raw.img d
 	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
 	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
 	
+
+
 		
 	# Init
 	echo "(allow init sys_dev_block (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
@@ -416,8 +418,14 @@ mount -o loop,rw s-ab-raw.img d
 
 	echo "(allow ueventd unlabeled (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow netutils_wrapper hinetmanager (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow vendor_init splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 
-
+	echo "(allowx phhsu_daemon device (ioctl blk_file (0x127c)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+		
+		
 )
 
 sleep 1
