@@ -49,8 +49,7 @@ mount -o loop,rw s-aonly.img d
 	chown root:root modem_log
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
-	
-
+		
 	#----------------------------- Make a-only image ------------------------------------------------------	
 	
 	cp init.environ.rc "$origin"/tmp
