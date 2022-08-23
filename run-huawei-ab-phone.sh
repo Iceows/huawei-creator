@@ -528,6 +528,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow init hwservicemanager (binder (transfer)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow init hidl_base_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
+	
+ 	echo "(allow shell pstorefs (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil	
+ 	echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil	
+	
 
 
 )
