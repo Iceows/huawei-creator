@@ -10,7 +10,6 @@ set -ex
 origin="$(readlink -f -- "$0")"
 origin="$(dirname "$origin")"
 
-[ ! -d vendor_vndk ] && git clone https://github.com/phhusson/vendor_vndk -b android-10.0
 
 targetArch=64
 srcFile="$1"
@@ -535,6 +534,15 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server vold (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow profcollectd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow bootanim system_data_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+
+		#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 )
 
