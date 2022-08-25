@@ -283,6 +283,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow wpa_hisi hi110x_cust_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow wpa_hisi self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil	
 
 	echo "(allow aptouch_daemon system_prop (file (open read write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow hisecd default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
@@ -305,6 +306,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow fsck modem_nv_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck modem_log_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+
+
+	
 	
 	# Vold	
 	echo "(allow vold sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -325,7 +329,8 @@ mount -o loop,rw s-ab-raw.img d
  	echo "(allow vendor_init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow vendor_init default_prop (file (open read write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow vendor_init default_prop (file (open read write setattr getattr)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Init
 	echo "(allow init sys_dev_block (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
@@ -515,8 +520,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	
-	#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-
  	echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow init hwservicemanager (binder (call)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init untrusted_app_visible_hisi_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
