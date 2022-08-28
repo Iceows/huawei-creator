@@ -1,0 +1,98 @@
+on post-fs
+	exec - root -- /system/bin/vndk-detect
+	exec - root -- /system/bin/rw-system.sh
+	mount none /system/etc/usb_audio_policy_configuration.xml /vendor/etc/usb_audio_policy_configuration.xml bind
+        setprop ro.vndk.version ${persist.sys.vndk}
+
+on property:vold.decrypt=trigger_restart_framework
+	exec - root -- /system/bin/phh-on-data.sh
+
+on early-boot
+	exec - root -- /system/bin/phh-on-data.sh
+
+service phh_on_boot /system/bin/phh-on-boot.sh
+    oneshot
+    disabled
+
+on property:sys.boot_completed=1
+    start phh_on_boot
+    chown wifi system /data/misc/wifi
+    chown system wifi /data/misc/wifi/hostapd.conf
+
+on property:persist.sys.phh.mainkeys=*
+    setprop qemu.hw.mainkeys ${persist.sys.phh.mainkeys}
+
+on property:persist.sys.phh.oppo.dt2w=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.oppo.dt2w"
+
+on property:persist.sys.phh.oppo.gaming_mode=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.oppo.gaming_mode"
+
+on property:persist.sys.phh.oppo.usbotg=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.oppo.usbotg"
+
+on property:persist.sys.phh.xiaomi.dt2w=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.xiaomi.dt2w"
+
+on property:persist.sys.phh.disable_audio_effects=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.disable_audio_effects"
+
+on property:persist.sys.phh.caf.audio_policy=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.caf.audio_policy"
+
+on property:persist.sys.phh.vsmart.dt2w=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.vsmart.dt2w"
+
+on property:persist.sys.phh.backlight.scale=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.backlight.scale"
+
+on property:persist.sys.phh.disable_soundvolume_effect=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.disable_soundvolume_effect"
+
+on property:ro.sf.lcd_density=*
+    restart surfaceflinger
+
+on property:persist.sys.phh.qin.dt2w=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.qin.dt2w"
+
+on property:persist.sys.phh.disable_a2dp_offload=0
+    setprop persist.sys.phh.disable_a2dp_offload false
+
+on property:persist.sys.phh.disable_a2dp_offload=1
+    setprop persist.sys.phh.disable_a2dp_offload true
+
+on property:persist.sys.phh.disable_a2dp_offload=*
+    setprop persist.bluetooth.bluetooth_audio_hal.disabled ${persist.sys.phh.disable_a2dp_offload}
+
+on property:persist.sys.phh.root=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.root"
+
+on property:persist.sys.phh.safetynet=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.safetynet"
+
+on property:persist.sys.phh.pixelprops=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.pixelprops"
+
+on property:persist.sys.phh.autorun=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.autorun"
+
+on property:persist.sys.phh.nolog=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "persist.sys.phh.nolog"
+
+on property:sys.phh.restart_sysui=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "sys.phh.restart_sysui"
+
+on property:sys.phh.dump_logs=*
+    exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-prop-handler.sh "sys.phh.dump_logs"
+
+on property:init.svc.ril-proxy=stopped && property:persist.sys.phh.restart_ril=true
+    start ril-proxy
+
+on property:init.svc.vendor.ril-daemon-mtk=stopped && property:persist.sys.phh.restart_ril=true
+    start vendor.ril-daemon-mtk
+
+on property:persist.sys.phh.restart_ril=true
+    restart ril-proxy
+    restart vendor.qcrild
+    restart vendor.qcrild2
+    restart vendor.ril-daemon-mtk
