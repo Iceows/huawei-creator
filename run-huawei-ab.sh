@@ -244,7 +244,12 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-	fi	
+	fi
+	
+	# Fix LD_PRELOAD in vndk
+	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
+	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
+	
 	
 	# NFC permission
 	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
