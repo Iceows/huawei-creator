@@ -225,11 +225,6 @@ mount -o loop,rw s-ab-raw.img d
 	# ANE- Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
 	
-		for img in $(cd "$origin/files-patch/system/etc/charger/1080x2280"; echo *);do
-			cp "$origin/files-patch/system/etc/charger/1080x2280/$img" etc/charger/1080x2280/$img
-			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2280/$img
-		done
-	
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
