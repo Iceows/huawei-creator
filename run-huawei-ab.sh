@@ -376,6 +376,9 @@ mount -o loop,rw s-ab-raw.img d
 
 	echo "(allow init system_teecd_exec (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sys_block_mmcblk0 (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+
+
 	echo "(allow fsck splash2_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck cache_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck teecd_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -517,6 +520,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 
+	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+ 	echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
+ 	echo "(allow hwservicemanager init (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
+ 	echo "(allow hwservicemanager init (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
+ 	echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
+	
 	
 	# Log splash2
 	echo "(allow kernel anr_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
