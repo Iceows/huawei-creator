@@ -38,6 +38,12 @@ mount -o loop,rw s-ab-raw.img d
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
 	cd d
 	
+	rm -rf splash2
+	rm -rf modem_log
+	rm -rf /data
+	rm -rf /data/sec_storage_data
+	rm -rf /data/sec_storage_data_users
+	
 	mkdir splash2
 	chown root:root splash2
 	chmod 777 splash2
@@ -47,6 +53,19 @@ mount -o loop,rw s-ab-raw.img d
 	chown root:root modem_log
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
+	
+	mkdir /data
+	
+	mkdir /data/sec_storage_data
+	chown root:root /data/sec_storage_data
+	chmod 777 /data/sec_storage_data
+	xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data
+	
+	mkdir /data/sec_storage_data_users
+	chown root:root /data/sec_storage_data_users
+	chmod 777 /data/sec_storage_data_users
+	xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data_users
+    
 	
 	cd system
 		
@@ -255,6 +274,14 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
 	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
+	# Tee Deamon
+	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	
+	
+	
 	# NFC permission
 	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
 	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
@@ -357,7 +384,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vendor_init teecd_data_file_system (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
 	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
-	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
+	# here
+	#echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
  	echo "(allow vendor_init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
@@ -429,8 +457,18 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow system_server default_android_service (service_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow platform_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server isolated_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow linkerconfig self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow ueventd dmd_device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+
 	
 	# --------------- A11 specifique -------------------- 
 	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
@@ -566,7 +604,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	
  	echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
- 	echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil	
+ 	echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
+ 	
+
 	
 
 )
