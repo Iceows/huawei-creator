@@ -93,33 +93,45 @@ mount -o loop,rw s-ab-raw.img d
 
 	
 	# change product and system_ext prop
-	sed -i "/ro.product.system_ext.model/d" build.prop 
-	sed -i "/ro.product.system_ext.brand/d" build.prop 
-	sed -i "/ro.product.system_ext.device/d" build.prop 
-	sed -i "/ro.product.system_ext.name/d" build.prop 
+	# sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
+		
+	# sed -i "/ro.product.product.model/d" product/build.prop 
+	# sed -i "/ro.product.product.brand/d" product/build.prop 
+	# sed -i "/ro.product.product.device/d" product/build.prop 
+	# sed -i "/ro.product.product.name/d" product/build.prop  
 	
-	sed -i "/ro.product.product.model/d" build.prop 
-	sed -i "/ro.product.product.brand/d" build.prop 
-	sed -i "/ro.product.product.device/d" build.prop 
-	sed -i "/ro.product.product.name/d" build.prop 
+	# sed -i "/ro.product.system.model/d" product/build.prop 
+	# sed -i "/ro.product.system.brand/d" product/build.prop 
+	# sed -i "/ro.product.system.device/d" product/build.prop 
+	# sed -i "/ro.product.system.name/d" product/build.prop 
 	
-	echo "ro.product.system_ext.model=$model" >>  build.prop
-	echo "ro.product.system_ext.brand=Huawei" >>  build.prop
-	echo "ro.product.system_ext.device=anne" >>  build.prop
-	echo "ro.product.system_ext.name=LeaOS" >>  build.prop
+	# echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
 	
-	echo "ro.product.product.model=$model" >>  build.prop
-	echo "ro.product.product.brand=Huawei" >>  build.prop
-	echo "ro.product.product.device=anne" >>  build.prop
-	echo "ro.product.product.name=LeaOS" >>  build.prop
+	# echo "ro.product.product.model=$model" >>  product/build.prop
+	# echo "ro.product.product.brand=Huawei" >>  product/build.prop
+	# echo "ro.product.product.device=anne" >>  product/build.prop
+	# echo "ro.product.product.name=LeaOS" >>  product/build.prop
 	
-
-	sed -i "/ro.product.model/d" build.prop
-	sed -i "/ro.product.system.model/d" build.prop
+	echo "ro.product.system.model=$model" >>  build.prop
+	echo "ro.product.system.brand=Huawei" >>  build.prop
+	echo "ro.product.system.device=anne" >>  build.prop
+	echo "ro.product.system.name=LeaOS" >>  build.prop
+	
 	sed -i "/ro.product.manufacturer/d" build.prop
-	echo "ro.product.manufacturer=HUAWEI" >> build.prop
-	echo "ro.product.system.model=ANE-LX1" >> build.prop
-	echo "ro.product.model=ANE-LX1" >> build.prop
+	sed -i "/ro.product.model/d" build.prop
+	sed -i "/ro.product.device/d" build.prop
+	sed -i "/ro.product.name/d" build.prop
+	
+	echo "ro.product.manufacturer=Huawei" >> build.prop
+	echo "ro.product.model=$model" >> build.prop
+	echo "ro.product.device=anne" >> build.prop
+	echo "ro.product.name=LeaOS" >> build.prop
 
 
 	
