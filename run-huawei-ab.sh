@@ -188,7 +188,8 @@ mount -o loop,rw s-ab-raw.img d
 	# rw-system custom for Huawei device
 	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	cp "$origin/files-patch/system/bin/vndk-detect.sh" bin/vndk-detect.sh
+	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
