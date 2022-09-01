@@ -40,9 +40,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	rm -rf splash2
 	rm -rf modem_log
-	rm -rf /data
-	rm -rf /data/sec_storage_data
-	rm -rf /data/sec_storage_data_users
+	#rm -rf /data
+	#rm -rf /data/sec_storage_data
+	#rm -rf /data/sec_storage_data_users
 	
 	mkdir splash2
 	chown root:root splash2
@@ -54,17 +54,17 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
 	
-	mkdir /data
+	#mkdir /data
 	
-	mkdir /data/sec_storage_data
-	chown root:root /data/sec_storage_data
-	chmod 777 /data/sec_storage_data
-	xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data
+	#mkdir /data/sec_storage_data
+	#chown root:root /data/sec_storage_data
+	#chmod 777 /data/sec_storage_data
+	#xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data
 	
-	mkdir /data/sec_storage_data_users
-	chown root:root /data/sec_storage_data_users
-	chmod 777 /data/sec_storage_data_users
-	xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data_users
+	#mkdir /data/sec_storage_data_users
+	#chown root:root /data/sec_storage_data_users
+	#chmod 777 /data/sec_storage_data_users
+	#xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data_users
     
 	
 	cd system
@@ -141,7 +141,7 @@ mount -o loop,rw s-ab-raw.img d
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
-	echo "ro.config.alarm_alert=Alarm_Classic.ogg">>  build.prop
+	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
 	# set lineage version number for lineage build
 	sed -i "/ro.lineage.version/d"  build.prop
@@ -600,15 +600,15 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server untrusted_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow system_server untrusted_app_29 (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vold (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 
 	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow profcollectd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	
-	#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
  	echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow init hwservicemanager (binder (call)))" >> etc/selinux/plat_sepolicy.cil
@@ -620,12 +620,10 @@ mount -o loop,rw s-ab-raw.img d
  	echo "(allow hwservicemanager init (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hwservicemanager init (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
-	
-	
- 	echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
- 	echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
- 	
 
+ 	#echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
+ 	#echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
+ 	
 	
 	# Log splash2
 	echo "(allow kernel anr_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
