@@ -150,10 +150,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.lineage.version=$versionNumber" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	echo "ro.modversion=$versionNumber" >>  build.prop
-
  
-	# LMK - for Android Kernel that support it - e
-	echo "ro.lmk.debug=true" >>  build.prop
+	# Debug LMK - for Android Kernel that support it - e
+	echo "ro.lmk.debug=false" >>  build.prop
+	
+	# Debug Huawei Off - if on  start service logcat 
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
+
 	
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >>  build.prop
@@ -190,9 +194,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.cpuset.enable=1" >> build.prop
 	echo "persist.sys.performance=true" >> build.prop
 	
-	# Debug Huawei Off
-	echo "persist.sys.hiview.debug=0" >> build.prop
-	echo "persist.sys.huawei.debug.on=0" >> build.prop
+
 	
 
 	# Usb
@@ -588,12 +590,20 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
 	echo "(allow rootfs labeledfs (filesystem (relabelto relabelfrom associate mount )))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	# Rild
+	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow rild splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+
+
 
 	# --------------- A12 specifique --------------------
 	echo "(allow surfaceflinger bootanim (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
