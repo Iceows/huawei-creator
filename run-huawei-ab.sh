@@ -281,6 +281,34 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
 	fi
+	
+	# Remove duplicate media audio
+	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
+	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
+	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
+	
+	# Remove non huawei Overlay
+	rm -rf product/overlay/treble-overlay-infinix-*
+	rm -rf product/overlay/treble-overlay-lenovo-*
+	rm -rf product/overlay/treble-overlay-lge-*
+	rm -rf product/overlay/treble-overlay-asus-*
+	rm -rf product/overlay/treble-overlay-xiaomi-*
+	rm -rf product/overlay/treble-overlay-samsung-*
+	rm -rf product/overlay/treble-overlay-sony-*	
+	rm -rf product/overlay/treble-overlay-tecno-*
+	rm -rf product/overlay/treble-overlay-realme-*
+	rm -rf product/overlay/treble-overlay-oppo-*
+	rm -rf product/overlay/treble-overlay-nokia-*
+	rm -rf product/overlay/treble-overlay-oneplus-*	
+	rm -rf product/overlay/treble-overlay-nubia-*		
+	rm -rf product/overlay/treble-overlay-moto-*	
+	rm -rf product/overlay/treble-overlay-lg-*
+	rm -rf product/overlay/treble-overlay-htc-*
+	rm -rf product/overlay/treble-overlay-blackview-*
+	rm -rf product/overlay/treble-overlay-vivo-*
+	rm -rf product/overlay/treble-overlay-vsmart-*
+	rm -rf product/overlay/treble-overlay-razer-*
+	rm -rf product/overlay/treble-overlay-sharp-*
 		
 	# Fix LD_PRELOAD in vndk
 	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
