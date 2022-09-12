@@ -155,8 +155,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.lmk.debug=false" >>  build.prop
 	
 	# Debug Huawei Off - if on  start service logcat 
-	echo "persist.sys.hiview.debug=0" >> build.prop
-	echo "persist.sys.huawei.debug.on=0" >> build.prop
+	echo "persist.sys.hiview.debug=1" >> build.prop
+	echo "persist.sys.huawei.debug.on=1" >> build.prop
 
 	
 	# Enable wireless display (Cast/Miracast)
