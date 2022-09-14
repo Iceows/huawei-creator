@@ -302,6 +302,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
+
+	
 	# oeminfo_nvm
 	echo "(allow oeminfo_nvm block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow oeminfo_nvm device (chr_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
@@ -382,6 +384,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow init system_teecd_exec (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init sys_block_mmcblk0 (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init hwservicemanager (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+
 
 
 	echo "(allow fsck splash2_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -447,6 +453,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	
 	# --------------- A11 specifique -------------------- 
 	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
@@ -510,6 +517,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vdc self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vold_prepare_subdirs self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow zygote exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow nfc system_data_file (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -532,7 +541,7 @@ mount -o loop,rw s-ab-raw.img d
  	echo "(allow hwservicemanager init (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
  	echo "(allow hwservicemanager init (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
-	
+	echo "(allow hwservicemanager init (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Log splash2
 	echo "(allow kernel anr_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
