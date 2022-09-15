@@ -572,7 +572,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vold_prepare_subdirs self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow zygote exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
-	echo "(allow nfc system_data_file (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow nfc system_data_file (file (open write read create ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow nfc system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 
 
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -624,9 +625,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow tlogcat self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow tlogcat device (chr_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
-	#echo "(type system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
-	#echo "(roletype object_r system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
-	#echo "/system/bin/tee_auth_daemon   u:object_r:system_teecd_exec:s0" >> etc/selinux/plat_file_contexts
+	echo "(type system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "/system/bin/tee_auth_daemon   u:object_r:system_teecd_exec:s0" >> etc/selinux/plat_file_contexts
 	
     # --------------------------- Kirin EMUI 9 properties -------------------
 
