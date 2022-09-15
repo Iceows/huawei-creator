@@ -76,33 +76,31 @@ mount -o loop,rw s-ab-raw.img d
 	echo "## Adding hi6250 props" >> build.prop
 	echo "#" >> build.prop
 	
-
-	
 	# change product and system_ext prop
-	# sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
 		
-	# sed -i "/ro.product.product.model/d" product/build.prop 
-	# sed -i "/ro.product.product.brand/d" product/build.prop 
-	# sed -i "/ro.product.product.device/d" product/build.prop 
-	# sed -i "/ro.product.product.name/d" product/build.prop  
+	sed -i "/ro.product.product.model/d" product/build.prop 
+	sed -i "/ro.product.product.brand/d" product/build.prop 
+	sed -i "/ro.product.product.device/d" product/build.prop 
+	sed -i "/ro.product.product.name/d" product/build.prop  
 	
-	# sed -i "/ro.product.system.model/d" product/build.prop 
-	# sed -i "/ro.product.system.brand/d" product/build.prop 
-	# sed -i "/ro.product.system.device/d" product/build.prop 
-	# sed -i "/ro.product.system.name/d" product/build.prop 
+	sed -i "/ro.product.system.model/d" build.prop 
+	sed -i "/ro.product.system.brand/d" build.prop 
+	sed -i "/ro.product.system.device/d" build.prop 
+	sed -i "/ro.product.system.name/d" build.prop 
 	
-	# echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
+	echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
+	echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
+	echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
+	echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
 	
-	# echo "ro.product.product.model=$model" >>  product/build.prop
-	# echo "ro.product.product.brand=Huawei" >>  product/build.prop
-	# echo "ro.product.product.device=anne" >>  product/build.prop
-	# echo "ro.product.product.name=LeaOS" >>  product/build.prop
+	echo "ro.product.product.model=$model" >>  product/build.prop
+	echo "ro.product.product.brand=Huawei" >>  product/build.prop
+	echo "ro.product.product.device=anne" >>  product/build.prop
+	echo "ro.product.product.name=LeaOS" >>  product/build.prop
 	
 	echo "ro.product.system.model=$model" >>  build.prop
 	echo "ro.product.system.brand=Huawei" >>  build.prop
@@ -119,10 +117,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.device=anne" >> build.prop
 	echo "ro.product.name=LeaOS" >> build.prop
 
-
-	
-	# echo "ro.product.name
-	# echo "ro.product.device
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
@@ -307,10 +301,10 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# Tee Deamon
-	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
-	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
-	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
-	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	#cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	#xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	#cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	#xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
 	
 	
 	
