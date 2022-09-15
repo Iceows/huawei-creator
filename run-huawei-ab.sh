@@ -38,6 +38,10 @@ mount -o loop,rw s-ab-raw.img d
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
 	cd d
 	
+	rm -rf splash2
+	rm -rf modem_log
+
+	
 	mkdir splash2
 	chown root:root splash2
 	chmod 777 splash2
@@ -47,6 +51,7 @@ mount -o loop,rw s-ab-raw.img d
 	chown root:root modem_log
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
+	
 	
 	cd system
 		
@@ -74,30 +79,30 @@ mount -o loop,rw s-ab-raw.img d
 
 	
 	# change product and system_ext prop
-	sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
-	sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
-	sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
-	sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
+	# sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
 		
-	sed -i "/ro.product.product.model/d" product/build.prop 
-	sed -i "/ro.product.product.brand/d" product/build.prop 
-	sed -i "/ro.product.product.device/d" product/build.prop 
-	sed -i "/ro.product.product.name/d" product/build.prop  
+	# sed -i "/ro.product.product.model/d" product/build.prop 
+	# sed -i "/ro.product.product.brand/d" product/build.prop 
+	# sed -i "/ro.product.product.device/d" product/build.prop 
+	# sed -i "/ro.product.product.name/d" product/build.prop  
 	
-	sed -i "/ro.product.system.model/d" product/build.prop 
-	sed -i "/ro.product.system.brand/d" product/build.prop 
-	sed -i "/ro.product.system.device/d" product/build.prop 
-	sed -i "/ro.product.system.name/d" product/build.prop 
+	# sed -i "/ro.product.system.model/d" product/build.prop 
+	# sed -i "/ro.product.system.brand/d" product/build.prop 
+	# sed -i "/ro.product.system.device/d" product/build.prop 
+	# sed -i "/ro.product.system.name/d" product/build.prop 
 	
-	echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
-	echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
-	echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
-	echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
+	# echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
 	
-	echo "ro.product.product.model=$model" >>  product/build.prop
-	echo "ro.product.product.brand=Huawei" >>  product/build.prop
-	echo "ro.product.product.device=anne" >>  product/build.prop
-	echo "ro.product.product.name=LeaOS" >>  product/build.prop
+	# echo "ro.product.product.model=$model" >>  product/build.prop
+	# echo "ro.product.product.brand=Huawei" >>  product/build.prop
+	# echo "ro.product.product.device=anne" >>  product/build.prop
+	# echo "ro.product.product.name=LeaOS" >>  product/build.prop
 	
 	echo "ro.product.system.model=$model" >>  build.prop
 	echo "ro.product.system.brand=Huawei" >>  build.prop
@@ -115,10 +120,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.name=LeaOS" >> build.prop
 
 
+	
+	# echo "ro.product.name
+	# echo "ro.product.device
+
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
-	echo "ro.config.alarm_alert=Alarm_Classic.ogg">>  build.prop
+	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
 	# set lineage version number for lineage build
 	sed -i "/ro.lineage.version/d"  build.prop
@@ -127,10 +136,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.lineage.version=$versionNumber" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	echo "ro.modversion=$versionNumber" >>  build.prop
-
  
-	# LMK - for Android Kernel that support it - e
-	echo "ro.lmk.debug=true" >>  build.prop
+	# Debug LMK - for Android Kernel that support it
+	echo "ro.lmk.debug=false" >>  build.prop
+	
+	# Debug Huawei Off - if on  start service logcat 
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
+
 	
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >>  build.prop
@@ -235,6 +248,11 @@ mount -o loop,rw s-ab-raw.img d
 	# ANE- Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
 	
+		#for img in $(cd "$origin/files-patch/system/etc/charger/1080x2280"; echo *);do
+		#	cp "$origin/files-patch/system/etc/charger/1080x2280/$img" etc/charger/1080x2280/$img
+		#	xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2280/$img
+		#done
+	
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
@@ -255,10 +273,46 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
 	fi
+	
+	# Remove duplicate media audio
+	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
+	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
+	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
+	
+	# Remove non huawei Overlay
+	rm -rf product/overlay/treble-overlay-infinix-*
+	rm -rf product/overlay/treble-overlay-lenovo-*
+	rm -rf product/overlay/treble-overlay-lge-*
+	rm -rf product/overlay/treble-overlay-asus-*
+	rm -rf product/overlay/treble-overlay-xiaomi-*
+	rm -rf product/overlay/treble-overlay-samsung-*
+	rm -rf product/overlay/treble-overlay-sony-*	
+	rm -rf product/overlay/treble-overlay-tecno-*
+	rm -rf product/overlay/treble-overlay-realme-*
+	rm -rf product/overlay/treble-overlay-oppo-*
+	rm -rf product/overlay/treble-overlay-nokia-*
+	rm -rf product/overlay/treble-overlay-oneplus-*	
+	rm -rf product/overlay/treble-overlay-nubia-*		
+	rm -rf product/overlay/treble-overlay-moto-*	
+	rm -rf product/overlay/treble-overlay-lg-*
+	rm -rf product/overlay/treble-overlay-htc-*
+	rm -rf product/overlay/treble-overlay-blackview-*
+	rm -rf product/overlay/treble-overlay-vivo-*
+	rm -rf product/overlay/treble-overlay-vsmart-*
+	rm -rf product/overlay/treble-overlay-razer-*
+	rm -rf product/overlay/treble-overlay-sharp-*
 		
 	# Fix LD_PRELOAD in vndk
 	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
 	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
+	
+	# Tee Deamon
+	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	
+	
 	
 	# NFC permission
 	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
@@ -301,8 +355,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow platform_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-
 	
 	# oeminfo_nvm
 	echo "(allow oeminfo_nvm block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -365,7 +417,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vendor_init teecd_data_file_system (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	# Fix ls ioctl cmd	FS_IOC_SET_ENCRYPTION_POLICY and FS_IOC_GET_ENCRYPTION_POLICY: 0x6613, 0x6615
 	echo "(allowx vendor_init teecd_data_file (ioctl dir (0x6613 0x6615)))" >> etc/selinux/plat_sepolicy.cil 
-	# echo "(allow vendor_init block_device (blk_file (open read write ioctl)))" >> etc/selinux/plat_sepolicy.cil	
+	# This rules make a bootloop
+	# echo "(allow vendor_init block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
  	echo "(allow vendor_init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
@@ -380,20 +433,20 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow init teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init splash2_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom mounton)))" >> etc/selinux/plat_sepolicy.cil
-
 	echo "(allow init system_teecd_exec (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow init block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 	echo "(allow init sys_block_mmcblk0 (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init hwservicemanager (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow init sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
-
-
-
+	# FSCK
 	echo "(allow fsck splash2_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck cache_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck teecd_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
-
+	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 
 	# Teecd
 	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
@@ -451,9 +504,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server default_android_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server default_android_service (service_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow system_server isolated_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow platform_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow linkerconfig self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow ueventd dmd_device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# --------------- A11 specifique -------------------- 
 	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
@@ -506,7 +564,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow otapreopt_slot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rootfs labeledfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rootfs sysfs_zram (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow splash2_data_file splash2_data_file (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow splash2_data_file self (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow su splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow su splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow su splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 
@@ -524,14 +584,21 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rootfs labeledfs (filesystem (relabelto relabelfrom associate mount )))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	
+	# Rild
+	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow rild splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+
+
 	echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 
 	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
