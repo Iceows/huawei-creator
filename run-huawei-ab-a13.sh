@@ -69,10 +69,10 @@ mount -o loop,rw s-ab-raw.img d
 	
 
 	# build - change type to user
-	sed -i "/ro.system.build.type/d" build.prop 
-	sed -i "/ro.build.type/d" build.prop 	
-	echo "ro.system.build.type=user" >> build.prop
-	echo "ro.build.type=user" >> build.prop
+	#sed -i "/ro.system.build.type/d" build.prop 
+	#sed -i "/ro.build.type/d" build.prop 	
+	#echo "ro.system.build.type=user" >> build.prop
+	#echo "ro.build.type=user" >> build.prop
 
 	
 	echo "#" >> build.prop
