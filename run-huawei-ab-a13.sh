@@ -20,8 +20,8 @@ bootanim="$4"
 
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab.sh [/path/to/system.img] [version] [model device] [bootanimation]"
-	echo "version=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
+	echo "Usage: sudo bash run-huawei-ab-a13.sh [/path/to/system.img] [version] [model device] [bootanimation]"
+	echo "version=LeaOS A13"
 	echo "device=ANE-LX1"
 	echo "bootanimation=[Y/N]"
 	exit 1
@@ -63,82 +63,21 @@ mount -o loop,rw s-ab-raw.img d
 		
 	#---------------------------------Setting properties -------------------------------------------------
 	
-	# Dirty hack to show build properties
-	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
-	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
-	
-
-	# build - change type to user
-	#sed -i "/ro.system.build.type/d" build.prop 
-	#sed -i "/ro.build.type/d" build.prop 	
-	#echo "ro.system.build.type=user" >> build.prop
-	#echo "ro.build.type=user" >> build.prop
-
-	
 	echo "#" >> build.prop
 	echo "## Adding hi6250 props" >> build.prop
 	echo "#" >> build.prop
 	
-
+	sed -i "/ro.system.build.type/d" build.prop 
+	sed -i "/ro.build.type/d" build.prop 	
+	echo "ro.system.build.type=userdebug" >> build.prop
+	echo "ro.build.type=userdebug" >> build.prop
 	
-	# change product and system_ext prop
-	# sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
-		
-	# sed -i "/ro.product.product.model/d" product/build.prop 
-	# sed -i "/ro.product.product.brand/d" product/build.prop 
-	# sed -i "/ro.product.product.device/d" product/build.prop 
-	# sed -i "/ro.product.product.name/d" product/build.prop  
-	
-	# sed -i "/ro.product.system.model/d" product/build.prop 
-	# sed -i "/ro.product.system.brand/d" product/build.prop 
-	# sed -i "/ro.product.system.device/d" product/build.prop 
-	# sed -i "/ro.product.system.name/d" product/build.prop 
-	
-	# echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
-	
-	# echo "ro.product.product.model=$model" >>  product/build.prop
-	# echo "ro.product.product.brand=Huawei" >>  product/build.prop
-	# echo "ro.product.product.device=anne" >>  product/build.prop
-	# echo "ro.product.product.name=LeaOS" >>  product/build.prop
-	
-	echo "ro.product.system.model=$model" >>  build.prop
-	echo "ro.product.system.brand=Huawei" >>  build.prop
-	echo "ro.product.system.device=anne" >>  build.prop
-	echo "ro.product.system.name=LeaOS" >>  build.prop
-	
-	sed -i "/ro.product.manufacturer/d" build.prop
-	sed -i "/ro.product.model/d" build.prop
-	sed -i "/ro.product.device/d" build.prop
-	sed -i "/ro.product.name/d" build.prop
-	
-	echo "ro.product.manufacturer=Huawei" >> build.prop
-	echo "ro.product.model=$model" >> build.prop
-	echo "ro.product.device=anne" >> build.prop
-	echo "ro.product.name=LeaOS" >> build.prop
-
-
-	
-	# echo "ro.product.name
-	# echo "ro.product.device
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
 	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
-	# set lineage version number for lineage build
-	sed -i "/ro.lineage.version/d"  build.prop
-	sed -i "/ro.lineage.display.version/d"  build.prop
-	sed -i "/ro.modversion/d"  build.prop
-	echo "ro.lineage.version=$versionNumber" >>  build.prop
-	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
-	echo "ro.modversion=$versionNumber" >>  build.prop
  
 	# Debug LMK - for Android Kernel that support it - e
 	echo "ro.lmk.debug=false" >>  build.prop
@@ -184,8 +123,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.performance=true" >> build.prop
 	
 
-	
-
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
 	echo "sys.usb.config=mtp" >> build.prop
@@ -199,19 +136,6 @@ mount -o loop,rw s-ab-raw.img d
 
 	#-----------------------------File copy -----------------------------------------------------
 	
-	# Fix vndk-detect don't work in huawei 9.1
-	#cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
-	#xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
-	
-	# Fix LD_PRELOAD in vndk
-	#cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
-	#xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
-	
-	# rw-system custom for Huawei device
-	# now include in device treble patch
-	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
 		mkdir media
@@ -255,13 +179,8 @@ mount -o loop,rw s-ab-raw.img d
 	
 	
 	
-	#----------------------------- SELinux rules -----------------------------------------------------	
+	#----------------------------- SELinux rules Now include in huawei.te --------------------------	
 	
-	#----------------------------- Now include in huawei.te ------------------------------------------
-	
-	
-	
-		
 	
 	
 
