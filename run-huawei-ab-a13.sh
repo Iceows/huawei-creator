@@ -200,14 +200,15 @@ mount -o loop,rw s-ab-raw.img d
 	#-----------------------------File copy -----------------------------------------------------
 	
 	# Fix vndk-detect don't work in huawei 9.1
-	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
+	#cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
+	#xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
 	
 	# Fix LD_PRELOAD in vndk
-	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
-	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
+	#cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
+	#xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# rw-system custom for Huawei device
+	# now include in device treble patch
 	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 
@@ -256,22 +257,20 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- SELinux rules -----------------------------------------------------	
 	
+	#----------------------------- Now include in huawei.te ------------------------------------------
 	
 	
 	
-	
-	
-	
-	
+		
 	
 	
 
-	#-----------------------------vndk-lite -----------------------------------------------------	
+	#-----------------------------vndk-lite --------------------------------------------------------	
 	cd ../d
 
 	
 	find -name \*.capex -or -name \*.apex -type f -delete
-	for vndk in 28 29 ;do
+	for vndk in 28 29 30 31;do
 	    for arch in 32 64;do
 		d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
 		[ ! -d "$d" ] && continue
