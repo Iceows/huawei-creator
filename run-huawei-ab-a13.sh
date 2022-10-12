@@ -153,7 +153,29 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
 		chmod 644 "media/bootanimation.zip"
 		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
+
+	
+		# NFC 
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+		
 	fi
+
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
