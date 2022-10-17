@@ -1,0 +1,42 @@
+# Copyright (C) 2012 The Android Open Source Project
+#
+# USB configuration common for hisi devices
+#
+
+import /vendor/etc/init/charger/init.hisi.usb.rc
+
+on boot
+    chown system system /sys/devices/platform/ff100000.hisi_usb/plugusb
+    chmod 0660 /sys/devices/platform/ff100000.hisi_usb/plugusb
+
+on init && property:sys.usb.configfs=0
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+
+on property:sys.usb.config=hisi_debug,adb && property:sys.usb.configfs=0
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 12d1
+    write /sys/class/android_usb/android0/idProduct 107e
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/f_rndis/wceis  1
+    write /sys/class/android_usb/android0/functions rndis,adb,balong_acm
+    write /sys/class/android_usb/android0/enable 1
+    stop atcmdserver
+    start hw_cdma_service
+    start adbd
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=hisi_debug && property:sys.usb.configfs=0
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 12d1
+    write /sys/class/android_usb/android0/idProduct 107e
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/f_rndis/wceis  1
+    write /sys/class/android_usb/android0/functions rndis,balong_acm
+    write /sys/class/android_usb/android0/enable 1
+    stop atcmdserver
+    start hw_cdma_service
+    setprop sys.usb.state ${sys.usb.config}
+
+on post-fs-data && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/bcdUSB 0x0200

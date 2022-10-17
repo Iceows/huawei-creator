@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
+<!-- Devices that support MIFARE need to declare NXP's feature constant -->
 <permissions>
-    <library name="com.android.nfc_extras"
-            file="/system/framework/com.android.nfc_extras.jar" />
+    <feature name="com.nxp.mifare" />
 </permissions>

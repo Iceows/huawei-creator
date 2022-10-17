@@ -142,7 +142,7 @@ mount -o loop,rw s-ab-raw.img d
 	# rw-system custom for Huawei device
 	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	
+
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
 		mkdir media
@@ -153,8 +153,12 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/media/bootanimation.zip" "media/bootanimation.zip"
 		chmod 644 "media/bootanimation.zip"
 		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
-
 	
+	fi
+	
+	# NFC
+	# ANE-LX1 Huawei P20 Lite 2017
+	if [ "$model" == "ANE-LX1" ];then
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
@@ -173,30 +177,9 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-		
-		# NFC permission
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
-		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+	fi	
 
-		# NFC product permission
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
-		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 	
-		
-	fi
-
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
@@ -226,6 +209,42 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/overlay/treble-overlay-razer-*
 	rm -rf product/overlay/treble-overlay-sharp-*
 	
+	
+	# Tee Deamon
+	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	
+	# NFC permission
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+
+
+	# NFC product permission
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+
+	
+	# Codec bluetooth 32 bits
+	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libaptX_encoder.so
+	cp "$origin/files-patch/system/lib/libaptXHD_encoder.so" lib/libaptXHD_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libaptXHD_encoder.so
+	
+	# Codec bluetooth 64 bits
+	cp "$origin/files-patch/system/lib64/libaptX_encoder.so" lib64/libaptX_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptX_encoder.so
+	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
 	
 	
 	
