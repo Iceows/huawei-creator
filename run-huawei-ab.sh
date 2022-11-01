@@ -92,19 +92,17 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.product.system.device/d" build.prop 
 	sed -i "/ro.product.system.name/d" build.prop 
 	
-	echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
-	echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
-	echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
+	echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
+	echo "ro.product.system_ext.device=HWANE" >>  system_ext/build.prop
 	echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
 	
-	echo "ro.product.product.model=$model" >>  product/build.prop
-	echo "ro.product.product.brand=Huawei" >>  product/build.prop
-	echo "ro.product.product.device=anne" >>  product/build.prop
+	echo "ro.product.product.brand=HUAWEI" >>  product/build.prop
+	echo "ro.product.product.device=HWANE" >>  product/build.prop
 	echo "ro.product.product.name=LeaOS" >>  product/build.prop
 	
 	echo "ro.product.system.model=$model" >>  build.prop
-	echo "ro.product.system.brand=Huawei" >>  build.prop
-	echo "ro.product.system.device=anne" >>  build.prop
+	echo "ro.product.system.device=HWANE" >>  build.prop
+	echo "ro.product.system.brand=HUAWEI" >>  build.prop
 	echo "ro.product.system.name=LeaOS" >>  build.prop
 	
 	sed -i "/ro.product.manufacturer/d" build.prop
@@ -112,10 +110,17 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.product.device/d" build.prop
 	sed -i "/ro.product.name/d" build.prop
 	
-	echo "ro.product.manufacturer=Huawei" >> build.prop
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
 	echo "ro.product.model=$model" >> build.prop
-	echo "ro.product.device=anne" >> build.prop
-	echo "ro.product.name=LeaOS" >> build.prop
+	echo "ro.product.device=HWANE" >> build.prop
+	echo "ro.product.name=$model" >> build.prop
+	echo "ro.product.brand=HUAWEI" >> build.prop
+	
+	# Safetynet CTS profile
+	echo "ro.build.fingerprint HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	echo "ro.build.version.security_patch 2020-08-01" >> build.prop
+	
+
 
 
 	# set default sound
