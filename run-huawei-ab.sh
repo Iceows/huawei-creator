@@ -40,9 +40,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	rm -rf splash2
 	rm -rf modem_log
-	#rm -rf /data
-	#rm -rf /data/sec_storage_data
-	#rm -rf /data/sec_storage_data_users
+
 	
 	mkdir splash2
 	chown root:root splash2
@@ -54,18 +52,6 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
 	
-	#mkdir /data
-	
-	#mkdir /data/sec_storage_data
-	#chown root:root /data/sec_storage_data
-	#chmod 777 /data/sec_storage_data
-	#xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data
-	
-	#mkdir /data/sec_storage_data_users
-	#chown root:root /data/sec_storage_data_users
-	#chmod 777 /data/sec_storage_data_users
-	#xattr -w security.selinux u:object_r:teecd_data_file_system:s0 /data/sec_storage_data_users
-    
 	
 	cd system
 		
@@ -90,37 +76,33 @@ mount -o loop,rw s-ab-raw.img d
 	echo "## Adding hi6250 props" >> build.prop
 	echo "#" >> build.prop
 	
-
-	
 	# change product and system_ext prop
-	# sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
-	# sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
 		
-	# sed -i "/ro.product.product.model/d" product/build.prop 
-	# sed -i "/ro.product.product.brand/d" product/build.prop 
-	# sed -i "/ro.product.product.device/d" product/build.prop 
-	# sed -i "/ro.product.product.name/d" product/build.prop  
+	sed -i "/ro.product.product.model/d" product/build.prop 
+	sed -i "/ro.product.product.brand/d" product/build.prop 
+	sed -i "/ro.product.product.device/d" product/build.prop 
+	sed -i "/ro.product.product.name/d" product/build.prop  
 	
-	# sed -i "/ro.product.system.model/d" product/build.prop 
-	# sed -i "/ro.product.system.brand/d" product/build.prop 
-	# sed -i "/ro.product.system.device/d" product/build.prop 
-	# sed -i "/ro.product.system.name/d" product/build.prop 
+	sed -i "/ro.product.system.model/d" build.prop 
+	sed -i "/ro.product.system.brand/d" build.prop 
+	sed -i "/ro.product.system.device/d" build.prop 
+	sed -i "/ro.product.system.name/d" build.prop 
 	
-	# echo "ro.product.system_ext.model=$model" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.brand=Huawei" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.device=anne" >>  system_ext/build.prop
-	# echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
+	echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
+	echo "ro.product.system_ext.device=HWANE" >>  system_ext/build.prop
+	echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
 	
-	# echo "ro.product.product.model=$model" >>  product/build.prop
-	# echo "ro.product.product.brand=Huawei" >>  product/build.prop
-	# echo "ro.product.product.device=anne" >>  product/build.prop
-	# echo "ro.product.product.name=LeaOS" >>  product/build.prop
+	echo "ro.product.product.brand=HUAWEI" >>  product/build.prop
+	echo "ro.product.product.device=HWANE" >>  product/build.prop
+	echo "ro.product.product.name=LeaOS" >>  product/build.prop
 	
 	echo "ro.product.system.model=$model" >>  build.prop
-	echo "ro.product.system.brand=Huawei" >>  build.prop
-	echo "ro.product.system.device=anne" >>  build.prop
+	echo "ro.product.system.device=HWANE" >>  build.prop
+	echo "ro.product.system.brand=HUAWEI" >>  build.prop
 	echo "ro.product.system.name=LeaOS" >>  build.prop
 	
 	sed -i "/ro.product.manufacturer/d" build.prop
@@ -128,15 +110,18 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.product.device/d" build.prop
 	sed -i "/ro.product.name/d" build.prop
 	
-	echo "ro.product.manufacturer=Huawei" >> build.prop
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
 	echo "ro.product.model=$model" >> build.prop
-	echo "ro.product.device=anne" >> build.prop
-	echo "ro.product.name=LeaOS" >> build.prop
-
-
+	echo "ro.product.device=HWANE" >> build.prop
+	echo "ro.product.name=$model" >> build.prop
+	echo "ro.product.brand=HUAWEI" >> build.prop
 	
-	# echo "ro.product.name
-	# echo "ro.product.device
+	# Safetynet CTS profile
+	echo "ro.build.fingerprint HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	echo "ro.build.version.security_patch 2020-08-01" >> build.prop
+	
+
+
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
@@ -151,12 +136,12 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	echo "ro.modversion=$versionNumber" >>  build.prop
  
-	# Debug LMK - for Android Kernel that support it - e
+	# Debug LMK - for Android Kernel that support it
 	echo "ro.lmk.debug=false" >>  build.prop
 	
 	# Debug Huawei Off - if on  start service logcat 
-	echo "persist.sys.hiview.debug=1" >> build.prop
-	echo "persist.sys.huawei.debug.on=1" >> build.prop
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
 
 	
 	# Enable wireless display (Cast/Miracast)
@@ -194,7 +179,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.cpuset.enable=1" >> build.prop
 	echo "persist.sys.performance=true" >> build.prop
 	
-
+	# Debug Huawei Off
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
 	
 
 	# Usb
@@ -213,6 +200,8 @@ mount -o loop,rw s-ab-raw.img d
 	# rw-system custom for Huawei device
 	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -258,10 +247,10 @@ mount -o loop,rw s-ab-raw.img d
 	# ANE- Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
 	
-		for img in $(cd "$origin/files-patch/system/etc/charger/1080x2280"; echo *);do
-			cp "$origin/files-patch/system/etc/charger/1080x2280/$img" etc/charger/1080x2280/$img
-			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2280/$img
-		done
+		#for img in $(cd "$origin/files-patch/system/etc/charger/1080x2280"; echo *);do
+		#	cp "$origin/files-patch/system/etc/charger/1080x2280/$img" etc/charger/1080x2280/$img
+		#	xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2280/$img
+		#done
 	
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
@@ -317,10 +306,10 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# Tee Deamon
-	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
-	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
-	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
-	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	#cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	#xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	#cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	#xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
 	
 	
 	
@@ -410,6 +399,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow fsck modem_nv_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck modem_log_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Vold	
 	echo "(allow vold sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -446,11 +436,16 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	#echo "(allow init block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
+	echo "(allow init sys_block_mmcblk0 (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init hwservicemanager (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init sys_block_mmcblk0 (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
 	# FSCK
 	echo "(allow fsck splash2_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck cache_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow fsck teecd_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
-
+	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 
 	# Teecd
 	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
@@ -508,18 +503,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_server exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_server default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
-	
 	echo "(allow system_server default_android_service (service_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow platform_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server vendor_file (file (execute getattr map open read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_server cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow system_server isolated_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
+	echo "(allow platform_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow linkerconfig self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow ueventd dmd_device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-
-	echo "(allow fsck mnt_modem_file (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-
 	
 	# --------------- A11 specifique -------------------- 
 	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
@@ -572,7 +563,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow otapreopt_slot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rootfs labeledfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rootfs sysfs_zram (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow splash2_data_file splash2_data_file (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow splash2_data_file self (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
 	
 	echo "(allow su splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow su splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -585,16 +576,20 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow vdc self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vold_prepare_subdirs self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow zygote exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow nfc system_data_file (file (open write read create ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow nfc system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 
 
 	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow priv_app gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-
 	echo "(allow rootfs labeledfs (filesystem (relabelto relabelfrom associate mount )))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
+	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	
 	# Rild
 	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
@@ -603,59 +598,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow rild splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow rild splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 
-
-
-	# --------------- A12 specifique --------------------
-	echo "(allow surfaceflinger bootanim (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger platform_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger priv_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger system_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger system_server (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger untrusted_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow surfaceflinger untrusted_app_29 (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server audioserver (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server bluetooth (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server cameraserver (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server gatekeeperd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow system_server keystore (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server mediaextractor (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server mediametrics (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow system_server mediaprovider (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server mediaprovider_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server netd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server network_stack (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server nfc (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server permissioncontroller_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow system_server platform_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server priv_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow system_server radio (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server secure_element (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server shared_relro (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server shell (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server statsd (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server storaged (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server surfaceflinger (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server system_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server traceur_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server untrusted_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil	
-	echo "(allow system_server untrusted_app_29 (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_server vold (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	#echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
-
 	echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow profcollectd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	#echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	
+	echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
- 	echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
- 	echo "(allow init hwservicemanager (binder (call)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init hwservicemanager (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow init untrusted_app_visible_hisi_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init hwservicemanager (binder (transfer)))" >> etc/selinux/plat_sepolicy.cil	
 	echo "(allow init hidl_base_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
 	
  	echo "(allow hwservicemanager init (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
@@ -663,9 +613,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow hwservicemanager init (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
  	echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
 
- 	#echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
+ 	echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
  	#echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
- 	
+ 	#echo "(allow profcollectd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil 	
 	
 	# Log splash2
 	echo "(allow kernel anr_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -682,7 +633,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(type system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
 	echo "(roletype object_r system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
 	echo "/system/bin/tee_auth_daemon   u:object_r:system_teecd_exec:s0" >> etc/selinux/plat_file_contexts
-	
 	
     # --------------------------- Kirin EMUI 9 properties -------------------
 

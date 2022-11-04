@@ -75,6 +75,33 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.build.type=userdebug" >> build.prop
 	echo "ro.product.model=ANE-LX1" >> build.prop
 	
+	
+	# change product and system prop
+	sed -i "/ro.product.system.model/d" build.prop 
+	sed -i "/ro.product.system.brand/d" build.prop 
+	sed -i "/ro.product.system.device/d" build.prop 
+	sed -i "/ro.product.system.name/d" build.prop 
+	
+	echo "ro.product.system.model=$model" >>  build.prop
+	echo "ro.product.system.device=HWANE" >>  build.prop
+	echo "ro.product.system.brand=HUAWEI" >>  build.prop
+	echo "ro.product.system.name=LeaOS" >>  build.prop
+	
+	sed -i "/ro.product.manufacturer/d" build.prop
+	sed -i "/ro.product.model/d" build.prop
+	sed -i "/ro.product.device/d" build.prop
+	sed -i "/ro.product.name/d" build.prop
+	
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
+	echo "ro.product.model=$model" >> build.prop
+	echo "ro.product.device=HWANE" >> build.prop
+	echo "ro.product.name=$model" >> build.prop
+	echo "ro.product.brand=HUAWEI" >> build.prop
+	
+	# Safetynet CTS profile
+	echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	echo "ro.build.version.security_patch=2020-08-01" >> build.prop
+	
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
@@ -136,6 +163,29 @@ mount -o loop,rw s-ab-raw.img d
 	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
 	echo "sys.usb.state=mtp,adb" >> build.prop
 	
+	#----------------------------- offline charging fix ----------------------------------------
+	# remove AOSP charger img
+	rm -rf etc/charger
+
+	# unzip new img for all resolution
+	cd etc/
+	unzip "$origin/files-patch/system/etc/charger.zip"
+	cd ..
+	
+	# cp new offline charger animation
+	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	chown root:2000 bin/offlinecharger
+	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	chmod 755 bin/offlinecharger
+
+
+	# Fix init.rc	
+	sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
+	sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
+	
+	sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
+	sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
+
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -177,6 +227,27 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+		
+		# NFC permission
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
+		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+
+		# NFC product permission
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
+
 	fi	
 
 	
@@ -241,7 +312,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	
 	find -name \*.capex -or -name \*.apex -type f -delete
-	for vndk in 28 29 30 31;do
+	for vndk in 28 29;do
 	    for arch in 32 64;do
 		d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
 		[ ! -d "$d" ] && continue
