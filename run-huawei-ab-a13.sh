@@ -112,7 +112,7 @@ mount -o loop,rw s-ab-raw.img d
 	# Debug LMK - for Android Kernel that support it - e
 	echo "ro.lmk.debug=false" >>  build.prop
 	
-	# Debug Huawei Off - if on  start service logcat 
+	# Debug Huawei Off/On - if on EMUI8 start service logcat on boot
 	echo "persist.sys.hiview.debug=1" >> build.prop
 	echo "persist.sys.huawei.debug.on=1" >> build.prop
 
