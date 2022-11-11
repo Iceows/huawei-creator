@@ -149,9 +149,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# DarkJoker ANE-LX1 special prop
 	# Audio
-	echo "audio.deep_buffer.media=true" >>  build.prop
-	echo "ro.config.media_vol_steps=25" >>  build.prop
-	echo "ro.config.vc_call_vol_steps=7" >>  build.prop
+	# echo "audio.deep_buffer.media=true" >>  build.prop
+	# echo "ro.config.media_vol_steps=25" >>  build.prop
+	# echo "ro.config.vc_call_vol_steps=7" >>  build.prop
 
 	# Display
 	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
@@ -193,6 +193,29 @@ mount -o loop,rw s-ab-raw.img d
 	echo "sys.usb.ffs.ready=0" >> build.prop
 	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
 	echo "sys.usb.state=mtp,adb" >> build.prop
+	
+	#----------------------------- offline charging fix ----------------------------------------
+	# remove AOSP charger img
+	rm -rf etc/charger
+
+	# unzip new img for all resolution
+	cd etc/
+	unzip "$origin/files-patch/system/etc/charger-emui9.zip"
+	cd ..
+	
+	# cp new offline charger animation
+	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	chown root:2000 bin/offlinecharger
+	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	chmod 755 bin/offlinecharger
+
+
+	# Fix init.rc	
+	sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
+	# sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
+	
+	# sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
+	# sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
 	
 
 	#-----------------------------File copy -----------------------------------------------------
