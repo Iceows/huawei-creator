@@ -52,6 +52,12 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
 	
+	#----------------------------- Missing sbin root folder for magisk --------------------------------------------
+	#mkdir sbin
+	#chown root:root sbin
+	#chmod 777 sbin
+	#xattr -w security.selinux u:object_r:rootfs:s0 sbin
+	
 	#mkdir sec_storage
 	#chown root:root sec_storage
 	#chmod 777 sec_storage
@@ -99,8 +105,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.brand=HUAWEI" >> build.prop
 	
 	# Safetynet CTS profile
-	echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
-	echo "ro.build.version.security_patch=2020-08-01" >> build.prop
+	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	#echo "ro.build.version.security_patch=2020-08-01" >> build.prop
 	
 
 	# set default sound
@@ -123,8 +129,8 @@ mount -o loop,rw s-ab-raw.img d
 	# DarkJoker ANE-LX1 special prop
 	# Audio
 	echo "audio.deep_buffer.media=true" >>  build.prop
-	echo "ro.config.media_vol_steps=25" >>  build.prop
-	echo "ro.config.vc_call_vol_steps=7" >>  build.prop
+	#echo "ro.config.media_vol_steps=25" >>  build.prop
+	#echo "ro.config.vc_call_vol_steps=7" >>  build.prop
 
 	# Display
 	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
@@ -280,6 +286,12 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/overlay/treble-overlay-razer-*
 	rm -rf product/overlay/treble-overlay-sharp-*
 	
+	# Remove non use apex vndk
+	rm -rf "system_ext/apex/com.android.vndk.v29"
+	rm -rf "system_ext/apex/com.android.vndk.v30"
+	rm -rf "system_ext/apex/com.android.vndk.v31"
+	rm -rf "system_ext/apex/com.android.vndk.v32"
+
 	
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
