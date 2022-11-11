@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#bash build-all.sh "path of the gsi"
+#bash build-all.sh "yyyymmdd"
 
 origin="$(readlink -f -- "$0")"
 origin="$(dirname "$origin")"
