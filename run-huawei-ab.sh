@@ -210,13 +210,10 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 755 bin/offlinecharger
 
 
-	# Fix init.rc	
-	sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
-	# sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
-	
-	# sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
-	# sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
-	
+	# Change init.rc to include huawei charger init	
+	cp "$origin/files-patch/system/etc/init/init.charger.huawei.rc" etc/init/init.charger.huawei.rc
+	chown root:root etc/init/init.charger.huawei.rc
+	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
 
 	#-----------------------------File copy -----------------------------------------------------
 	
