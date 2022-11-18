@@ -171,33 +171,33 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- offline charging fix ----------------------------------------
 	# remove AOSP charger img
-	rm -rf etc/charger
+	# rm -rf etc/charger
 
 	# unzip new img for all resolution
-	cd etc/
-	unzip "$origin/files-patch/system/etc/charger.zip"
-	cd ..
+	# cd etc/
+	# unzip "$origin/files-patch/system/etc/charger.zip"
+	# cd ..
 	
 	# cp new offline charger animation
-	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
-	chown root:2000 bin/offlinecharger
-	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
-	chmod 755 bin/offlinecharger
+	# cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	# chown root:2000 bin/offlinecharger
+	# xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	# chmod 755 bin/offlinecharger
 
 
 	# Fix init.rc	
-	sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
-	sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
+	# sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
+	# sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
 	
-	sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
-	sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
+	# sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
+	# sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
 
 
 	#-----------------------------File copy -----------------------------------------------------
 
 	# rw-system custom for Huawei device
-	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -235,24 +235,24 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
 		# NFC permission
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
-		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
-		xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+		# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
 
 		# NFC product permission
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
-		cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
-		cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+		# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
+		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 
 	fi	
 
