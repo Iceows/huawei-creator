@@ -79,7 +79,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	echo "ro.system.build.type=userdebug" >> build.prop
 	echo "ro.build.type=userdebug" >> build.prop
-	echo "ro.product.model=ANE-LX1" >> build.prop
+	echo "ro.product.model=$model" >> build.prop
 	
 	
 	# change product and system prop
@@ -119,8 +119,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.lmk.debug=false" >>  build.prop
 	
 	# Debug Huawei Off/On - if on EMUI8 start service logcat on boot
-	echo "persist.sys.hiview.debug=1" >> build.prop
-	echo "persist.sys.huawei.debug.on=1" >> build.prop
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
 
 	
 	# Enable wireless display (Cast/Miracast)
@@ -211,6 +211,30 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
 	
 	fi
+
+	# NFC
+	# FIG-LX1 Huawei Figo
+	if [ "$model" == "FIG-LX1" ];then
+		# NFC
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo_L31.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo_L31.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo_L31.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo_L31.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo_L31.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo_L31.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo_L31.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo_L31.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+	fi
+			
 	
 	# NFC
 	# ANE-LX1 Huawei P20 Lite 2017
@@ -291,6 +315,7 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf "system_ext/apex/com.android.vndk.v30"
 	rm -rf "system_ext/apex/com.android.vndk.v31"
 	rm -rf "system_ext/apex/com.android.vndk.v32"
+	
 
 	
 	# Tee Deamon
