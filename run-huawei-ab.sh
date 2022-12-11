@@ -196,12 +196,12 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- offline charging fix ----------------------------------------
 	# remove AOSP charger img
-	rm -rf etc/charger
+	# rm -rf etc/charger
 
 	# unzip new img for all resolution
-	cd etc/
-	unzip "$origin/files-patch/system/etc/charger-emui9.zip"
-	cd ..
+	# cd etc/
+	# unzip "$origin/files-patch/system/etc/charger-emui9.zip"
+	# cd ..
 	
 	# cp new offline charger animation
 	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
@@ -214,14 +214,16 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/init.charger.huawei.rc" etc/init/init.charger.huawei.rc
 	chown root:root etc/init/init.charger.huawei.rc
 	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	
+	
 
 	#-----------------------------File copy -----------------------------------------------------
 	
 	# rw-system custom for Huawei device
 	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
+	# cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
+	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -235,10 +237,6 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
 	fi
 	
-	# Remove duplicate media audio
-	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
-	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
-	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
 	
 	# Remove non huawei Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
@@ -266,7 +264,6 @@ mount -o loop,rw s-ab-raw.img d
 	# NFC
 	# ANE- Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
-	
 
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
@@ -287,6 +284,19 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
+	fi
+
+	if [ "$model" == "FIG-LX1" ];then
+	
+		# NFC 
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 	fi
 	
 	# Remove duplicate media audio
@@ -318,36 +328,35 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/overlay/treble-overlay-sharp-*
 		
 	# Fix LD_PRELOAD in vndk
-	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
-	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
+	#cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
+	#xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# Tee Deamon
-	#cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
-	#xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
-	#cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
-	#xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
-	
+	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
 	
 	
 	# NFC permission
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
-	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
-	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
-	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
-	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
-	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+	# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
 
 	# NFC product permission
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
-	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
-	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
-	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+	# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
+	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 	
 	# Codec bluetooth 32 bits
 	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
@@ -732,7 +741,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(typeattribute huawei_perf_persist_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
 
 
-	# ------------------- etc/selinux/plat_property_contextsl ------------------
+	# ------------------- etc/selinux/plat_property_contexts ------------------
 
 	echo "" >> etc/selinux/plat_property_contexts	
 	echo "# vendor-init-settable|public-readable" >> etc/selinux/plat_property_contexts
