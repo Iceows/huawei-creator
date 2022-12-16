@@ -216,22 +216,22 @@ mount -o loop,rw s-ab-raw.img d
 	# FIG-LX1 Huawei Figo
 	if [ "$model" == "FIG-LX1" ];then
 		# NFC
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo_L31.conf" etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo_L31.conf" etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo.conf" etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo_L31.conf" etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo.conf" etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo_L31.conf" etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 		
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo_L31.conf" product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo.conf" product/etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo_L31.conf" product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_figo.conf" product/etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo_L31.conf" product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_figo.conf" product/etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo_L31.conf" product/etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 	fi
 			
@@ -240,46 +240,49 @@ mount -o loop,rw s-ab-raw.img d
 	# ANE-LX1 Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
 		# NFC 
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne.conf" etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne.conf" etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne.conf" etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 		
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne_L31.conf" product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne.conf" product/etc/libnfc-brcm.conf
 		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne_L31.conf" product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_anne.conf" product/etc/libnfc-nci.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne_L31.conf" product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_anne.conf" product/etc/libnfc-nxp.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" product/etc/libnfc-nxp_RF.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
-		# NFC permission
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
-		# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
-
-		# NFC product permission
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
-		# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
-		# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
-		# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
-
 	fi	
 
+
+	# STF-L09 Huawei Honor 9
+	if [ "$model" == "STF-L09" ];then
+		# NFC 
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_stanford.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_stanford.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_stanford.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_stanford.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_stanford.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_stanford.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_stanford.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_stanford.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+		
+	fi
 	
 	
 	# Remove duplicate media audio
