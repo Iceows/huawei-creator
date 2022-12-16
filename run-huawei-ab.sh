@@ -204,14 +204,14 @@ mount -o loop,rw s-ab-raw.img d
 	# cd ..
 	
 	# cp new offline charger animation
-	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
-	chown root:2000 bin/offlinecharger
-	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
-	chmod 755 bin/offlinecharger
+	# cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	# chown root:2000 bin/offlinecharger
+	# xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	# chmod 755 bin/offlinecharger
 
 
 	# Change init.rc to include huawei charger init	
-	cp "$origin/files-patch/system/etc/init/init.charger.huawei.rc" etc/init/init.charger.huawei.rc
+	cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
 	chown root:root etc/init/init.charger.huawei.rc
 	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
 	
@@ -222,8 +222,8 @@ mount -o loop,rw s-ab-raw.img d
 	# rw-system custom for Huawei device
 	# cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
 	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	# cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
-	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
+	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -238,28 +238,7 @@ mount -o loop,rw s-ab-raw.img d
 	fi
 	
 	
-	# Remove non huawei Overlay
-	rm -rf product/overlay/treble-overlay-infinix-*
-	rm -rf product/overlay/treble-overlay-lenovo-*
-	rm -rf product/overlay/treble-overlay-lge-*
-	rm -rf product/overlay/treble-overlay-asus-*
-	rm -rf product/overlay/treble-overlay-xiaomi-*
-	rm -rf product/overlay/treble-overlay-samsung-*
-	rm -rf product/overlay/treble-overlay-sony-*	
-	rm -rf product/overlay/treble-overlay-tecno-*
-	rm -rf product/overlay/treble-overlay-realme-*
-	rm -rf product/overlay/treble-overlay-oppo-*
-	rm -rf product/overlay/treble-overlay-nokia-*
-	rm -rf product/overlay/treble-overlay-oneplus-*	
-	rm -rf product/overlay/treble-overlay-nubia-*		
-	rm -rf product/overlay/treble-overlay-moto-*	
-	rm -rf product/overlay/treble-overlay-lg-*
-	rm -rf product/overlay/treble-overlay-htc-*
-	rm -rf product/overlay/treble-overlay-blackview-*
-	rm -rf product/overlay/treble-overlay-vivo-*
-	rm -rf product/overlay/treble-overlay-vsmart-*
-	rm -rf product/overlay/treble-overlay-razer-*
-	rm -rf product/overlay/treble-overlay-sharp-*
+
 	
 	# NFC
 	# ANE- Huawei P20 Lite 2017
@@ -328,8 +307,8 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/overlay/treble-overlay-sharp-*
 		
 	# Fix LD_PRELOAD in vndk
-	#cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
-	#xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
+	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
+	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
@@ -339,24 +318,24 @@ mount -o loop,rw s-ab-raw.img d
 	
 	
 	# NFC permission
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
-	# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/android.hardware.nfc.xml
+	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" etc/permissions/com.android.nfc_extras.xml
+	xattr -w security.selinux u:object_r:system_file:s0 etc/permissions/com.android.nfc_extras.xml
 
 	# NFC product permission
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
-	# cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
-	# cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
-	# xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hce.xml" product/etc/permissions/android.hardware.nfc.hce.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hce.xml 
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.hcef.xml" product/etc/permissions/android.hardware.nfc.hcef.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.hcef.xml
+	cp "$origin/files-patch/system/etc/permissions/android.hardware.nfc.xml" product/etc/permissions/android.hardware.nfc.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/android.hardware.nfc.xml
+	cp "$origin/files-patch/system/etc/permissions/com.android.nfc_extras.xml" product/etc/permissions/com.android.nfc_extras.xml
+	xattr -w security.selinux u:object_r:system_file:s0 product/etc/permissions/com.android.nfc_extras.xml
 	
 	# Codec bluetooth 32 bits
 	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
@@ -374,11 +353,10 @@ mount -o loop,rw s-ab-raw.img d
 		
 	#----------------------------- SELinux rules -----------------------------------------------------	
 	
-	# Fix platform_app, system_app
+	# Fix platform_app
 	echo "(allow platform_app nfc_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow platform_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app cameradaemon_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+
 	
 	# oeminfo_nvm
 	echo "(allow oeminfo_nvm block_device (blk_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -650,6 +628,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow kernel splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow kernel splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+
+	# system_app
+	echo "(allow system_app proc_pagetypeinfo (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app proc_vmallocinfo (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app cameradaemon_prop (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
 
 	# TeeLogCat splash2
 	echo "(allow tlogcat self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil

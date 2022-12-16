@@ -1,0 +1,9 @@
+import /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc
+
+
+service charger /system/bin/offlinecharger -p
+	class charger
+	user root
+	group root system shell graphics input wakelock
+	capabilities SYS_BOOT
+	seclabel u:r:charger:s0
