@@ -80,7 +80,19 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.system.build.type=userdebug" >> build.prop
 	echo "ro.build.type=userdebug" >> build.prop
 	echo "ro.product.model=$model" >> build.prop
+
+
+	#sed -i "/ro.build.description/d" build.prop
+	#sed -i "/ro.build.display.id/d" build.prop	
+	#echo "ro.build.description=LeaOS 13 HUAWEISTF-L09 20221219 release-keys" >> build.prop
+	#echo "ro.build.display.id=LeaOS 13-20221219" >> build.prop
+
 	
+	#[ro.build.description]: [LeaOS 13 HUAWEISTF-L09 20221219 release-keys]
+	#[ro.build.display.id]: [STF-L09 9.1.0.220(C432E2R1P5)]
+	#[ro.build.description]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
+	#[ro.build.display.id]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
+	#[ro.build.flavor]: [treble_arm64_bvS-userdebug]	
 	
 	# change root and system prop
 	sed -i "/ro.product.system.model/d" build.prop 
@@ -118,6 +130,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.system_ext.model=$model" >> system_ext/etc/build.prop
 	echo "ro.product.system_ext.name=$model" >> system_ext/etc/build.prop
 	
+	
+
+
 		
 	# Safetynet CTS profile
 	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
@@ -184,28 +199,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
 	echo "sys.usb.state=mtp,adb" >> build.prop
 	
-	#----------------------------- offline charging fix ----------------------------------------
-	# remove AOSP charger img
-	# rm -rf etc/charger
-
-	# unzip new img for all resolution
-	# cd etc/
-	# unzip "$origin/files-patch/system/etc/charger.zip"
-	# cd ..
-	
-	# cp new offline charger animation
-	# cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
-	# chown root:2000 bin/offlinecharger
-	# xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
-	# chmod 755 bin/offlinecharger
-
-
-	# Fix init.rc	
-	# sed -i '13iimport /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc' etc/init/hw/init.rc
-	# sed -i -e "s/service charger \/bin\/charger/service charger \/bin\/offlinecharger -p/g" etc/init/hw/init.rc 
-	
-	# sed -i -e "s/user system/user root/g" etc/init/hw/init.rc
-	# sed -i -e "s/group system shell graphics input wakelock/group root system shell graphics input wakelock/g" etc/init/hw/init.rc
 
 
 	#-----------------------------File copy -----------------------------------------------------
@@ -227,8 +220,40 @@ mount -o loop,rw s-ab-raw.img d
 	
 	fi
 
-	# NFC
-	# FIG-LX1 Huawei Figo
+
+	# VTR-L09 Huawei P10
+	if [ "$model" == "VTR-L09" ];then
+		# NFC
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+		
+		echo "ro.product.system.device=HWVTR" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop
+		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+	fi
+
+	# FIG-LX1 Huawei P Smart 2018
 	if [ "$model" == "FIG-LX1" ];then
 		# NFC
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_figo.conf" etc/libnfc-brcm.conf
@@ -261,7 +286,7 @@ mount -o loop,rw s-ab-raw.img d
 	fi
 			
 	
-	# NFC
+
 	# ANE-LX1 Huawei P20 Lite 2017
 	if [ "$model" == "ANE-LX1" ];then
 		# NFC 
@@ -295,7 +320,7 @@ mount -o loop,rw s-ab-raw.img d
 	fi	
 
 
-	# STF-L09 Huawei Honor 9
+	# STF-L09 Huawei Honor 9 (L09 - L29)
 	if [ "$model" == "STF-L09" ];then
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_stanford.conf" etc/libnfc-brcm.conf
@@ -326,10 +351,25 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.brand=HONOR" >>  system_ext/etc/build.prop
 		
 		# Perhaps also replace fingerprint
-		# ro.product.build.fingerprint=google/treble_arm64_bvN/tdgsi_arm64_ab:13/TQ1A.221205.012/20221209:userdebug/release-keys
-	
+		#[ro.build.description]: [STF-L09-user 9.1.0 HUAWEISTF-L09 231-OVS-LGRP2 release-keys]
+		#[ro.build.display.id]: [STF-L09 9.1.0.220(C432E2R1P5)]
+		#[ro.build.fingerprint]: [HONOR/STF-L09/HWSTF:9/HUAWEISTF-L09/9.1.0.220C432:user/release-keys]
+		#[ro.huawei.build.fingerprint]: [HONOR/STF-L09/HWSTF:9/HUAWEISTF-L09/9.1.0.231C432:user/release-keys]
+		
 	fi
 	
+	# Huawei Honor play
+	if [ "$model" == "COR-AL00" ];then
+	
+		echo "ro.product.system.device=HWCOR" >>  build.prop
+		echo "ro.product.system.brand=HONOR" >>  build.prop	
+		echo "ro.product.brand=HONOR" >> build.prop
+		echo "ro.product.device=HWCOR" >> build.prop
+		echo "ro.product.product.device=HWCOR" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HONOR" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWCOR" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HONOR" >>  system_ext/etc/build.prop
+	fi
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
@@ -513,8 +553,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.kirin.product.platform     u:object_r:product_platform_prop:s0" >> etc/selinux/plat_property_contexts
 	echo "ro.vendor.tui.service  u:object_r:tee_tui_prop:s0" >> etc/selinux/plat_property_contexts
 
-	
-	
+
+
 
 	#-----------------------------vndk-lite --------------------------------------------------------	
 	cd ../d
