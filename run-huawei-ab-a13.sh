@@ -70,7 +70,7 @@ mount -o loop,rw s-ab-raw.img d
 	#---------------------------------Setting properties -------------------------------------------------
 	
 	echo "#" >> build.prop
-	echo "## Adding hi6250 props" >> build.prop
+	echo "## Adding kirin props" >> build.prop
 	echo "#" >> build.prop
 	
 	sed -i "/ro.system.build.type/d" build.prop 
@@ -156,16 +156,13 @@ mount -o loop,rw s-ab-raw.img d
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >>  build.prop
 	
-	# DarkJoker ANE-LX1 special prop
 	# Audio
 	echo "audio.deep_buffer.media=true" >>  build.prop
-	#echo "ro.config.media_vol_steps=25" >>  build.prop
-	#echo "ro.config.vc_call_vol_steps=7" >>  build.prop
 
 	# Display
 	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
 
-	# Graphics
+	# Graphics hi6250 ?
 	echo "debug.egl.hw=1" >>  build.prop
 	echo "debug.egl.profiler=1" >>  build.prop
 	echo "debug.hwui.use_buffer_age=false" >>  build.prop
@@ -191,15 +188,8 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
-	echo "sys.usb.config=mtp" >> build.prop
-	echo "sys.usb.configfs=1" >> build.prop
-	echo "sys.usb.controller=hisi-usb-otg" >> build.prop
-	echo "sys.usb.ffs.aio_compat=true" >> build.prop
-	echo "sys.usb.ffs.ready=0" >> build.prop
-	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
-	echo "sys.usb.state=mtp,adb" >> build.prop
-	
 
+	
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -220,6 +210,29 @@ mount -o loop,rw s-ab-raw.img d
 	
 	fi
 
+
+	# POT-LX1 / POT-LX1A P Smart 2019 / 2020
+	if [ "$model" == "POT-LX1" ];then
+		# NFC
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_potter.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_potter.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_potter.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_potter.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf	
+	
+		echo "ro.product.system.device=HWPOT" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWPOT" >> build.prop
+		echo "ro.product.product.device=HWPOT" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+	fi	
 
 	# VTR-L09 Huawei P10
 	if [ "$model" == "VTR-L09" ];then
@@ -586,12 +599,22 @@ mount -o loop,rw s-ab-raw.img d
 
 sleep 1
 
+
+# --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
+
+if [ "$model" == "POT-LX1" ];then
+	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+else
+	e2fsck -f -y s-ab-raw.img || true
+	resize2fs -M s-ab-raw.img
+
+	mv s-ab-raw.img s-vndklite.img
+fi
+	
+	
 umount d
 
-e2fsck -f -y s-ab-raw.img || true
-resize2fs -M s-ab-raw.img
 
-mv s-ab-raw.img s-vndklite.img
 
 
 
