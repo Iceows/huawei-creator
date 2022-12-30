@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-abonly.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation]
 #cleanups
 #A13 version
 umount d
