@@ -33,11 +33,11 @@ e2fsck -E unshare_blocks -y -f s-ab-raw.img
 mount -o loop,rw s-ab-raw.img d
 
 rm -Rf s-erofs.img
-mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 
 umount d
 
-mount  -o loop,ro -t erofs s-erofs.img test-eros/
+#mount  -o loop,ro -t erofs s-erofs.img test-eros/
 
-img2simg s-erofs.img s-erofs-sparse.img
+#img2simg s-erofs.img s-erofs-sparse.img
 

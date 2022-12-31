@@ -18,9 +18,9 @@ targetArch=64
 
 [ -z "$ANDROID_BUILD_TOP" ] && ANDROID_BUILD_TOP=/build2/AOSP-11.0/
 if [ "$targetArch" == 32 ];then
-    srcFile="$ANDROID_BUILD_TOP/out/target/product/phhgsi_a64_ab/system.img"
+    srcFile="$ANDROID_BUILD_TOP/out/target/product/tdgsi_a64_ab/system.img"
 else
-    srcFile="$ANDROID_BUILD_TOP/out/target/product/phhgsi_arm64_ab/system.img"
+    srcFile="$ANDROID_BUILD_TOP/out/target/product/tdgsi_arm64_ab/system.img"
 fi
 if [ -f "$2" ];then
     srcFile="$2"
@@ -31,14 +31,14 @@ if [ ! -f "$srcFile" ];then
 	exit 1
 fi
 
-"$origin"/simg2img "$srcFile" s.img || cp "$srcFile" s.img
+simg2img "$srcFile" s-vndklite.img  || cp "$srcFile" s-vndklite.img 
 
 rm -Rf tmp
 mkdir -p d tmp
-e2fsck -y -f s.img
-resize2fs s.img 4500M
-e2fsck -E unshare_blocks -y -f s.img
-mount -o loop,rw s.img d
+e2fsck -y -f s-vndklite.img 
+resize2fs s-vndklite.img  3500M
+e2fsck -E unshare_blocks -y -f s-vndklite.img 
+mount -o loop,rw s-vndklite.img d
 (
 cd d
 find -name \*.capex -or -name \*.apex -type f -delete
@@ -63,16 +63,14 @@ for vndk in 28 29;do
         xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
     done
 done
+mkdir -p firmware/radio
+xattr -w security.selinux u:object_r:firmware_file:s0 firmware
+xattr -w security.selinux u:object_r:firmware_file:s0 firmware/radio
 )
 sleep 1
 
 umount d
 
-e2fsck -f -y s.img || true
-resize2fs -M s.img
-
-mv s.img s-vndklite.img
-
-#xz -c s-vndklite.img -T0  > s-vndklite-vanilla.xz
-
+e2fsck -f -y s-vndklite.img  || true
+resize2fs -M s-vndklite.img 
 

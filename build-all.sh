@@ -17,6 +17,33 @@ bash aosp_build_leaos/build.sh treble 64BGN
 
 cd ../huawei-creator
 
+# --------------------------------- LeaOS Gsi -----------------------------------
+
+# TrebleDroid ab version
+cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.xz
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.xz
+
+# TrebleDroid vndklite version
+sudo bash ./lite-adapter.sh 64 /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img
+mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vvN.img
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vvN.xz
+sudo bash ./lite-adapter.sh 64 /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img
+mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vgN.img
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_vgN.xz
+
+# TrebleDroid erofs version
+sudo bash ./make-erofs.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_evN.img
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_evN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_evN.xz
+sudo bash ./make-erofs.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_egN.img
+xz -c /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_egN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_egN.xz
+
+
+# --------------------------------- LeaOS Gsis -----------------------------------
+
 # Vanilia
 sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "ANE-LX1" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-ane.img

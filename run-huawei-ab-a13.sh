@@ -572,7 +572,7 @@ mount -o loop,rw s-ab-raw.img d
 	#-----------------------------vndk-lite --------------------------------------------------------	
 	cd ../d
 
-	
+
 	find -name \*.capex -or -name \*.apex -type f -delete
 	for vndk in 28 29;do
 	    for arch in 32 64;do
@@ -595,6 +595,9 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
 	    done
 	done
+	mkdir -p firmware/radio
+	xattr -w security.selinux u:object_r:firmware_file:s0 firmware
+	xattr -w security.selinux u:object_r:firmware_file:s0 firmware/radio
 )
 
 sleep 1
