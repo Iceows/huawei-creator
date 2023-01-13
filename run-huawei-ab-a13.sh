@@ -595,19 +595,22 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
 	    done
 	done
-	mkdir -p firmware/radio
-	xattr -w security.selinux u:object_r:firmware_file:s0 firmware
-	xattr -w security.selinux u:object_r:firmware_file:s0 firmware/radio
+	#mkdir -p firmware/radio
+	#xattr -w security.selinux u:object_r:firmware_file:s0 firmware
+	#xattr -w security.selinux u:object_r:firmware_file:s0 firmware/radio
 )
 
 sleep 1
+
 
 
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
 if [ "$model" == "POT-LX1" ];then
 	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+	umount d
 else
+	umount d
 	e2fsck -f -y s-ab-raw.img || true
 	resize2fs -M s-ab-raw.img
 
@@ -615,7 +618,6 @@ else
 fi
 	
 	
-umount d
 
 
 
