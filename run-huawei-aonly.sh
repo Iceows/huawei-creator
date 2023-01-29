@@ -304,14 +304,19 @@ mount -o loop,rw s-aonly.img d
 		
 	fi
 
-	
-	# FIG - Huawei P Smart
-	if [ "$model" == "FIG-LX1" ];then
-		for img in $(cd "$origin/files-patch/system/etc/charger/1080x2160"; echo *);do
-			cp "$origin/files-patch/system/etc/charger/1080x2160/$img" etc/charger/1080x2160/$img
-			xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2160/$img
-		done
-	fi
+	# Add charger animation for 1200x1920
+	for img in $(cd "$origin/files-patch/system/etc/charger/1200x1920"; echo *);do
+		cp "$origin/files-patch/system/etc/charger/1200x1920/$img" etc/charger/1200x1920/$img
+		xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1200x1920/$img
+	done
+
+			
+	# Add charger animation for 1080x2160
+	for img in $(cd "$origin/files-patch/system/etc/charger/1080x2160"; echo *);do
+		cp "$origin/files-patch/system/etc/charger/1080x2160/$img" etc/charger/1080x2160/$img
+		xattr -w security.selinux u:object_r:system_file:s0 etc/charger/1080x2160/$img
+	done
+
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
