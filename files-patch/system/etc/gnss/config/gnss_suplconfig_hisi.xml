@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--if any child have more than one value it will come as a subchild of that
+        element e.g. <baudrate> <subbaud1>144</subbaud1> <subbaud2>156</subbaud2>
+        </baudrate> -->
+<!-- The node below is used to configure the entire SUPL stack to either
+        1 or 2 -->
+<supl>
+  <suplver>2</suplver>
+  <config_start name="SUPL1"
+                version="1.0">
+    <!--Version of SUPL protocol for which this configuration file works -->
+    <!--All configuration parameters pertaining to SUPL 1.0 is specified in
+                        this section -->
+    <!--version -->
+    <version>
+      <major>1</major>
+      <minor>0</minor>
+      <srvind>0</srvind>
+    </version>
+    <!--Logger details -->
+    <logparam>
+      <!--FileName -->
+      <filename>abs.log</filename>
+      <directtofile>0</directtofile>
+      <directtologcat>0</directtologcat>
+      <debugzone>FCFFEEFF</debugzone>
+      <debuglevel>FFFFFFFF</debuglevel>
+    </logparam>
+    <!--Capabilities of the SET pertaining to position technology, position
+                        protocol etc. -->
+    <setcapability>
+      <!--Specifies the mode of SLP supported by the SET -->
+      <slpmode>
+        <proxysupp>1</proxysupp>
+        <nonproxysupp>0</nonproxysupp>
+      </slpmode>
+      <!--Specifies the position technologies supported by SET -->
+      <postech>
+        <!--represented by set of bool -->
+        <agps_msa>1</agps_msa>
+        <agps_msb>1</agps_msb>
+        <autogps>1</autogps>
+        <aFLT>0</aFLT>
+        <ecid>0</ecid>
+        <eotd>0</eotd>
+        <otdoa>0</otdoa>
+      </postech>
+      <!--Specifies the position protocols supported by SET -->
+      <posprotocol>
+        <!--represented by set of bool -->
+        <tia_801>0</tia_801>
+        <rrc>1</rrc>
+        <rrlp>1</rrlp>
+      </posprotocol>
+      <!--Describes the preferred position technology. For pref postech use
+                                the tags (agps_msa or agps_msb) in section postech -->
+      <pref_postech>agps_msb</pref_postech>
+       <!--Support parameters for Bearer Networks -->
+      <bearer_network_enable>1</bearer_network_enable>
+      <!-- The numbers specify the priority among the bearer network. Lower the
+           number, higher is the priority. If two have the same nos, then their
+           priority is the same. If the value is zero, then it is of lower
+           priority. -->
+      <bearer_network_support roaming="1">
+        <wcdma>1</wcdma>
+        <cdma>0</cdma>
+        <gsm>1</gsm>
+        <lte>0</lte>
+        <umb>0</umb>
+        <wimax>0</wimax>
+        <wlan>1</wlan>
+        <hrpd>0</hrpd>
+      </bearer_network_support>
+        <bearer_network_support roaming="0">
+        <wcdma>1</wcdma>
+        <cdma>0</cdma>
+        <gsm>1</gsm>
+        <lte>0</lte>
+        <umb>0</umb>
+        <wimax>0</wimax>
+        <wlan>1</wlan>
+        <hrpd>0</hrpd>
+      </bearer_network_support>
+    </setcapability>
+    <!--SUPL protocol engine parameters -->
+    <supl_protocol_engine>
+      <!--Default QOP Params -->
+      <defqop>
+        <!--Horizontal accuracy -->
+        <horizontalaccuracy>30</horizontalaccuracy>
+        <!--Vertical accuracy -->
+        <verticalaccuracy>20</verticalaccuracy>
+        <!--Delay -->
+        <delay>7</delay>
+        <!--Max location Age -->
+        <maxlocationage>0</maxlocationage>
+      </defqop>
+      <!--Count to indicate the number of times assistance can be re-requested -->
+      <rereqasstcnt>2</rereqasstcnt>
+      <!--Injection control word - Specifies the types of assistance messages
+                                that have to be downloaded to the GPS chipset -->
+      <asstcontrol_msa>
+        <ref_loc>0</ref_loc>
+        <ref_time>1</ref_time>
+        <dgps>0</dgps>
+        <navmodel>0</navmodel>
+        <ionomodel>0</ionomodel>
+        <utcmodel>0</utcmodel>
+        <almanac>0</almanac>
+        <acquist>1</acquist>
+        <rti>0</rti>
+      </asstcontrol_msa>
+      <asstcontrol_msb>
+        <ref_loc>1</ref_loc>
+        <ref_time>1</ref_time>
+        <dgps>0</dgps>
+        <navmodel>1</navmodel>
+        <ionomodel>0</ionomodel>
+        <utcmodel>0</utcmodel>
+        <almanac>1</almanac>
+        <acquist>0</acquist>
+        <rti>0</rti>
+      </asstcontrol_msb>
+      <!--Specifies the values to be used for timers UT1,UT2,UT3 UT4 as in protocol.
+                                Units = Milliseconds -->
+      <protocoltimer>
+        <ut1>11000</ut1>
+        <ut2>13000</ut2>
+        <ut3>11000</ut3>
+        <ut4>11000</ut4>
+        <defaultto>10000</defaultto>
+        <!--user verification timeout seconds-->
+        <usrverifto>10000</usrverifto>
+      </protocoltimer>
+      <!--Setting this field to 1 will make the protocol engine -->
+      <forcetestvalue>0
+      <gsm>
+        <valid>0</valid>
+        <mcc>404</mcc>
+        <mnc>45</mnc>
+        <lac>1425</lac>
+        <ci>4791</ci>
+        <!-- Fill the TA parameter and NMR parameter only if the following flag is set to 1 -->
+        <filltaandnmr>0</filltaandnmr>
+        <ta>0</ta>
+        <!--arfcn, bsic, rxlev params mentioned in array. This is applicable only for gsm -->
+        <nmr>10,11,12,13,14,15,16,17,18,19,20,21</nmr>
+      </gsm>
+      <wcdma>
+        <valid>0</valid>
+        <mcc>404</mcc>
+        <mnc>45</mnc>
+        <ucid>12345678</ucid>
+        <freqinfo></freqinfo>                    <!-- For now not filling this element -->
+        <meas-res>
+            <freqinfo></freqinfo>                <!-- For now not filling this element -->
+            <carrierRSSI></carrierRSSI>          <!-- For now not filling this element -->
+            <!-- Adding 4 cell measured results -->
+                <cell-meas-res>
+                    <cellid>100000</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>41</Cpich_Ec_N0>
+                        <Cpich_RSCP>123</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100001</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>51</Cpich_Ec_N0>
+                        <Cpich_RSCP>124</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100002</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>61</Cpich_Ec_N0>
+                        <Cpich_RSCP>125</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100003</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>62</Cpich_Ec_N0>
+                        <Cpich_RSCP>126</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+        </meas-res>
+      </wcdma>
+
+      </forcetestvalue>
+      <msisdn>918951322358</msisdn>
+      <!--Support parameters for SET ID -->
+      <setid_supported>
+        <msisdn>1</msisdn>
+        <mdn>0</mdn>
+        <min>0</min>
+        <imsi>1</imsi>
+        <nai>0</nai>
+        <ipaddress>1</ipaddress>
+      </setid_supported>
+      <pref_setid>imsi</pref_setid>
+      <priority_for_privacy_override>0</priority_for_privacy_override>
+    </supl_protocol_engine>
+    <!--Configuration Paramters with respect to network controllers present -->
+    <netcont_params>
+      <!--Time duration before client reattempts to connecting to server -->
+      <nw_timeout>15</nw_timeout>
+      <nw_retries>5</nw_retries>
+      <!--Configuration parameters of Interface Communication Manager -->
+      <icm>
+        <port>9000</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </icm>
+      <!--Congiration parameters of Platform Communication Manager -->
+      <pcm>
+        <port>9001</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </pcm>
+      <!--Congiration parameters of SUPL Server Communication Manager -->
+      <scm>
+        <port>9002</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </scm>
+      <!-->Client Communication Manager< -->
+      <ccm>
+        <port>9000</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </ccm>
+    </netcont_params>
+    <!--In SUPL version 1 check GPS enable in the android setting for start the service-->
+    <checkgps>1</checkgps>
+    <!--H-SLP server Configuration -->
+    <hslp>
+      <port>7275</port>
+      <ipaddress>74.125.31.192</ipaddress>
+      <fqdn>supl.google.com</fqdn>
+      <secure>1</secure>
+      <!--Set 1.0 for TLSv1 and 1.1 for TLSv1.1. This will be considered only when secure is set to 1 -->
+      <tlsversion>1.2</tlsversion>
+      <!-- The following values are to be used for the corresponding type
+        0 - Normal (uses the spec provided flow)
+        1 - Provisioned HSLP which is nothing but the string presented in fqdn field above.
+        2 - Auto H-SLP - This uses always the generated H-SLP directly.
+        3 - UICC (currently not supported since the Android framework does not support retrieval-->
+      <slpcfgtype>1</slpcfgtype>
+      <!--Time out(in ms) for TLS handshake-->
+      <handshake_to>10000</handshake_to>
+      <!--Time out(in ms) for socket connection-->
+      <conn_to>10000</conn_to>
+    </hslp>
+    <!-- Set to 0 to disable NI through UDP. If set to 0 SUPL won't listen for UDP connections on 7275-->
+    <ni_udp_enabled>0</ni_udp_enabled>
+    <!--Following Params will be parsed from Java-->
+    <cert>
+      <!-- Java service shall pick the below variables and use it only if this param is set to 1-->
+      <valid>1</valid>
+      <path>/vendor/etc/gnss/security</path>
+      <!--finally this would be an encrypted string-->
+    </cert>
+    <utcparams>
+      <gpsweekrollover>
+        <year>1999</year>
+        <month>8</month>
+        <day>22</day>
+        <hour>0</hour>
+        <min>0</min>
+        <sec>0</sec>
+      </gpsweekrollover>
+      <leapseconds>15</leapseconds>
+    </utcparams>
+  </config_start>
+  <config_start name="SUPL2"
+                version="2.0">
+    <!--Version of SUPL protocol for which this configuration parameters are
+                        provided -->
+    <!--All configuration parameters pertaining to SUPL 2.0 is specified in
+                        this section -->
+    <!--version -->
+    <version>
+      <major>2</major>
+      <minor>0</minor>
+      <srvind>0</srvind>
+    </version>
+    <!--Logger details -->
+    <logparam>
+      <!--FileName -->
+      <filename>abs.log</filename>
+      <directtofile>0</directtofile>
+      <directtologcat>0</directtologcat>
+      <debugzone>FFFFFFFF</debugzone>
+      <debuglevel>FFFFFFFF</debuglevel>
+    </logparam>
+    <!--Capabilities of the SET pertaining to position technology, position
+                        protocol etc. -->
+    <setcapability>
+      <!--Specifies the mode of SLP supported by the SET -->
+      <slpmode>
+        <proxysupp>1</proxysupp>
+        <nonproxysupp>0</nonproxysupp>
+      </slpmode>
+      <!--Specifies the position technologies supported by SET -->
+      <postech>
+        <!--represented by set of bool -->
+        <agps_msa>1</agps_msa>
+        <agps_msb>1</agps_msb>
+        <autogps>1</autogps>
+        <aFLT>0</aFLT>
+        <ecid>0</ecid>
+        <eotd>0</eotd>
+        <otdoa>0</otdoa>
+        <!-- If ganssext is set to 1 SUPLClient queries the AGPS framework for
+                                        retrievingGANSS params -->
+        <ganssext>1</ganssext>
+      </postech>
+      <!--Specifies the position protocols supported by SET -->
+      <posprotocol>
+        <!--Specifies the TIA support -->
+        <tia_801>0</tia_801>
+        <!--Specifies the RRC support and supported spec version -->
+        <rrc>1</rrc>
+        <!--long -->
+        <rrcmaj>9</rrcmaj>
+        <rrctech>5</rrctech>
+        <rrcedit>0</rrcedit>
+        <!--Specifies the RRLP support and supported spec version -->
+        <rrlp>1</rrlp>
+        <!--long -->
+        <rrlpmaj>10</rrlpmaj>
+        <rrlptech>0</rrlptech>
+        <rrlpedit>0</rrlpedit>
+        <!--Specifies the LPP support and supported spec version -->
+        <lpp>1</lpp>
+        <!--long -->
+        <lppmaj>10</lppmaj>
+        <lpptech>2</lpptech>
+        <lppedit>0</lppedit>
+      </posprotocol>
+      <!--Describes the preferred position technology.
+        agps_msa,agps_msb,autogps,aFLT,ecid,eotd,otdoa,
+        agnss_msa,agnss_msbautognss are the tags that can be used.-->
+      <pref_postech>agps_msb</pref_postech>
+      <!--Support parameters for Bearer Networks -->
+      <bearer_network_enable>1</bearer_network_enable>
+      <!-- The numbers specify the priority among the bearer network. Lower the
+           number, higher is the priority. If two have the same nos, then their
+           priority is the same. If the value is zero, then it is of lower
+           priority. -->
+      <bearer_network_support roaming="1">
+        <wcdma>6</wcdma>
+        <cdma>0</cdma>
+        <gsm>2</gsm>
+        <lte>0</lte>
+        <umb>0</umb>
+        <wimax>3</wimax>
+        <wlan>4</wlan>
+        <hrpd>5</hrpd>
+      </bearer_network_support>
+      <bearer_network_support roaming="0">
+        <wcdma>6</wcdma>
+        <cdma>0</cdma>
+        <gsm>2</gsm>
+        <lte>0</lte>
+        <umb>0</umb>
+        <wimax>3</wimax>
+        <wlan>4</wlan>
+        <hrpd>5</hrpd>
+      </bearer_network_support>
+      <!-- Services Capabilities are mentioned in this section -->
+      <services_capability>
+        <!-- Services supported in terms of triggered services -->
+        <services_supported>
+          <periodic>1</periodic>
+          <event>1</event>
+        </services_supported>
+        <!-- Reporting Capability -->
+        <report_capab>
+          <!-- Minimum / Maximum reporting interval supported -->
+          <!--Uint -->
+          <!--Range is from 1..3600 seconds-->
+          <min_int>1</min_int>
+          <!--Range is from 1..1440 minutes-->
+          <max_int>1440</max_int>
+          <!-- Modes of reporting supported -->
+          <!--bool -->
+          <realtime>1</realtime>
+          <quasi>1</quasi>
+          <batch>1</batch>
+          <!-- Batch Reporting Capability. Valid only if batch tag is set to 1 -->
+          <report_position>1</report_position>
+          <report_measurement>1</report_measurement>
+          <!--Uint -->
+          <!--Maximum number of positions per batch-->
+          <max_num_positions>128</max_num_positions>
+          <!--Maximum number of measurements per batch-->
+          <max_num_measurements>128</max_num_measurements>
+        </report_capab>
+        <!-- Event trigger capabilities are set in this section -->
+        <eventtrig_capab>
+          <!--bool -->
+          <ellipse>1</ellipse>
+          <polygon>1</polygon>
+          <!-- Maximum No of geotarget areas supported (0 - 32) -->
+          <max_geoareas>32</max_geoareas>
+          <!-- Maximum No of areaid list supported (0 - 32) -->
+          <max_areaidlst>16</max_areaidlst>
+          <!-- Maximum No of areaid supported per list (0 - 256) -->
+          <max_areaidinlst>32</max_areaidinlst>
+        </eventtrig_capab>
+        <!-- Session capability -->
+        <sess_capab>
+          <!-- Maximum No of sessions that can run in parallel (1 - 128) -->
+          <max_sess>128</max_sess>
+          <!-- Maximum No of periodic sessions that can run in parallel (1 - 32) -->
+          <max_periodic>32</max_periodic>
+          <!-- Maximum No of event sessions that can run in parallel (1 - 32) -->
+          <max_eventtrig>32</max_eventtrig>
+        </sess_capab>
+      </services_capability>
+      <!--Max records that can be stored in a Historic data record-->
+      <max_historic_record>1000</max_historic_record>
+    </setcapability>
+    <!--SUPL protocol engine parameters -->
+    <supl_protocol_engine>
+      <!--Default QOP Params -->
+      <defqop>
+        <!--Horizontal accuracy -->
+        <horizontalaccuracy>30</horizontalaccuracy>
+        <!--Vertical accuracy -->
+        <verticalaccuracy>20</verticalaccuracy>
+        <!--Delay -->
+        <delay>7</delay>
+        <!--Max location Age -->
+        <maxlocationage>0</maxlocationage>
+      </defqop>
+      <!--Count to indicate the number of times assistance can be re-requested -->
+      <rereqasstcnt>2</rereqasstcnt>
+      <!--Injection control word - Specifies the types of assistance messages
+                                that have to be downloaded to the GPS chipset -->
+      <asstcontrol_msa>
+        <ref_loc>0</ref_loc>
+        <ref_time>1</ref_time>
+        <dgps>0</dgps>
+        <navmodel>0</navmodel>
+        <ionomodel>0</ionomodel>
+        <utcmodel>0</utcmodel>
+        <almanac>0</almanac>
+        <acquist>1</acquist>
+        <rti>0</rti>
+      </asstcontrol_msa>
+      <asstcontrol_msb>
+        <ref_loc>1</ref_loc>
+        <ref_time>1</ref_time>
+        <dgps>0</dgps>
+        <navmodel>1</navmodel>
+        <ionomodel>1</ionomodel>
+        <utcmodel>1</utcmodel>
+        <almanac>1</almanac>
+        <acquist>0</acquist>
+        <rti>1</rti>
+      </asstcontrol_msb>
+      <!--Specifies the values to be used for timers UT1,UT2,UT3 UT4 as in protocol.
+                                Units = Milliseconds -->
+      <protocoltimer>
+        <ut1>11000</ut1>
+        <ut2>13000</ut2>
+        <ut3>11000</ut3>
+        <ut4>11000</ut4>
+        <ut5>11000</ut5>
+        <ut6>11000</ut6>
+        <ut7>11000</ut7>
+        <ut8>11000</ut8>
+        <ut9>11000</ut9>
+        <ut10>11000</ut10>
+        <defaultto>10000</defaultto>
+        <!--user verification timeout -->
+        <usrverifto>10000</usrverifto>
+      </protocoltimer>
+      <!--Setting this field to 1 will make the protocol engine -->
+      <forcetestvalue>0
+      <gsm>
+        <valid>0</valid>
+        <mcc>404</mcc>
+        <mnc>45</mnc>
+        <lac>1425</lac>
+        <ci>4791</ci>
+        <!-- Fill the TA parameter and NMR parameter only if the following flag is set to 1 -->
+        <filltaandnmr>0</filltaandnmr>
+        <ta>2</ta>
+        <!--arfcn, bsic, rxlev params mentioned in array. This is applicable only for gsm -->
+        <nmr>10,11,12,13,14,15,16,17,18,19,20,21</nmr>
+      </gsm>
+      <wcdma>
+        <valid>0</valid>
+        <mcc>404</mcc>                           <!-- Valid values for the mcc are 0 - 999 -->
+        <mnc>45</mnc>                            <!-- Valid values for the mcc are 0 - 999 -->
+        <ucid>12345678</ucid>                    <!-- Valid values for the UC-ID are 0 - 268435455) -->
+        <freqinfo></freqinfo>                    <!-- For now not filling this element -->
+        <meas-res>
+            <freqinfo></freqinfo>                <!-- For now not filling this element -->
+            <carrierRSSI></carrierRSSI>          <!-- For now not filling this element -->
+            <!-- Adding 4 cell measured results -->
+                <cell-meas-res>
+                    <cellid>100000</cellid>          <!-- Valid values for the cell are 0 - 268435455 -->
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info> <!-- Valid values for the CPICH_Info are 0 - 511 -->
+                        <Cpich_Ec_N0>41</Cpich_Ec_N0><!-- Valid values for the Cpich_Ec_N0 are 0 - 63 -->
+                        <Cpich_RSCP>123</Cpich_RSCP> <!-- Valid values for the Cpich_RSCP are 0-91 or 123-127 -->
+                        <Pathloss>50</Pathloss>      <!-- Valid values for the Pathloss are 46-173 -->
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100001</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>51</Cpich_Ec_N0>
+                        <Cpich_RSCP>124</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100002</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>61</Cpich_Ec_N0>
+                        <Cpich_RSCP>125</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+                <cell-meas-res>
+                    <cellid>100003</cellid>
+                    <fdd>
+                        <CPICH_Info>211</CPICH_Info>
+                        <Cpich_Ec_N0>62</Cpich_Ec_N0>
+                        <Cpich_RSCP>126</Cpich_RSCP>
+                        <Pathloss>50</Pathloss>
+                    </fdd>
+                </cell-meas-res>
+        </meas-res>
+      </wcdma>
+      <lte>
+        <valid>0</valid>
+        <globalid>
+          <!-- present the list as comma seperated values as in NMR. first element is number of elements. valid
+                                         3 values followed by values. Valid values for the mcc are 0 - 9. Atleast one element mandatory -->
+          <mcclst>3, 1,2,3</mcclst>
+          <!-- present the list as comma seperated values as in NMR. first element is number of elements. valid
+                                         values from 2 - 3 followed by values.  Valid values for the mnc are 0 - 9. Atleast one element mandatory-->
+          <mnclst>2, 4,9</mnclst>
+          <!-- Valid values  0 to 2 pow 28-->
+          <cellid>23</cellid>
+        </globalid>
+        <!-- Valid values  0 - 503.  Mandatory-->
+        <physid>2</physid>
+        <!-- Valid values  0 to 2 pow 16. Mandatory-->
+        <trkareacode>1</trkareacode>
+        <!-- Indicates if the Reference Signal Received Power is valid-->
+        <rsrpvalid>0</rsrpvalid>
+        <!-- Reference Signal Received Power. Valid (0 - 97) -->
+        <rsrpresult>45</rsrpresult>
+        <!-- Indicates if the Reference Signal Received Quality is valid-->
+        <rsrqvalid>0</rsrqvalid>
+        <!-- Reference Signal Received Quality. Valid (0 - 34) -->
+        <rsrqresult>23</rsrqresult>
+        <!-- Indicates if TA is valid -->
+        <tavalid>0</tavalid>
+        <!--Timing Advance, range: (0.. 1282)-->
+        <ta>245</ta>
+        <!-- meas-res-list is Network Measurement report. It contains list of meas-res-eutra elements. Max limit is 8 elements -->
+        <meas-res-list>
+            <meas-res-eutra>
+                <phycellid>475</phycellid>  <!-- Range : 0 - 503 -->
+                <cgiinfovalid>1</cgiinfovalid>
+                <cgiinfo>
+                    <cellglobalid>
+                        <plmnid>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mcc are 0 - 9. thress elements mandatory -->
+                          <mcclst>3, 2,4,6</mcclst>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mnc are 0 - 9. Atleast two elements mandatory-->
+                          <mnclst>2, 4,5</mnclst>
+                        </plmnid>
+                        <cellid>147</cellid>  <!-- Valid values  0 to 2 pow 28-->
+                    </cellglobalid>
+                    <trackareacode>97</trackareacode>  <!-- Valid values  0 to 2 pow 16 -->
+                </cgiinfo>
+                <meas-res-valid>1</meas-res-valid>
+                <meas-res>
+                    <!-- Indicates if RSRP measurement is valid -->
+                    <rsrp-valid>1</rsrp-valid>
+                    <rsrp-result>44</rsrp-result> <!-- Range : 0 - 97 -->
+                    <!-- Indicates if RSRQ measurement is valid -->
+                    <rsrq-valid>1</rsrq-valid>
+                    <rsrq-result>10</rsrq-result> <!-- Range : 0 - 34 -->
+                </meas-res>
+            </meas-res-eutra>
+            <meas-res-eutra>
+                <phycellid>500</phycellid>  <!-- Range : 0 - 503 -->
+                <cgiinfovalid>1</cgiinfovalid>
+                <cgiinfo>
+                    <cellglobalid>
+                        <plmnid>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mcc are 0 - 9. thress elements mandatory -->
+                           <mcclst>1, 4</mcclst>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mnc are 0 - 9. Atleast two elements mandatory-->
+                          <mnclst>2, 5,7</mnclst>
+                        </plmnid>
+                        <cellid>148</cellid> <!-- Valid values  0 to 2 pow 28-->
+                    </cellglobalid>
+                    <trackareacode>54</trackareacode>  <!-- Valid values  0 to 2 pow 16 -->
+                </cgiinfo>
+                <meas-res-valid>1</meas-res-valid>
+                <meas-res>
+                    <!-- Indicates if RSRP measurement is valid -->
+                    <rsrp-valid>1</rsrp-valid>
+                    <rsrp-result>54</rsrp-result>  <!-- Range : 0 - 97 -->
+                    <!-- Indicates if RSRQ measurement is valid -->
+                    <rsrq-valid>1</rsrq-valid>
+                    <rsrq-result>14</rsrq-result>  <!-- Range : 0 - 34 -->
+                </meas-res>
+            </meas-res-eutra>
+            <meas-res-eutra>
+                <phycellid>200</phycellid>  <!-- Range : 0 - 503 -->
+                <cgiinfovalid>1</cgiinfovalid>
+                <cgiinfo>
+                    <cellglobalid>
+                        <plmnid>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mcc are 0 - 9. thress elements mandatory -->
+                          <mcclst>1, 4</mcclst>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mnc are 0 - 9. Atleast two elements mandatory-->
+                          <mnclst>2, 6,7</mnclst>
+                        </plmnid>
+                        <cellid>149</cellid>  <!-- Valid values  0 to 2 pow 28-->
+                    </cellglobalid>
+                    <trackareacode>154</trackareacode>  <!-- Valid values  0 to 2 pow 16 -->
+                </cgiinfo>
+                <meas-res-valid>1</meas-res-valid>
+                <meas-res>
+                    <!-- Indicates if RSRP measurement is valid -->
+                    <rsrp-valid>1</rsrp-valid>
+                    <rsrp-result>65</rsrp-result>  <!-- Range : 0 - 97 -->
+                    <!-- Indicates if RSRQ measurement is valid -->
+                    <rsrq-valid>1</rsrq-valid>
+                    <rsrq-result>24</rsrq-result>  <!-- Range : 0 - 34 -->
+                </meas-res>
+            </meas-res-eutra>
+            <meas-res-eutra>
+                <phycellid>100</phycellid>  <!-- Range : 0 - 503 -->
+                <!-- Indicates if Cell GlobalID Info is valid -->
+                <cgiinfovalid>1</cgiinfovalid>
+                <cgiinfo>
+                    <cellglobalid>
+                        <plmnid>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mcc are 0 - 9. thress elements mandatory -->
+                          <mcclst>1, 4</mcclst>
+                          <!-- present the list as comma seperated values as in NMR. first element is number of elements. Valid values for the mnc are 0 - 9. Atleast two elements mandatory-->
+                          <mnclst>2, 3,5</mnclst>
+                        </plmnid>
+                        <cellid>150</cellid>  <!-- Valid values  0 to 2 pow 28-->
+                    </cellglobalid>
+                    <trackareacode>254</trackareacode>  <!-- Valid values  0 to 2 pow 16 -->
+                </cgiinfo>
+                <meas-res-valid>1</meas-res-valid>
+                <meas-res>
+                    <!-- Indicates if RSRP measurement is valid -->
+                    <rsrp-valid>1</rsrp-valid>
+                    <rsrp-result>90</rsrp-result>  <!-- Range : 0 - 97 -->
+                    <!-- Indicates if RSRQ measurement is valid -->
+                    <rsrq-valid>1</rsrq-valid>
+                    <rsrq-result>32</rsrq-result>  <!-- Range : 0 - 34 -->
+                </meas-res>
+            </meas-res-eutra>
+        </meas-res-list>
+      </lte>
+      </forcetestvalue>
+      <msisdn>918951322358</msisdn>
+      <!--Support parameters for SET ID -->
+      <setid_supported>
+        <msisdn>1</msisdn>
+        <mdn>0</mdn>
+        <min>0</min>
+        <imsi>1</imsi>
+        <nai>0</nai>
+        <ipaddress>1</ipaddress>
+      </setid_supported>
+      <pref_setid>imsi</pref_setid>
+      <priority_for_privacy_override>0</priority_for_privacy_override>
+      <!--Interval in milliseconds at which the SET will go for a position fix
+          when it is in the border zone as per the given area-id lists
+          in event triggered sessions-->
+      <border_zone_posfix_interval>60000</border_zone_posfix_interval>
+      <!--Interval in milliseconds. When GDM is going to be closed in an
+          NI or Triggered Session, if it is expected that GDM will have to
+          be opened in less than "max_trig_int_to_keep_gps_on" milliseconds
+          GDM will be forced to remain open -->
+      <max_trig_int_to_keep_gps_on>60000</max_trig_int_to_keep_gps_on>
+      <!-- If a triggered session isn't going to communicate with the
+            server for "max_trig_int_to_keep_cnxn" milliseconds the
+            connection to the server will be closed. It will be reopened only
+            when required -->
+      <max_trig_int_to_keep_cnxn>60000</max_trig_int_to_keep_cnxn>
+      <!--During a preiodic session. GPS will be opend "gps_preopen_time"
+          milliseconds before a trigger -->
+      <gps_preopen_time>2000</gps_preopen_time>
+      <!--The flag below is used for enabling emergency call check during emergency-->
+      <emergency_call_check>0</emergency_call_check>
+      <!--The flag below is used for enabling stopping all sessions from app-->
+      <enable_stopall_sessions>1</enable_stopall_sessions>
+    </supl_protocol_engine>
+    <!--Configuration Paramters with respect to network controllers present -->
+    <netcont_params>
+      <!--Time duration before client reattempts to connecting to server -->
+      <nw_timeout>15</nw_timeout>
+      <nw_retries>5</nw_retries>
+      <!--Configuration parameter to enable or disable UDP server-->
+      <ni_udp_enabled>0</ni_udp_enabled>
+      <!--Configuration parameters of Interface Communication Manager -->
+      <icm>
+        <port>9000</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </icm>
+      <!--Congiration parameters of Platform Communication Manager -->
+      <pcm>
+        <port>9001</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </pcm>
+      <!--Congiration parameters of SUPL Server Communication Manager -->
+      <scm>
+        <port>9002</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </scm>
+      <!-->Client Communication Manager< -->
+      <ccm>
+        <port>9000</port>
+        <ipaddress>127.0.0.1</ipaddress>
+      </ccm>
+    </netcont_params>
+    <!--H-SLP server Configuration -->
+    <hslp>
+      <port>7275</port>
+      <ipaddress>74.125.31.192</ipaddress>
+      <fqdn>supl.google.com</fqdn>
+      <secure>1</secure>
+      <!--Set 1.0 for TLSv1 and 1.1 for TLSv1.1. This will be considered only when secure is set to 1 -->
+      <tlsversion>1.2</tlsversion>
+      <!-- The following values are to be used for the corresponding type
+        0 - Normal (uses the spec provided flow
+        1 - Provisioned HSLP which is nothing but the string presented in fqdn field above.
+        2 - Auto H-SLP - This uses always the generated H-SLP directly.
+        3 - UICC (currently not supported since the Android framework does not support retrieval-->
+      <slpcfgtype>1</slpcfgtype>
+      <!--Following timeout values are applicable for all SLPs (E-SLP,H-SLP,W-SLP)-->
+      <!--Time out(in ms) for TLS handshake-->
+      <handshake_to>10000</handshake_to>
+      <!--Time out(in ms) for socket connection-->
+      <conn_to>10000</conn_to>
+    </hslp>
+    <!-- Set to 0 to disable NI through UDP. If set to 0 SUPL won't listen for UDP connections on 7275-->
+    <ni_udp_enabled>0</ni_udp_enabled>
+    <!--Emergency-SLP server Configuration -->
+    <eslp>
+      <port>7275</port>
+      <ipaddress>208.8.164.7</ipaddress>
+      <fqdn>seattle1.supl.telecomsys.com</fqdn>
+      <secure>1</secure>
+    </eslp>
+    <!--Whitelisted -SLP server Configuration -->
+    <wslplist>
+       <!--max count is 5 -->
+       <wslp>
+       <port>7275</port>
+       <fqdn>seattle1.supl.telecomsys.com</fqdn>
+       </wslp>
+       <wslp>
+       <port>7275</port>
+       <fqdn>seattle1.supl.telecomsys.com</fqdn>
+       </wslp>
+    </wslplist>
+    <ganss>
+        <!-- capwait_timer specifies how many milliseconds the SUPL engine should wait for
+             AGPS interface to respond for the capabilites request made by the engine -->
+        <capwait_time>2000</capwait_time>
+        <!-- trigg_timer specifies how many milliseconds before the acutal trigger timer, the SUPL engine should fetch the ganss capabilites -->
+        <triggbuff_time>2000</triggbuff_time>
+        <!-- "supported" tag specifies whether the SUPL Engine supports this Positioning system or not. 0-NotSupported. 1-Supported -->
+        <glonass supported="1">
+                <pos_cap>
+                <!--Capability bitmap-->
+                <!-- Usage: Hex values for each flag . check header files for hex values -->
+                <!-- Flag : 0x01 for MSA -->
+                <!-- Flag : 0x02 for MSB -->
+                <!-- Flag : 0x04 for AUTO -->
+                <!-- Example : <capbitmap>7</capbitmap> : 7 specifies the available 3 flags (0x01 + 0x02 + 0x04) -->
+                <!-- Example : <capbitmap>2</capbitmap> : 2 specifies the single flag SUPL_GANSS_POS_MSB -->
+                    <capbitmap>7</capbitmap>
+                <!--Signal bitmap-->
+                <!-- Usage: Hex values for each flag  -->
+                <!-- Signal flags are mutually exclusive -->
+                <!--Bitmap (length 8 bits) defining the supported signals for GNSS indicated by GANSS ID.
+                Refer SUPL-2 Spec "OMA-TS-ULP-V2_0-20100816-C"
+                For Galileo, the bits are interpreted as :
+                    Bit 0: E1
+                    Bit 1: E5a
+                    Bit 2: E5b
+                    Bit 3: E5a+E5b
+                    Bit 4: E6
+                    Bits 5-7: Spare
+                For Modernized GPS, the bits are interpreted as:
+                    Bit 0: L1 C
+                    Bit 1: L2 C
+                    Bit 2: L5
+                    Bits 3-7: Spare
+                For QZSS, the bits are interpreted as:
+                    Bit 0: L1 C/A
+                    Bit 1: L1 C
+                    Bit 2: L2 C
+                    Bit 3: L5
+                    Bits 4-7: Spare
+                For GLONASS, the bits are interpreted as:
+                    Bit 0: G1
+                    Bit 1: G2
+                    Bit 2: G3
+                    Bits 3-7: Spare
+                For SBAS, the bits are interpreted as:
+                    Bit 0: L1
+                    Bits 1-7: Spare -->
+                    <signalbitmap>7</signalbitmap>
+                <!-- This is valid for "sbas" positioning system only -->
+                    <SBASbitmap>0</SBASbitmap>
+                </pos_cap>
+                <asst_cap>
+                <!-- This bitmap specifies the assitance types to be requested -->
+                <!-- Refer "SUPL_Inteface.h for each bit values"-->
+                    <capbitmap>131071</capbitmap>
+                <!-- Model range 1 - 5 , 0 to 4 bits for each model respectively -->
+                <!-- For details in each model type refer the below specs
+                Reference - section 10.3.7.88c of 3GPP spec 25.331 (RRC),
+                 Table A.8.2.2 table A.61 of 3GPP spec 44.031 (RRLP) and section - 6.5.2.10
+                 'GNSS-NavigationModelSupport','GNSS-AlmanacSupport' and
+                 'GNSS-UTC-ModelSupport' of 3GPP spec 26.255 (LPP) -->
+                <!-- Example : <orbmodel>4</ordmodel> : 4 specifies that 3rd bit is set hence it is Model-3 -->
+                    <orbmodel>1</orbmodel>
+                <!-- Model range 1 - 5 , 0 to 4 bits for each model respectively -->
+                    <clkmodel>1</clkmodel>
+                <!-- Model range 1 - 5 , 0 to 4 bits for each model respectively -->
+                    <almmodel>1</almmodel>
+                <!-- Model range 1 - 4 , 0 to 3 bits for each model respectively -->
+                    <utcmodel>1</utcmodel>
+                </asst_cap>
+        </glonass>
+       <sbas supported="0">
+                <pos_cap>
+                        <capbitmap>0</capbitmap>
+                        <signalbitmap>0</signalbitmap>
+                        <SBASbitmap>0</SBASbitmap>
+                </pos_cap>
+                <asst_cap>
+                        <capbitmap>0</capbitmap>
+                        <orbmodel>0</orbmodel>
+                        <clkmodel>0</clkmodel>
+                        <almmodel>0</almmodel>
+                        <utcmodel>0</utcmodel>
+                </asst_cap>
+       </sbas>
+       <moderngps supported="0">
+                <pos_cap>
+                        <capbitmap>0</capbitmap>
+                        <signalbitmap>0</signalbitmap>
+                        <SBASbitmap>0</SBASbitmap>
+                </pos_cap>
+                <asst_cap>
+                        <capbitmap>0</capbitmap>
+                        <orbmodel>0</orbmodel>
+                        <clkmodel>0</clkmodel>
+                        <almmodel>0</almmodel>
+                        <utcmodel>0</utcmodel>
+                </asst_cap>
+        </moderngps>
+        <qzss supported="0">
+                <pos_cap>
+                       <capbitmap>0</capbitmap>
+                       <signalbitmap>0</signalbitmap>
+                       <SBASbitmap>0</SBASbitmap>
+                </pos_cap>
+                <asst_cap>
+                       <capbitmap>0</capbitmap>
+                       <orbmodel>0</orbmodel>
+                       <clkmodel>0</clkmodel>
+                       <almmodel>0</almmodel>
+                       <utcmodel>0</utcmodel>
+                </asst_cap>
+        </qzss>
+        <galileo supported="0">
+                <pos_cap>
+                      <capbitmap>0</capbitmap>
+                      <signalbitmap>0</signalbitmap>
+                      <SBASbitmap>0</SBASbitmap>
+                </pos_cap>
+                <asst_cap>
+                      <capbitmap>0</capbitmap>
+                      <orbmodel>0</orbmodel>
+                      <clkmodel>0</clkmodel>
+                      <almmodel>0</almmodel>
+                      <utcmodel>0</utcmodel>
+                </asst_cap>
+        </galileo>
+        <asstcontrol_msa>
+            <!-- Ganss ID Values -->
+            <!--    SBAS        = 1
+                    MODERNGPS   = 2
+                    QZSS        = 4
+                    GLONASS     = 8
+                    GALILEO     = 16 -->
+            <!-- This id is addition of one or more of the above mentioned Ganss Id values -->
+            <!-- Example : <ganssid>7</ganssid> : 7 specifies three GANSS technologies
+                                                : which are SBAS,MODERNGPS,QZSS (1+2+4) -->
+            <ganssid>8</ganssid>
+            <reftime>1</reftime>
+            <ionospheremodel>1</ionospheremodel>
+            <ionoid00>0</ionoid00>
+            <ionoid11>0</ionoid11>
+            <earthorien>0</earthorien>
+            <timemodellst>0</timemodellst>
+            <dganss>0</dganss>
+            <navmodel>0</navmodel>
+            <addlnavmodel>0</addlnavmodel>
+            <exteph>0</exteph>
+            <rti>0</rti>
+            <gnssdatabit>0</gnssdatabit>
+            <almanac>1</almanac>
+            <utcmodel>0</utcmodel>
+        <addlutcmodel>0</addlutcmodel>
+            <refmeasinfo>0</refmeasinfo>
+            <auxinfo>0</auxinfo>
+        </asstcontrol_msa>
+        <asstcontrol_msb>
+            <ganssid>8</ganssid>
+            <reftime>1</reftime>
+            <ionospheremodel>0</ionospheremodel>
+            <ionoid00>0</ionoid00>
+            <ionoid11>0</ionoid11>
+            <earthorien>0</earthorien>
+            <timemodellst>1</timemodellst>
+            <dganss>0</dganss>
+            <navmodel>1</navmodel>
+            <addlnavmodel>0</addlnavmodel>
+            <exteph>0</exteph>
+            <rti>1</rti>
+            <gnssdatabit>0</gnssdatabit>
+            <almanac>1</almanac>
+            <utcmodel>1</utcmodel>
+            <addlutcmodel>0</addlutcmodel>
+            <refmeasinfo>0</refmeasinfo>
+            <auxinfo>1</auxinfo>
+        </asstcontrol_msb>
+    </ganss>
+    <!-- Emergency related parameters to be defined -->
+    <!--Following Params will be parsed from Java-->
+    <cert>
+      <!-- Java service shall pick the below variables and use it only if this param is set to 1-->
+      <valid>1</valid>
+      <path>/vendor/etc/gnss/security</path>
+      <!--finally this would be an encrypted string-->
+    </cert>
+    <utcparams>
+      <gpsweekrollover>
+        <year>1999</year>
+        <month>8</month>
+        <day>22</day>
+        <hour>0</hour>
+        <min>0</min>
+        <sec>0</sec>
+      </gpsweekrollover>
+      <leapseconds>15</leapseconds>
+    </utcparams>
+  </config_start>
+</supl>
+
+<!--
+Debug zones masks in hex:
+CMD_PROCESSOR       0x00000100
+SERVER_COMM_MGR     0x00000200
+LOCATION_MGR        0x00000400
+GPS_DEV_MGR         0x00000800
+NWCONTROLLER        0x00001000
+INTERFACE_COMMMGR   0x00002000
+ASN_CODEC           0x00004000
+CONFIG_MGR          0x00008000
+INTERFACE           0x00010000
+PROGOTOL_ENGINE     0x00020000
+PLATFORM_COMMMGR    0x00040000
+GEO_HANDLER         0x00080000
+SESSION_MANAGER     0x00100000
+CLIENT              0x00200000
+TRIGGER_HANDLER     0x00400000
+CLIENT_LAUNCHER     0x00800000
+READWRITEMUTEX      0x01000000
+QUEUE               0x02000000
+REPORTING           0x04000000
+GEOFENCE            0x08000000
+MISC                0x10000000
+OTHERPOSTECH        0x20000000
+
+Debug level masks:
+NONE        0x00000000
+ENTRY       0x00000001
+EXIT        0x00000002
+CRITICAL    0x00000004
+INFO        0x00000008
+ERROR       0x00000010
+WARNING     0x00000020
+DATA        0x00000040
+-->
+

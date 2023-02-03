@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.android.supl">
+	<permission name="android.permission.READ_EXTERNAL_STORAGE" />
+	<permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<permission name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+
+	<permission name="android.permission.READ_PHONE_STATE" />
+	<permission name="android.permission.ACCESS_COARSE_LOCATION" />
+	<permission name="android.permission.ACCESS_COARSE_UPDATES" />
+	<permission name="android.permission.INTERNET" />
+	<permission name="android.permission.CHANGE_NETWORK_STATE" />
+	<permission name="android.permission.ACCESS_NETWORK_STATE" />
+	<permission name="android.permission.ACCESS_WIFI_STATE" />
+	<permission name="android.permission.PROCESS_OUTGOING_CALLS" />
+
+	<permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+	
+    </privapp-permissions>
+</permissions>

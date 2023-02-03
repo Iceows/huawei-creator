@@ -1,0 +1,6 @@
+on property:setup_hi110x_modules=success
+service watchlssd /system/bin/gnss_watchlssd_thirdparty
+    class main
+    user system
+    group system gps inet net_raw wakelock
+	
