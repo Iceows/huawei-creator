@@ -1,9 +1,10 @@
+# Charger fix huawei
 import /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc
 
-
-service charger /bin/offlinecharger -p
-	class charger
-	user root
-	group root system shell graphics input wakelock
-	capabilities SYS_BOOT
-	seclabel u:r:charger:s0
+# Charger fix huawei
+service charger /system/bin/offlinecharger -p
+    class charger
+    user root
+    group root system
+    critical
+    seclabel u:r:charger:s0
