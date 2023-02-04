@@ -349,7 +349,7 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
 	
-	
+
 	# --------------AGPS Patch ---------------------- #
 	
 	cp "$origin/files-patch/system/bin/gnss_watchlssd_thirdparty" bin/gnss_watchlssd_thirdparty
@@ -357,8 +357,15 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/lib64/libgnss_lss_gw_thirdparty.so" lib64/libgnss_lss_gw_thirdparty.so
 	
 	mkdir app/gnss_supl20service_hisi
+	chmod 755 app/
+	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi
+	
 	cp "$origin/files-patch/system/app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk" app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+	
 	cp "$origin/files-patch/system/etc/gps_debug.conf" etc/gps_debug.conf
+	cp "$origin/files-patch/system/etc/permissions/privapp-permissions-supl.xml" etc/permissions/privapp-permissions-supl.xml
+	xattr -w security.selinux u:object_r:system_file:s0  etc/permissions/privapp-permissions-supl.xml
 	
 	mkdir etc/gnss
 	mkdir etc/gnss/config
@@ -369,11 +376,12 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# Add RC
 	cp "$origin/files-patch/system/etc/init/init-gnss.rc" etc/init/init-gnss.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init-gnss.rc
 	
 	
-	# Set owner and permissions
-	chmod 750 bin/gnss_watchlssd_thirdparty
-	#chown gps:system bin/gnss_watchlssd_thirdparty
+	# Set owner and permissions (system:system)
+	chmod 755 bin/gnss_watchlssd_thirdparty
+	chown 1000:1000 bin/gnss_watchlssd_thirdparty
 
 	xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
@@ -385,24 +393,14 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow hi110x_daemon self (fifo_file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hi110x_daemon system_data_root_file (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow hi110x_daemon socket_device (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
-
-	# For lss 
-	sed -i '/(type alarm_device)/d' etc/selinux/plat_sepolicy.cil
-	sed -i '/(roletype object_r alarm_device)/d'  etc/selinux/plat_sepolicy.cil
-	sed -i '/(typeattributeset dev_type (device ashmem_device ashmem_libcutils_device audio_device binder_device uhid_device uio_device tun_device/d' etc/selinux/plat_sepolicy.cil
 	
-	echo "(type alarm_device)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r alarm_device)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset dev_type (device ashmem_device ashmem_libcutils_device audio_device binder_device hwbinder_device vndbinder_device block_device camera_device dm_device keychord_device loop_control_device loop_device pmsg_device radio_device ram_device rtc_device vold_device console_device fscklogs gpu_device graphics_device hw_random_device input_device port_device lowpan_device mtp_device nfc_device ptmx_device kmsg_device kmsg_debug_device null_device random_device secure_element_device sensors_device serial_device socket_device alarm_device owntty_device tty_device video_device zero_device fuse_device iio_device ion_device qtaguid_device watchdog_device uhid_device uio_device tun_device usbaccessory_device usb_device usb_serial_device properties_device properties_serial property_info hci_attach_dev rpmsg_device root_block_device frp_block_device system_block_device recovery_block_device boot_block_device userdata_block_device cache_block_device swap_block_device metadata_block_device misc_block_device super_block_device sdcard_block_device ppp_device tee_device ))" >> etc/selinux/plat_sepolicy.cil
-
-	sed -i '/u:object_r:alarm_device:s0/d' etc/selinux/plat_file_contexts 
-	echo "/dev/alarm(/.*)?    u:object_r:alarm_device:s0" >> etc/selinux/plat_file_contexts 
 
 	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
 	echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
 	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
+
 
 	# ------------------------------------ #
 	
@@ -426,6 +424,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# active le mode journalisation
 	# echo "ro.control_privapp_permissions=log" >> /system_root/system/build.prop;
+
 
 
 
