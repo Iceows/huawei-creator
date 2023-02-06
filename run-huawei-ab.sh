@@ -194,26 +194,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "sys.usb.ffs_hdb.ready=0" >> build.prop
 	echo "sys.usb.state=mtp,adb" >> build.prop
 	
-	#----------------------------- offline charging fix ----------------------------------------
-	# remove AOSP charger img
-	# rm -rf etc/charger
-
-	# unzip new img for all resolution
-	# cd etc/
-	# unzip "$origin/files-patch/system/etc/charger-emui9.zip"
-	# cd ..
-	
-	# cp new offline charger animation
-	# cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
-	# chown root:2000 bin/offlinecharger
-	# xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
-	# chmod 755 bin/offlinecharger
-
-
-	# Change init.rc to include huawei charger init	
-	cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
-	chown root:root etc/init/init.charger.huawei.rc
-	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
 	
 	
 
@@ -348,7 +328,42 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptX_encoder.so
 	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
+
+
+	#----------------------------- offline charging fix ----------------------------------------
+	# remove AOSP charger img
+	rm -rf etc/charger
 	
+	# unzip new img for all resolution
+	unzip "$origin/files-patch/system/etc/charger-emui9.zip" -d etc/
+	find etc/charger -type f -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	find etc/charger -type d -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	chmod -R 777 etc/charger
+	xattr -w security.selinux u:object_r:system_file:s0 etc/charger
+	
+
+	# cp new offline charger executable
+	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	chown root:2000 bin/offlinecharger
+	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	chmod 755 bin/offlinecharger
+
+
+	# Change init.rc to include huawei charger init	
+	# cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
+	# chown root:root etc/init/init.charger.huawei.rc
+	# xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
+	# chmod 755 etc/init/init.charger.huawei.rc
+	
+	# sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	
+	# cp new init.rc	
+	cp "$origin/files-patch/system/etc/init/hw/init.rc" etc/init/hw/init.rc
+	chown root:root etc/init/hw/init.rc
+	chmod 755 etc/init/hw/init.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/hw/init.rc
+
+
 
 	# --------------AGPS Patch ---------------------- #
 	
