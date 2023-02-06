@@ -350,18 +350,13 @@ mount -o loop,rw s-ab-raw.img d
 
 
 	# Change init.rc to include huawei charger init	
-	# cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
-	# chown root:root etc/init/init.charger.huawei.rc
-	# xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
-	# chmod 755 etc/init/init.charger.huawei.rc
+	cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
+	chown root:root etc/init/init.charger.huawei.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
+	chmod 755 etc/init/init.charger.huawei.rc
 	
-	# sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
 	
-	# cp new init.rc	
-	cp "$origin/files-patch/system/etc/init/hw/init.rc" etc/init/hw/init.rc
-	chown root:root etc/init/hw/init.rc
-	chmod 755 etc/init/hw/init.rc
-	xattr -w security.selinux u:object_r:system_file:s0 etc/init/hw/init.rc
 
 
 
