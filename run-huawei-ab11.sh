@@ -560,16 +560,83 @@ mount -o loop,rw s.img d
 
 
 
+	# --------------- A11 specifique -------------------- 
+	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow audioserver vendor_default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow blkcginit self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow blkid_untrusted self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow bootanim userspace_reboot_exported_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow bootanim system_data_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow boringssl_self_test self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow fsverity_init self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_hwhiview_default self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app modem_secure_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app priv_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app priv_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app priv_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gmscore_app teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow gpsdaemon system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_camera_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_camera_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_camera_default system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_drm_widevine default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_fingerprint_default default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_health_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_health_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_keymaster_default config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_nfc_default config_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_nfc_default default_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_nfc_default system_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hal_usb_default self (capability (dac_override sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow healthd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hinetmanager self (capability (sys_admin dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon default_prop (file (read open write getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon self (fifo_file (ioctl)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hinetmanager self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hwemerffu_service proc (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow mac_addr_normalization self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow migrate_legacy_obb_data self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow modprobe self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow isolated_app content_capture_service (service_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow netutils_wrapper hinetmanager (fd (use)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow netutils_wrapper hinetmanager (fifo_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow netutils_wrapper self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow otapreopt_slot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rootfs labeledfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rootfs sysfs_zram (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow splash2_data_file self (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow su splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow su splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow su splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow ueventd unlabeled (lnk_file (read create getattr setattr relabelfrom unlink)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow unrmd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow update_verifier self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow usbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vdc self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow vold_prepare_subdirs self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow zygote exported_camera_prop (file (open read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow nfc system_data_file (file (open write read create ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow nfc system_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
 
 
+	echo "(allow priv_app gmscore_app (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow priv_app gmscore_app (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow priv_app gmscore_app (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rootfs labeledfs (filesystem (relabelto relabelfrom associate mount )))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger bootanim (dir (search read open write getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
-
-
-
-
-
-
-
+	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
 
     # --------------------------- Kirin EMUI 9 properties -------------------
 
