@@ -266,8 +266,111 @@ mount -o loop,rw s.img d
 	xattr -w security.selinux u:object_r:system_file:s0  phh/huawei/fingerprint.kl
 
 
+	#----------------------------- offline charging fix ----------------------------------------
+	# remove AOSP charger img
+	rm -rf etc/charger
+	
+	# unzip new img for all resolution
+	unzip "$origin/files-patch/system/etc/charger-emui9.zip" -d etc/
+	find etc/charger -type f -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	find etc/charger -type d -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	chmod -R 777 etc/charger
+	xattr -w security.selinux u:object_r:system_file:s0 etc/charger
+	
+
+	# cp new offline charger executable
+	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	chown root:2000 bin/offlinecharger
+	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	chmod 755 bin/offlinecharger
 
 
+	# Change init.rc to include huawei charger init	
+	cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
+	chown root:root etc/init/init.charger.huawei.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
+	chmod 755 etc/init/init.charger.huawei.rc
+	
+	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	
+	
+	
+
+
+	# --------------AGPS Patch ---------------------- #
+	
+	cp "$origin/files-patch/system/bin/gnss_watchlssd_thirdparty" bin/gnss_watchlssd_thirdparty
+	cp "$origin/files-patch/system/lib/libgnss_lss_gw_thirdparty.so" lib/libgnss_lss_gw_thirdparty.so
+	cp "$origin/files-patch/system/lib64/libgnss_lss_gw_thirdparty.so" lib64/libgnss_lss_gw_thirdparty.so
+	
+	mkdir app/gnss_supl20service_hisi
+	chmod 755 app/
+	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi
+	
+	cp "$origin/files-patch/system/app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk" app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+	
+	cp "$origin/files-patch/system/etc/gps_debug.conf" etc/gps_debug.conf
+	cp "$origin/files-patch/system/etc/permissions/privapp-permissions-supl.xml" etc/permissions/privapp-permissions-supl.xml
+	xattr -w security.selinux u:object_r:system_file:s0  etc/permissions/privapp-permissions-supl.xml
+	
+	mkdir etc/gnss
+	mkdir etc/gnss/config
+	cp "$origin/files-patch/system/etc/gnss/config/gnss_suplconfig_hisi.xml" etc/gnss/config/gnss_suplconfig_hisi.xml
+	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_config_thirdparty.bin" etc/gnss/config/gnss_lss_config_thirdparty.bin
+	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem" etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
+	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_slp_thirdparty.p12" etc/gnss/config/gnss_lss_slp_thirdparty.p12
+	
+	# Add RC
+	cp "$origin/files-patch/system/etc/init/init-gnss.rc" etc/init/init-gnss.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init-gnss.rc
+	
+	
+	# Set owner and permissions (system:system)
+	chmod 755 bin/gnss_watchlssd_thirdparty
+	chown 1000:1000 bin/gnss_watchlssd_thirdparty
+
+	xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libgnss_lss_gw_thirdparty.so
+
+
+	# For gnss_lss
+	echo "/system/bin/gnss_watchlssd_thirdparty		u:object_r:hi110x_daemon_exec:s0" >> etc/selinux/plat_file_contexts 
+	echo "(allow hi110x_daemon self (fifo_file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon system_data_root_file (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow hi110x_daemon socket_device (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
+	
+
+	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
+	echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
+	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
+
+
+	# ------------------------------------ #
+	
+	# From iceows supl20 apk (# Hisi)
+	echo "is_hisi_connectivity_chip=1" >> build.prop
+	echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+	echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+	
+	# Fix system ntp_server (europe pool)
+	set global ntp_server europe.pool.ntp.org
+
+	# Allow agps an set config
+	echo "persist.sys.pgps.config=1"  >> build.prop;
+	echo "assisted_gps_enabled=1"  >> build.prop;
+
+	# Uncomment to Debug GPS
+	# echo "log.tag.GnssConfiguration=DEBUG" >> /system_root/system/build.prop;
+	# echo "log.tag.GnssLocationProvider=DEBUG" >> /system_root/system/build.prop;
+	# echo "log.tag.GnssManagerService=DEBUG" >> /system_root/system/build.prop;
+	# echo "log.tag.NtpTimeHelper=DEBUG" >> /system_root/system/build.prop;
+	
+	# active le mode journalisation
+	# echo "ro.control_privapp_permissions=log" >> /system_root/system/build.prop;
 
 )
 
