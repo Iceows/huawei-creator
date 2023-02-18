@@ -546,20 +546,6 @@ mount -o loop,rw s.img d
 	echo "(allow ueventd dmd_device (chr_file (create open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	# --------------- A11 specifique -------------------- 
 	echo "(allow adbd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow audioserver vendor_default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
@@ -637,6 +623,62 @@ mount -o loop,rw s.img d
 	echo "(allow surfaceflinger bootanim (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
 
 	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	
+	
+	# Rild
+	echo "(allow rild config_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild system_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil	
+	echo "(allow rild splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow rild splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(allow wpa_hisi hi110x_cust_data_file (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow hi110x_daemon self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow adbroot self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow vendor_init default_prop (file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(allow init vendor_file (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow init hwservicemanager (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil	
+	#echo "(allow init untrusted_app_visible_hisi_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow init hidl_base_hwservice (hwservice_manager (find add)))" >> etc/selinux/plat_sepolicy.cil
+	
+ 	#echo "(allow hwservicemanager init (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
+ 	#echo "(allow hwservicemanager init (file (open write read ioctl getattr setattr lock relabelfrom rename unlink append execute_no_trans)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow hwservicemanager init (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+ 	#echo "(allow hwservicemanager init (binder (call)))" >> etc/selinux/plat_sepolicy.cil
+
+ 	echo "(allow shell pstorefs (dir (search ioctl read open write getattr lock)))" >> etc/selinux/plat_sepolicy.cil	
+ 	#echo "(allow aptouch_daemon aptouch_daemon_service (service_manager (add)))" >> etc/selinux/plat_sepolicy.cil
+ 	#echo "(allow profcollectd self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow odsign self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil 	
+	
+	# Log splash2
+	echo "(allow kernel anr_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel anr_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel anr_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel splash2_data_file (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel splash2_data_file (filesystem (getattr relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel splash2_data_file (dir (create search getattr open read setattr ioctl write add_name remove_name rmdir relabelto relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+
+	# system_app
+	echo "(allow system_app proc_pagetypeinfo (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app proc_vmallocinfo (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app sysfs_zram (lnk_file (ioctl read write create getattr setattr lock append unlink link rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app default_android_hwservice (hwservice_manager (find)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app cameradaemon_prop (file (create open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+
+	# TeeLogCat splash2
+	echo "(allow tlogcat self (capability (sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow tlogcat device (chr_file (open write read ioctl getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(type system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r system_teecd_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "/system/bin/tee_auth_daemon   u:object_r:system_teecd_exec:s0" >> etc/selinux/plat_file_contexts
+
+	
+	
 
     # --------------------------- Kirin EMUI 9 properties -------------------
 
