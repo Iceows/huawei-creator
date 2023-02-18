@@ -1,0 +1,4 @@
+# Charger fix huawei
+import /vendor/etc/init/${ro.bootmode}/init.${ro.bootmode}.rc
+
+
