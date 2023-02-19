@@ -62,7 +62,27 @@ mount -o loop,rw s.img d
 	# To get productid : sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline
 	#MODEL=$( cat /sys/firmware/devicetree/base/boardinfo/normal_product_name | tr -d '\n')
 	
-
+	# build - change type to user
+	sed -i "/ro.system.build.type/d" build.prop 
+	sed -i "/ro.build.type/d" build.prop 	
+	sed -i "/ro.build.keys/d" build.prop 	
+	#sed -i "/ro.build.version.security_patch/d" build.prop 
+	
+	echo "ro.system.build.type=user" >> build.prop
+	echo "ro.build.type=user" >> build.prop
+	echo "ro.build.keys=release-keys" >> build.prop
+	#echo "ro.build.version.security_patch=2023-01-05" >> build.prop
+		
+	
+	# change product and system_ext prop
+	#sed -i "/ro.system_ext.build.type/d" system_ext/build.prop 
+	#sed -i "/ro.product.build.type/d" product/build.prop 
+	
+	#echo "ro.system_ext.build.type=user" >>  system_ext/build.prop
+	#echo "ro.product.build.type=user" >>  product/build.prop
+	
+ 
+	
 
 	
 	# set default sound
@@ -131,8 +151,8 @@ mount -o loop,rw s.img d
 	#-----------------------------File copy -----------------------------------------------------
 	
 	# rw-system custom for Huawei device (safety version)
-	#cp "$origin/files-patch/system/bin/rw-system-safety.sh" bin/rw-system.sh
-	#xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	cp "$origin/files-patch/system/bin/rw-system-safety.sh" bin/rw-system.sh
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 	
 	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
