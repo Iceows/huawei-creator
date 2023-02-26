@@ -75,12 +75,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	sed -i "/ro.system.build.type/d" build.prop 
 	sed -i "/ro.build.type/d" build.prop 	
-	sed -i "/ro.product.model/d" build.prop
 	
-	echo "ro.system.build.type=userdebug" >> build.prop
-	echo "ro.build.type=userdebug" >> build.prop
-	echo "ro.product.model=$model" >> build.prop
-
+	echo "ro.system.build.type=user" >> build.prop
+	echo "ro.build.type=user" >> build.prop
 
 	#sed -i "/ro.build.description/d" build.prop
 	#sed -i "/ro.build.display.id/d" build.prop	
@@ -93,27 +90,30 @@ mount -o loop,rw s-ab-raw.img d
 	#[ro.build.description]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
 	#[ro.build.display.id]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
 	#[ro.build.flavor]: [treble_arm64_bvS-userdebug]	
+
 	
-	# change root and system prop
+	# change product
+	sed -i "/ro.product.manufacturer/d" build.prop
+	sed -i "/ro.product.model/d" build.prop
+	sed -i "/ro.product.name/d" build.prop
+	sed -i "/ro.product.brand/d" build.prop
+	sed -i "/ro.product.device/d" build.prop
+		
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
+	echo "ro.product.model=$model" >> build.prop
+	echo "ro.product.name=$model" >> build.prop
+	
+
+	# change product.system
 	sed -i "/ro.product.system.model/d" build.prop 
 	sed -i "/ro.product.system.brand/d" build.prop 
 	sed -i "/ro.product.system.device/d" build.prop 
 	sed -i "/ro.product.system.name/d" build.prop 
 	
 	echo "ro.product.system.model=$model" >>  build.prop
-	echo "ro.product.system.name=LeaOS" >>  build.prop
-	
-	sed -i "/ro.product.manufacturer/d" build.prop
-	sed -i "/ro.product.model/d" build.prop
-	sed -i "/ro.product.device/d" build.prop
-	sed -i "/ro.product.name/d" build.prop
-	
-	echo "ro.product.manufacturer=HUAWEI" >> build.prop
-	echo "ro.product.model=$model" >> build.prop
-	echo "ro.product.name=$model" >> build.prop
-	
-	
-	# change product
+	echo "ro.product.system.name=$model" >>  build.prop
+		
+	# change product.product
 	sed -i "/ro.product.product.model/d" product/etc/build.prop 
 	sed -i "/ro.product.product.brand/d" product/etc/build.prop 
 	sed -i "/ro.product.product.device/d" product/etc/build.prop 
@@ -122,7 +122,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.product.name=$model" >> product/etc/build.prop
 
 	
-	# change system_ext
+	# change product.system_ext
 	sed -i "/ro.product.system_ext.model/d" system_ext/etc/build.prop 
 	sed -i "/ro.product.system_ext.brand/d" system_ext/etc/build.prop 
 	sed -i "/ro.product.system_ext.device/d" system_ext/etc/build.prop 
@@ -130,12 +130,21 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.system_ext.model=$model" >> system_ext/etc/build.prop
 	echo "ro.product.system_ext.name=$model" >> system_ext/etc/build.prop
 	
-	
 
+	# set lineage version number for lineage build    	
+	sed -i "/ro.lineage.version/d" build.prop
+	sed -i "/ro.lineage.display.version/d" build.prop
+	sed -i "/ro.modversion/d" build.prop
+	sed -i "/ro.lineage.device/d" build.prop
+	echo "ro.lineage.version=20" >>  build.prop
+	echo "ro.lineage.display.version=20" >>  build.propp
+	echo "ro.modversion=$versionNumber" >>  build.prop
 
 		
 	# Safetynet CTS profile
 	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L21/9.1.0.311C461:user/release-keys" >> build.prop
+	
 	#echo "ro.build.version.security_patch=2020-08-01" >> build.prop
 	
 
@@ -172,11 +181,17 @@ mount -o loop,rw s-ab-raw.img d
 	echo "hwui.disable_vsync=true" >>  build.prop
 	echo "ro.config.enable.hw_accel=true" >>  build.prop
 	echo "video.accelerate.hw=1" >>  build.prop
-	echo "debug.sf.latch_unsignaled=1" >>  build.prop
 	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
+	echo "debug.sf.disable_backpressure=1" >>  build.prop
+	echo "debug.sf.latch_unsignaled=1" >>  build.prop
+
+	# Color
+	echo "persist.sys.sf.native_mode=1" >> build.prop
+	echo "persist.sys.sf.color_mode=1.0" >> build.prop
+	echo "persist.sys.sf.color_saturation=1.1" >> build.prop
 	
 	# CPU
 	echo "persist.sys.boost.byeachfling=true" >> build.prop
@@ -188,6 +203,11 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
+	
+	
+	#Performance android 13
+	echo "debug.performance.tuning=1" >> build.prop
+	
 
 	
 
@@ -222,11 +242,11 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_potter.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf	
-	
+
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWPOT" >> build.prop	
 		echo "ro.product.system.device=HWPOT" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
-		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWPOT" >> build.prop
 		echo "ro.product.product.device=HWPOT" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
@@ -254,11 +274,11 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-		
+
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop		
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
-		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWVTR" >> build.prop
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
@@ -286,16 +306,18 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_figo.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-		
+
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWFIG" >> build.prop		
 		echo "ro.product.system.device=HWFIG" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
-		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWFIG" >> build.prop
 		echo "ro.product.product.device=HWFIG" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWFIG" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
-
+		echo "ro.build.product=FIG" >> build.prop
+		
+		echo "ro.lineage.device=HWFIG" >>  build.prop
 	fi
 			
 	
@@ -329,7 +351,7 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWANE" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
-			
+		echo "ro.build.product=ANE" >> build.prop
 	fi	
 
 
@@ -353,15 +375,16 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_stanford.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-	
+
+		echo "ro.product.brand=HONOR" >> build.prop
+		echo "ro.product.device=HWSTF" >> build.prop	
 		echo "ro.product.system.device=HWSTF" >>  build.prop
 		echo "ro.product.system.brand=HONOR" >>  build.prop	
-		echo "ro.product.brand=HONOR" >> build.prop
-		echo "ro.product.device=HWSTF" >> build.prop
 		echo "ro.product.product.device=HWSTF" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HONOR" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWSTF" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HONOR" >>  system_ext/etc/build.prop
+		echo "ro.build.product=STF" >> build.prop
 		
 		# Perhaps also replace fingerprint
 		#[ro.build.description]: [STF-L09-user 9.1.0 HUAWEISTF-L09 231-OVS-LGRP2 release-keys]
@@ -519,10 +542,10 @@ mount -o loop,rw s-ab-raw.img d
 
 
 	
-	#----------------------------- SELinux rules Now include in huawei.te --------------------------	
+	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
 	
 	
-	# --------------------------- Kirin EMUI 9 perf properties -------------------
+	# --------------------------- Kirin EMUI 9 perf properties add SELinux rules for vendor init -----
 
 	echo "(type kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
 	echo "(roletype object_r kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
