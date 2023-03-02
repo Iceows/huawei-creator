@@ -84,6 +84,14 @@ fixSPL() {
 	if [ -z "$Arelease" ] || [ -z "$spl" ];then
 		return 0
 	fi
+
+    # Found on Cubot Pocket 3: trustkernel work only on stock model name or AOSP GSI model name
+    if [ -f /vendor/bin/hw/android.hardware.keymaster@4.1-service.trustkernel ] && [ -f /proc/tkcore/tkcore_log ];then
+        setprop debug.phh.props.teed keymaster
+        # Process name is android.hardware.keymaster@4.1-service.trustkernel
+        setprop debug.phh.props.ice.trustkernel keymaster
+    fi
+
         setprop ro.keymaster.brn Android
 
         if getprop ro.vendor.build.fingerprint |grep -qiE 'samsung.*star.*lte';then
@@ -728,7 +736,9 @@ copyprop() {
         resetprop_phh "$1" "$(getprop "$2")"
     fi
 }
+
 if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
+
     copyprop ro.build.device ro.vendor.build.device
     copyprop ro.system.build.fingerprint ro.vendor.build.fingerprint
     copyprop ro.bootimage.build.fingerprint ro.vendor.build.fingerprint
@@ -754,6 +764,7 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
     copyprop ro.product.manufacturer ro.vendor.product.manufacturer
     copyprop ro.system.product.manufacturer ro.product.vendor.manufacturer
     copyprop ro.product.manufacturer ro.product.vendor.manufacturer
+
     (getprop ro.vendor.build.security_patch; getprop ro.keymaster.xxx.security_patch) |sort |tail -n 1 |while read v;do
         [ -n "$v" ] && resetprop_phh ro.build.version.security_patch "$v"
     done
