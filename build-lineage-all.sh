@@ -18,6 +18,17 @@ cd ../leaos
 cd ../huawei-creator
 
 
+# --------------------------------- LeaOS Gsi -----------------------------------
+
+# TrebleDroid ab version
+cp /home/iceows/build-output/LeaOS-20.0-${srcDateFile}-arm64_bvN.img  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/
+cp /home/iceows/build-output/LeaOS-20.0-${srcDateFile}-arm64_bgN.img  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/
+
+xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bvN.img.xz
+xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bgN.img.xz
+
+exit
+
 # --------------------------------- LeaOS lineage 20.0 -----------------------------------
 
 # Vanilia
