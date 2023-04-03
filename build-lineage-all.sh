@@ -27,7 +27,6 @@ cp /home/iceows/build-output/LeaOS-20.0-${srcDateFile}-arm64_bgN.img  /media/ice
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bvN.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/LeaOS/20.0/LeaOS-20.0-${srcDateFile}-arm64_bgN.img.xz
 
-exit
 
 # --------------------------------- LeaOS lineage 20.0 -----------------------------------
 

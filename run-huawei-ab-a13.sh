@@ -671,6 +671,19 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.vendor.tui.service  u:object_r:tee_tui_prop:s0" >> etc/selinux/plat_property_contexts
 
 
+	# property
+	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> /system_root/system/etc/selinux/plat_property_contexts
+		
+	# Kirin	
+	echo "persist.kirin.alloc_buffer_sync=true" >> build.prop
+	echo "persist.kirin.texture_cache_opt=1"  >> build.prop
+	echo "persist.kirin.touch_move_opt=1"  >> build.prop
+	echo "persist.kirin.touch_vsync_opt=1"  >> build.prop
+	echo "persist.kirin.touchevent_opt=1"  >> build.prop
+	
+	# Enable lowlatency
+	echo "persist.media.lowlatency.enable=true" >> build.prop
+	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
 
 
 	#-----------------------------vndk-lite --------------------------------------------------------	
