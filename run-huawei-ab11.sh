@@ -65,31 +65,71 @@ mount -o loop,rw s.img d
 	# build - change type to user
 	sed -i "/ro.system.build.type/d" build.prop 
 	sed -i "/ro.build.type/d" build.prop 	
-	sed -i "/ro.build.keys/d" build.prop 	
-	#sed -i "/ro.build.version.security_patch/d" build.prop 
-	
 	echo "ro.system.build.type=user" >> build.prop
 	echo "ro.build.type=user" >> build.prop
-	echo "ro.build.keys=release-keys" >> build.prop
-	#echo "ro.build.version.security_patch=2023-01-05" >> build.prop
-		
-	
-	# change product and system_ext prop
-	#sed -i "/ro.system_ext.build.type/d" system_ext/build.prop 
-	#sed -i "/ro.product.build.type/d" product/build.prop 
-	
-	#echo "ro.system_ext.build.type=user" >>  system_ext/build.prop
-	#echo "ro.product.build.type=user" >>  product/build.prop
-	
- 
-	
 
 	
+	echo "#" >> build.prop
+	echo "## Adding hi6250 props" >> build.prop
+	echo "#" >> build.prop
+	
+	# change product and system_ext prop
+	sed -i "/ro.product.system_ext.model/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.brand/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.device/d" system_ext/build.prop 
+	sed -i "/ro.product.system_ext.name/d" system_ext/build.prop 
+		
+	sed -i "/ro.product.product.model/d" product/build.prop 
+	sed -i "/ro.product.product.brand/d" product/build.prop 
+	sed -i "/ro.product.product.device/d" product/build.prop 
+	sed -i "/ro.product.product.name/d" product/build.prop  
+	
+	sed -i "/ro.product.system.model/d" build.prop 
+	sed -i "/ro.product.system.brand/d" build.prop 
+	sed -i "/ro.product.system.device/d" build.prop 
+	sed -i "/ro.product.system.name/d" build.prop 
+	
+	echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
+	echo "ro.product.system_ext.device=HWANE" >>  system_ext/build.prop
+	echo "ro.product.system_ext.name=LeaOS" >>  system_ext/build.prop
+	
+	echo "ro.product.product.brand=HUAWEI" >>  product/build.prop
+	echo "ro.product.product.device=HWANE" >>  product/build.prop
+	echo "ro.product.product.name=LeaOS" >>  product/build.prop
+	
+	echo "ro.product.system.model=$model" >>  build.prop
+	echo "ro.product.system.device=HWANE" >>  build.prop
+	echo "ro.product.system.brand=HUAWEI" >>  build.prop
+	echo "ro.product.system.name=LeaOS" >>  build.prop
+	
+	sed -i "/ro.product.manufacturer/d" build.prop
+	sed -i "/ro.product.model/d" build.prop
+	sed -i "/ro.product.device/d" build.prop
+	sed -i "/ro.product.name/d" build.prop
+	
+	echo "ro.product.manufacturer=HUAWEI" >> build.prop
+	echo "ro.product.model=$model" >> build.prop
+	echo "ro.product.device=HWANE" >> build.prop
+	echo "ro.product.name=$model" >> build.prop
+	echo "ro.product.brand=HUAWEI" >> build.prop
+	
+	# Safetynet CTS profile
+	#echo "ro.build.fingerprint HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	#echo "ro.build.version.security_patch 2020-08-01" >> build.prop
+	
+
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
 	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
+	# set lineage version number for lineage build
+	sed -i "/ro.lineage.version/d"  build.prop
+	sed -i "/ro.lineage.display.version/d"  build.prop
+	sed -i "/ro.modversion/d"  build.prop
+	echo "ro.lineage.version=$versionNumber" >>  build.prop
+	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
+	echo "ro.modversion=$versionNumber" >>  build.prop
 
  
 	# Debug LMK - for Android Kernel that support it
@@ -151,8 +191,8 @@ mount -o loop,rw s.img d
 	#-----------------------------File copy -----------------------------------------------------
 	
 	# rw-system custom for Huawei device (safety version)
-	cp "$origin/files-patch/system/bin/rw-system-safety.sh" bin/rw-system.sh
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
+	# cp "$origin/files-patch/system/bin/rw-system-safety.sh" bin/rw-system.sh
+	# xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
 	
 	cp "$origin/files-patch/system/bin/vndk-detect" bin/vndk-detect
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/vndk-detect
@@ -238,9 +278,6 @@ mount -o loop,rw s.img d
 	rm -rf product/overlay/treble-overlay-razer-*
 	rm -rf product/overlay/treble-overlay-sharp-*
 		
-	# Fix LD_PRELOAD in vndk
-	cp "$origin/files-patch/system/etc/init/vndk.rc" etc/init/vndk.rc
-	xattr -w security.selinux u:object_r:system_file:s0  etc/init/vndk.rc
 	
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
@@ -287,44 +324,32 @@ mount -o loop,rw s.img d
 
 
 	#----------------------------- offline charging fix ----------------------------------------
+	# remove AOSP charger img
+	rm -rf etc/charger
 	
+	# unzip new img for all resolution
+	unzip "$origin/files-patch/system/etc/charger-emui9.zip" -d etc/
+	find etc/charger -type f -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	find etc/charger -type d -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
+	chmod -R 777 etc/charger
+	xattr -w security.selinux u:object_r:system_file:s0 etc/charger
 	
-	if [ "$bootanim" == "Y" ];then
-		
-		# remove AOSP charger img
-		rm -rf etc/charger
-		
-		# unzip new img for all resolution
-		unzip "$origin/files-patch/system/etc/charger-emui9.zip" -d etc/
-		find etc/charger -type f -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
-		find etc/charger -type d -exec xattr -w security.selinux u:object_r:system_file:s0  {} \;
-		chmod -R 777 etc/charger
-		xattr -w security.selinux u:object_r:system_file:s0 etc/charger
-		
 
-		# cp new offline charger executable
-		cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
-		chown root:2000 bin/offlinecharger
-		xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
-		chmod 755 bin/offlinecharger
+	# cp new offline charger executable
+	cp "$origin/files-patch/system/bin/offlinecharger" bin/offlinecharger
+	chown root:2000 bin/offlinecharger
+	xattr -w security.selinux u:object_r:charger_exec:s0 bin/offlinecharger
+	chmod 755 bin/offlinecharger
 
 
-		# Change init.rc to include huawei charger init	
-		cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
-		chown root:root etc/init/init.charger.huawei.rc
-		xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
-		chmod 755 etc/init/init.charger.huawei.rc
-		
-		sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
-	else
-		# Change init.rc to include GSI Huawei charger init	
-		cp "$origin/files-patch/system/etc/init/init.charger.emui9.gsi.rc" etc/init/init.charger.huawei.rc
-		chown root:root etc/init/init.charger.huawei.rc
-		xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
-		chmod 755 etc/init/init.charger.huawei.rc
-		
-		sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
-	fi
+	# Change init.rc to include huawei charger init	
+	cp "$origin/files-patch/system/etc/init/init.charger.emui9.huawei.rc" etc/init/init.charger.huawei.rc
+	chown root:root etc/init/init.charger.huawei.rc
+	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
+	chmod 755 etc/init/init.charger.huawei.rc
+	
+	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	
 	
 	
 
@@ -822,7 +847,17 @@ mount -o loop,rw s.img d
 	echo "ro.kirin.product.platform     u:object_r:product_platform_prop:s0" >> etc/selinux/plat_property_contexts
 	echo "ro.vendor.tui.service  u:object_r:tee_tui_prop:s0" >> etc/selinux/plat_property_contexts
 
-
+	# Kirin	
+	echo "persist.kirin.alloc_buffer_sync=true" >> build.prop
+	echo "persist.kirin.texture_cache_opt=1"  >> build.prop
+	echo "persist.kirin.touch_move_opt=1"  >> build.prop
+	echo "persist.kirin.touch_vsync_opt=1"  >> build.prop
+	echo "persist.kirin.touchevent_opt=1"  >> build.prop
+	
+	# Enable lowlatency
+	echo "persist.media.lowlatency.enable=true" >> build.prop
+	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
+	
 )
 
 sleep 1

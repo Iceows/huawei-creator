@@ -117,11 +117,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.product.brand=HUAWEI" >> build.prop
 	
 	# Safetynet CTS profile
-	echo "ro.build.fingerprint HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
-	echo "ro.build.version.security_patch 2020-08-01" >> build.prop
+	#echo "ro.build.fingerprint HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
+	#echo "ro.build.version.security_patch 2020-08-01" >> build.prop
 	
-
-
 
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
