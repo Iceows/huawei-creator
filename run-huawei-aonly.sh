@@ -22,7 +22,7 @@ bootanim="$4"
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] [bootanim : Y/N]"
 	echo "VERSION=LeaOS, LeaOS-PHH , crDRom v316 - Mod Iceows , LiR v316 - Mod Iceows , Caos v316 - Mod Iceows"
-	echo "model=PRA-LX1 , FIG-LX1"
+	echo "model=PRA-LX1 , FIG-LX1, AGS2-W09"
 	exit 1
 fi
 
@@ -302,6 +302,10 @@ mount -o loop,rw s-aonly.img d
 		cp "$origin/files-patch/system/etc/libnfc-nxp_RF.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 		
+	fi
+	if [ "$model" == "AGS2-W09" ];then
+		echo "log.tag.launcher_force_rotate=VERBOSE" >> etc/prop.default
+		echo "lockscreen.rot_override=true" >> etc/prop.default
 	fi
 
 	# Add charger animation for 1200x1920
