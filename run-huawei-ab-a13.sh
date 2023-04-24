@@ -52,18 +52,7 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
 	
-	#----------------------------- Missing sbin root folder for magisk --------------------------------------------
-	#mkdir sbin
-	#chown root:root sbin
-	#chmod 777 sbin
-	#xattr -w security.selinux u:object_r:rootfs:s0 sbin
-	
-	#mkdir sec_storage
-	#chown root:root sec_storage
-	#chmod 777 sec_storage
-	#xattr -w security.selinux u:object_r:rootfs:s0 sec_storage
-	
-	
+
 	cd system
 		
 		
@@ -78,18 +67,6 @@ mount -o loop,rw s-ab-raw.img d
 	
 	echo "ro.system.build.type=user" >> build.prop
 	echo "ro.build.type=user" >> build.prop
-
-	#sed -i "/ro.build.description/d" build.prop
-	#sed -i "/ro.build.display.id/d" build.prop	
-	#echo "ro.build.description=LeaOS 13 HUAWEISTF-L09 20221219 release-keys" >> build.prop
-	#echo "ro.build.display.id=LeaOS 13-20221219" >> build.prop
-
-	
-	#[ro.build.description]: [LeaOS 13 HUAWEISTF-L09 20221219 release-keys]
-	#[ro.build.display.id]: [STF-L09 9.1.0.220(C432E2R1P5)]
-	#[ro.build.description]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
-	#[ro.build.display.id]: [treble_arm64_bvS-userdebug 13 TQ1A.221205.012 20221219 release-keys]
-	#[ro.build.flavor]: [treble_arm64_bvS-userdebug]	
 
 	
 	# change product
@@ -141,13 +118,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.modversion=$versionNumber" >>  build.prop
 
 		
-	# Safetynet CTS profile
-	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L01/9.1.0.368C432:user/release-keys" >> build.prop
-	#echo "ro.build.fingerprint=HUAWEI/ANE-LX1/HWANE:9/HUAWEIANE-L21/9.1.0.311C461:user/release-keys" >> build.prop
-	
-	#echo "ro.build.version.security_patch=2020-08-01" >> build.prop
-	
-
 	# set default sound
 	echo "ro.config.ringtone=Ring_Synth_04.ogg" >>  build.prop
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
@@ -212,13 +182,6 @@ mount -o loop,rw s-ab-raw.img d
 	
 
 	#-----------------------------File copy -----------------------------------------------------
-
-	# rw-system custom for Huawei device
-	#cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	#xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	#cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
-	#xattr -w security.selinux u:object_r:system_file:s0 phh/secure.sh
-	
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -410,6 +373,20 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.brand=HONOR" >>  system_ext/etc/build.prop
 	fi
 	
+	# Huawei P20 Pro
+	if [ "$model" == "CLT-L29" ];then
+	
+		echo "ro.product.system.device=HWCLT" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.device=HWCLT" >> build.prop
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.product.device=HWCLT" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+	fi
+	
+	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
 	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
@@ -438,14 +415,7 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/overlay/treble-overlay-razer-*
 	rm -rf product/overlay/treble-overlay-sharp-*
 	
-	# Remove non use apex vndk
-	rm -rf "system_ext/apex/com.android.vndk.v29"
-	rm -rf "system_ext/apex/com.android.vndk.v30"
-	rm -rf "system_ext/apex/com.android.vndk.v31"
-	rm -rf "system_ext/apex/com.android.vndk.v32"
-	
 
-	
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
 	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
@@ -485,11 +455,17 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0  etc/permissions/privapp-permissions-supl.xml
 	
 	mkdir etc/gnss
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss
 	mkdir etc/gnss/config
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config
 	cp "$origin/files-patch/system/etc/gnss/config/gnss_suplconfig_hisi.xml" etc/gnss/config/gnss_suplconfig_hisi.xml
 	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_config_thirdparty.bin" etc/gnss/config/gnss_lss_config_thirdparty.bin
 	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem" etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
 	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_slp_thirdparty.p12" etc/gnss/config/gnss_lss_slp_thirdparty.p12
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_suplconfig_hisi.xml
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_config_thirdparty.bin
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
+	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_slp_thirdparty.p12
 	
 	# Add RC
 	cp "$origin/files-patch/system/etc/init/init-gnss.rc" etc/init/init-gnss.rc
@@ -687,6 +663,13 @@ mount -o loop,rw s-ab-raw.img d
 
 
 	#-----------------------------vndk-lite --------------------------------------------------------	
+
+	# Remove non use apex vndk
+	rm -rf "system_ext/apex/com.android.vndk.v29"
+	rm -rf "system_ext/apex/com.android.vndk.v30"
+	rm -rf "system_ext/apex/com.android.vndk.v31"
+	rm -rf "system_ext/apex/com.android.vndk.v32"
+
 	cd ../d
 
 
@@ -712,9 +695,7 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
 	    done
 	done
-	#mkdir -p firmware/radio
-	#xattr -w security.selinux u:object_r:firmware_file:s0 firmware
-	#xattr -w security.selinux u:object_r:firmware_file:s0 firmware/radio
+
 )
 
 sleep 1
@@ -723,7 +704,7 @@ sleep 1
 
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
-if [ "$model" == "POT-LX1" ];then
+if [ "$model" == "POT-LX1" ] || [ "$model" == "CLT-L29" ];then
 	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
 	umount d
 else
