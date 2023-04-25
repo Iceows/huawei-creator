@@ -23,7 +23,7 @@ Generate ARM64 AB VNDKLite (Huawei device) from ARM64 AB and include patchs and 
     sudo ./lite-adapter.sh 64 s-ab.img 
 
 # 创始人
-@Iceows ： [Github](https://github.com/Iceows)
+@[Iceows](https://github.com/Iceows)
 
 ## 自用修改
 @Coconutat
