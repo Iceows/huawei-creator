@@ -242,7 +242,10 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 
 		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWVTR" >> build.prop		
+		echo "ro.build.product=VTR-L09" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop	
+		echo "ro.product.model=VTR-L09" >> build.prop	
+		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
@@ -271,7 +274,10 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 
 		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWVTR" >> build.prop		
+		echo "ro.build.product=VTR-AL00" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop	
+		echo "ro.product.model=VTR-AL00" >> build.prop	
+		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
