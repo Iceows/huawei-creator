@@ -836,5 +836,5 @@ resize2fs -M s-ab-raw.img
 
 # Make android spare image
 img2simg s-ab-raw.img s-ab.img
-
+chmod -R 777 s-ab.img
 
