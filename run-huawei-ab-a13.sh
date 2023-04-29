@@ -241,6 +241,7 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 
+		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-L09" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
@@ -273,17 +274,22 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 
+		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-AL00" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.model=VTR-AL00" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
-		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop
+		echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> system_ext/etc/build.prop
+
 
 	fi
 
@@ -534,7 +540,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# From iceows supl20 apk (# Hisi)
 	echo "is_hisi_connectivity_chip=1" >> build.prop
-	echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+	# echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
 	echo "ro.hardware.hisupl=hi1102"  >> build.prop;
 	
 	# Fix system ntp_server (europe pool)
