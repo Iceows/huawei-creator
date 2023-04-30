@@ -704,7 +704,7 @@ sleep 1
 
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
-if [ "$model" == "POT-LX1" ] || [ "$model" == "CLT-L29" ];then
+if [ "$model" == "POT-LX1" ];then
 	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
 	umount d
 else
