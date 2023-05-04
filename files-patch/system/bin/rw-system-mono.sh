@@ -571,6 +571,10 @@ if getprop ro.hardware | grep -qF exynos; then
     setprop debug.sf.latch_unsignaled 1
 fi
 
+if getprop ro.product.model | grep -qF ANE; then
+    setprop debug.sf.latch_unsignaled 1
+fi
+
 if getprop ro.vendor.product.device | grep -q -e nora -e rhannah; then
     setprop debug.sf.latch_unsignaled 1
 fi
@@ -759,6 +763,7 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ] || [ -f /data/adb/ph
     copyprop ro.product.manufacturer ro.vendor.product.manufacturer
     copyprop ro.system.product.manufacturer ro.product.vendor.manufacturer
     copyprop ro.product.manufacturer ro.product.vendor.manufacturer
+
     (getprop ro.vendor.build.security_patch; getprop ro.keymaster.xxx.security_patch) |sort |tail -n 1 |while read v;do
         [ -n "$v" ] && resetprop_phh ro.build.version.security_patch "$v"
     done
@@ -853,7 +858,8 @@ if [ "$has_hostapd" = false ];then
     setprop persist.sys.phh.system_hostapd true
 fi
 
-# In Huawei phones, the modem configuration is made depending on the model (/odm/phone.prop or /vendor/phone.prop)
+
+# In Huawei phones, the modem configuration is made depending on the model (/odm/phone.prop or /vendor/phone.prop) 
 HW_PRODID="$(sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline)"
 [ -z "$HW_PRODID" ] && HW_PRODID="0x$(od -A none -t x1 /sys/firmware/devicetree/base/hisi,modem_id | sed s/' '//g)"
 for part in odm vendor;do
@@ -863,6 +869,22 @@ for part in odm vendor;do
         fi
     fi
 done
+
+# In android 13 the support of the two sim cards is not correct. So we disable one
+if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getprop persist.sys.overlay.huawei | grep -iq -E -e 'true'; then
+
+    # Set to mono sim
+    resetprop_phh ro.multi.rild false
+    resetprop_phh persist.radio.multisim.config single
+    resetprop_phh persist.dsds.enabled false
+
+    # ‭1001100110010100‬ = 09994 - Monosim
+    ‭# 1001101010011100‬ = 09A9C - Multisim
+    resetprop_phh persist.radio.modem.cap 09995
+    resetprop_phh ro.config.modem_number 1
+    resetprop_phh ro.config.client_number 1
+fi
+
 
 # Fix sprd adf for surfaceflinger to start
 # Somehow the names of the device nodes are incorrect on Android 10; fix them by mknod
@@ -1066,7 +1088,7 @@ fi
 if getprop ro.vendor.build.fingerprint | grep -iq samsung/a11que;then
 	echo -n V > /dev/watchdog0
 fi
-
+	
 if [ "$vndk" -le 30 ];then
 	# On older vendor the default behavior was to disable color management
 	# Don't override vendor value, merely add a fallback
