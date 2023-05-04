@@ -20,8 +20,8 @@ cd ../huawei-creator
 # --------------------------------- LeaOS Gsi -----------------------------------
 
 # TrebleDroid ab version
-cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
-cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+# cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+# cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
 
 xz -cv /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img.xz
@@ -46,43 +46,32 @@ xz -cv /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFi
 # --------------------------------- LeaOS for Huawei -----------------------------------
 
 # Vanilia
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "ANE-LX1" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "ANE-LX1" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-ane.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "FIG-LX1" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "FIG-LX1" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-fig.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "STF-L09" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "STF-L09" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-stf.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "COR-AL00" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-cor.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "VTR-L09" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "VTR-L09" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-vtr.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS" "POT-LX1" "Y"
-mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-pot.img
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-ane.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-ane.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-fig.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-fig.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-stf.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-stf.img.xz
-xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-cor.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-cor.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-vtr.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-vtr.img.xz
-xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-pot.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-pot.img.xz
 
 # Google
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "ANE-LX1" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "ANE-LX1" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-ane.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "FIG-LX1" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "FIG-LX1" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-fig.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "STF-L09" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "STF-L09" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-stf.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "COR-AL00" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-cor.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "VTR-L09" "Y"
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "VTR-L09" "Y"
 mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-vtr.img
-sudo bash ./run-huawei-ab-a13.sh /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS" "POT-LX1" "Y"
-mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-pot.img
+
 
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-ane.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-ane.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-fig.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-fig.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-stf.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-stf.img.xz
-xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-cor.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-cor.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-vtr.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-vtr.img.xz
-xz -cv /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-pot.img -T0 > /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-pot.img.xz
 
