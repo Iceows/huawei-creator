@@ -12,8 +12,8 @@ srcDateFile="$1"
 
 
 cd ../arrow
+bash arrow_build_leaos/build.sh treble 64BGN
 bash arrow_build_leaos/build.sh treble 64BVN
-bash arrow_build_leaos/build.sh treble 64BG
 
 cd ../huawei-creator
 
