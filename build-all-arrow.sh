@@ -12,8 +12,8 @@ srcDateFile="$1"
 
 
 cd ../arrow
-bash arrow_build_leaos/build.sh treble 64BGN
-bash arrow_build_leaos/build.sh treble 64BVN
+#bash arrow_build_leaos/build.sh treble 64BGN
+#bash arrow_build_leaos/build.sh treble 64BVN
 
 cd ../huawei-creator
 
@@ -39,19 +39,19 @@ xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-treble_a
 
 # Vanilia
 sudo bash ./run-huawei-emui10-ab-a13.sh /home/iceows/build-output/Arrow-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS-Arrow" "CLT-L29" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-clt.img
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-clt.img
 xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-clt.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow-A13-${srcDateFile}-iceows-clt.img.xz
 sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/Arrow-A13-${srcDateFile}-treble_arm64_bvN.img "LeaOS-Arrow" "POT-LX1" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-pot.img
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-pot.img
 xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-pot.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow-A13-${srcDateFile}-iceows-pot.img.xz
 
 # Google
 sudo bash ./run-huawei-emui10-ab-a13.sh /home/iceows/build-output/Arrow-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS-Arrow" "CLT-L29" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-clt.img
-xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-${srcDateFile}-iceows-google-clt.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-clt.img.xz
-sudo bash ./run-huawei-emui10-ab-a13.sh /home/iceows/build-output/Arrow-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS-Arrow" "POT-LX1" "Y"
-mv s-vndklite.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-pot.img
-xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-${srcDateFile}-iceows-google-pot.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-pot.img.xz
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-clt.img
+xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-clt.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-clt.img.xz
+sudo bash ./run-huawei-emui9-ab-a13.sh /home/iceows/build-output/Arrow-A13-${srcDateFile}-treble_arm64_bgN.img "LeaOS-Arrow" "POT-LX1" "Y"
+mv s-erofs.img /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-pot.img
+xz -cv /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-pot.img -T0 > /media/iceows/Sauvegardes/ice-rom/Arrow/Arrow-A13-${srcDateFile}-iceows-google-pot.img.xz
 
 
 
