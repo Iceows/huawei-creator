@@ -115,6 +115,8 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.lineage.device/d" build.prop
 	echo "ro.lineage.version=20" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
+	
+	# set modversion
 	echo "ro.modversion=$versionNumber" >>  build.prop
 
 		
@@ -175,11 +177,13 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
 	
 	
-	#Performance android 13
+	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
 
-	
+	# Set to mono-sim emui9 (Android13 bug)
+	cp "$origin/files-patch/system/bin/rw-system-mono.sh" bin/rw-system.sh
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh	
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -209,6 +213,7 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_potter.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf	
 
+		# Device Name
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.product.device=HWPOT" >> build.prop	
 		echo "ro.product.system.device=HWPOT" >>  build.prop
@@ -217,6 +222,7 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		
 
 	fi	
 
@@ -240,7 +246,8 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-
+		
+		# Device Name
 		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-L09" >> build.prop
@@ -274,6 +281,8 @@ mount -o loop,rw s-ab-raw.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
 
+
+		# Device Name
 		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-AL00" >> build.prop
@@ -282,13 +291,13 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop
-		echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
-		echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		# echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		# echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
-		echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> system_ext/etc/build.prop
+		# echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> system_ext/etc/build.prop
 
 
 	fi
@@ -478,55 +487,73 @@ mount -o loop,rw s-ab-raw.img d
 	
 	
 	
-	# --------------AGPS Patch ---------------------- #
+	# --------------AGPS Patch Only gnss model ---------------------- #
 	
-	cp "$origin/files-patch/system/bin/gnss_watchlssd_thirdparty" bin/gnss_watchlssd_thirdparty
-	cp "$origin/files-patch/system/lib/libgnss_lss_gw_thirdparty.so" lib/libgnss_lss_gw_thirdparty.so
-	cp "$origin/files-patch/system/lib64/libgnss_lss_gw_thirdparty.so" lib64/libgnss_lss_gw_thirdparty.so
+	if [ "$model" == "FIG-LX1" ] || [ "$model" == "ANE-LX1" ] || [ "$model" == "POT-LX1" ];then
 	
-	mkdir app/gnss_supl20service_hisi
-	chmod 755 app/
-	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi
-	
-	cp "$origin/files-patch/system/app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk" app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
-	xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
-	
-	cp "$origin/files-patch/system/etc/gps_debug.conf" etc/gps_debug.conf
-	cp "$origin/files-patch/system/etc/permissions/privapp-permissions-supl.xml" etc/permissions/privapp-permissions-supl.xml
-	xattr -w security.selinux u:object_r:system_file:s0  etc/permissions/privapp-permissions-supl.xml
-	
-	mkdir etc/gnss
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss
-	mkdir etc/gnss/config
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config
-	cp "$origin/files-patch/system/etc/gnss/config/gnss_suplconfig_hisi.xml" etc/gnss/config/gnss_suplconfig_hisi.xml
-	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_config_thirdparty.bin" etc/gnss/config/gnss_lss_config_thirdparty.bin
-	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem" etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
-	cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_slp_thirdparty.p12" etc/gnss/config/gnss_lss_slp_thirdparty.p12
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_suplconfig_hisi.xml
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_config_thirdparty.bin
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
-	xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_slp_thirdparty.p12
-	
-	# Add RC
-	cp "$origin/files-patch/system/etc/init/init-gnss.rc" etc/init/init-gnss.rc
-	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init-gnss.rc
-	
-	
-	# Set owner and permissions (system:system)
-	chmod 755 bin/gnss_watchlssd_thirdparty
-	chown 1000:1000 bin/gnss_watchlssd_thirdparty
+		cp "$origin/files-patch/system/bin/gnss_watchlssd_thirdparty" bin/gnss_watchlssd_thirdparty
+		cp "$origin/files-patch/system/lib/libgnss_lss_gw_thirdparty.so" lib/libgnss_lss_gw_thirdparty.so
+		cp "$origin/files-patch/system/lib64/libgnss_lss_gw_thirdparty.so" lib64/libgnss_lss_gw_thirdparty.so
+		
+		mkdir app/gnss_supl20service_hisi
+		chmod 755 app/
+		xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi
+		
+		cp "$origin/files-patch/system/app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk" app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+		xattr -w security.selinux u:object_r:system_file:s0 app/gnss_supl20service_hisi/gnss_supl20service_hisi.apk
+		
+		cp "$origin/files-patch/system/etc/gps_debug.conf" etc/gps_debug.conf
+		cp "$origin/files-patch/system/etc/permissions/privapp-permissions-supl.xml" etc/permissions/privapp-permissions-supl.xml
+		xattr -w security.selinux u:object_r:system_file:s0  etc/permissions/privapp-permissions-supl.xml
+		
+		mkdir etc/gnss
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss
+		mkdir etc/gnss/config
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config
+		cp "$origin/files-patch/system/etc/gnss/config/gnss_suplconfig_hisi.xml" etc/gnss/config/gnss_suplconfig_hisi.xml
+		cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_config_thirdparty.bin" etc/gnss/config/gnss_lss_config_thirdparty.bin
+		cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem" etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
+		cp "$origin/files-patch/system/etc/gnss/config/gnss_lss_slp_thirdparty.p12" etc/gnss/config/gnss_lss_slp_thirdparty.p12
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_suplconfig_hisi.xml
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_config_thirdparty.bin
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_rfg_key_thirdparty.pem
+		xattr -w security.selinux u:object_r:system_file:s0  etc/gnss/config/gnss_lss_slp_thirdparty.p12
+		
+		# Add RC
+		cp "$origin/files-patch/system/etc/init/init-gnss.rc" etc/init/init-gnss.rc
+		xattr -w security.selinux u:object_r:system_file:s0 etc/init/init-gnss.rc
+		
+		
+		# Set owner and permissions (system:system)
+		chmod 755 bin/gnss_watchlssd_thirdparty
+		chown 1000:1000 bin/gnss_watchlssd_thirdparty
 
-	xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
-	xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
-	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libgnss_lss_gw_thirdparty.so
+		xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
+		xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
+		xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libgnss_lss_gw_thirdparty.so
 
 
-	# For gnss_lss
-	echo "/system/bin/gnss_watchlssd_thirdparty		u:object_r:hi110x_daemon_exec:s0" >> etc/selinux/plat_file_contexts 
-	echo "(allow hi110x_daemon self (fifo_file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hi110x_daemon system_data_root_file (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow hi110x_daemon socket_device (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
+		# For gnss_lss
+		echo "/system/bin/gnss_watchlssd_thirdparty		u:object_r:hi110x_daemon_exec:s0" >> etc/selinux/plat_file_contexts 
+		echo "(allow hi110x_daemon self (fifo_file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
+		echo "(allow hi110x_daemon system_data_root_file (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
+		echo "(allow hi110x_daemon socket_device (dir (read write)))" >> etc/selinux/plat_sepolicy.cil
+		
+
+		# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
+		echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
+		echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
+		echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+		echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
+
+
+		# ------------------------------------ #
+		
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+	fi
 	
 
 	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
@@ -534,14 +561,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
 	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
-
-
-	# ------------------------------------ #
-	
-	# From iceows supl20 apk (# Hisi)
-	echo "is_hisi_connectivity_chip=1" >> build.prop
-	# echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
-	echo "ro.hardware.hisupl=hi1102"  >> build.prop;
 	
 	# Fix system ntp_server (europe pool)
 	set global ntp_server europe.pool.ntp.org
@@ -745,7 +764,7 @@ sleep 1
 
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
-if [ "$model" == "POT-LX1" ] || [ "$model" == "CLT-L29" ];then
+if [ "$model" == "POT-LX1" ];then
 	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
 	umount d
 else
