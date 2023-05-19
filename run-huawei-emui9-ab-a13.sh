@@ -181,10 +181,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "debug.performance.tuning=1" >> build.prop
 	
 
-	# Set to mono-sim emui9 (Android13 bug)
-	cp "$origin/files-patch/system/bin/rw-system-mono.sh" bin/rw-system.sh
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh	
-
 	#-----------------------------File copy -----------------------------------------------------
 
 	# Copy bootanimation.zip	
