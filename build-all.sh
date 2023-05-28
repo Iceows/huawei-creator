@@ -20,8 +20,8 @@ cd ../huawei-creator
 # --------------------------------- LeaOS Gsi -----------------------------------
 
 # TrebleDroid ab version
-# cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
-# cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
+cp /home/iceows/build-output/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img /media/iceows/Sauvegardes/ice-rom/TrebleDroid/
 
 xz -cv /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bvN.img.xz
 xz -cv /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img -T0 >  /media/iceows/Sauvegardes/ice-rom/TrebleDroid/TrebleDroid-A13-${srcDateFile}-treble_arm64_bgN.img.xz
