@@ -17,13 +17,14 @@ srcFile="$1"
 versionNumber="$2"
 model="$3"
 bootanim="$4"
-
+erofs="$5"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab-a13.sh [/path/to/system.img] [version] [model device] [bootanimation]"
+	echo "Usage: sudo bash run-huawei-ab-a13.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
 	echo "version=LeaOS A13"
 	echo "device=ANE-LX1"
 	echo "bootanimation=[Y/N]"
+	echo "erofs=[Y/N]"
 	exit 1
 fi
 
@@ -139,7 +140,9 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# Audio
 	echo "audio.deep_buffer.media=true" >>  build.prop
-
+	echo "audio.offload.buffer.size.kb=32" >> build.prop
+	echo "ro.audio.offload_wakelock=false" >> build.prop
+	
 	# Display
 	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
 
@@ -172,7 +175,9 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.cpuset.enable=1" >> build.prop
 	echo "persist.sys.performance=true" >> build.prop
 	
-
+	# bluetooth
+	echo "bluetooth.enable_timeout_ms=12000" >> build.prop
+	
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
 	
@@ -437,8 +442,30 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/lib64/libaptXHD_encoder.so" lib64/libaptXHD_encoder.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0 lib64/libaptXHD_encoder.so
 	
+	# Bluetooth conf : 1000 = system
+	mkdir etc/bluetooth/
+	chmod 766 etc/bluetooth/
+	chown 1000:1000 etc/bluetooth/
+	xattr -w security.selinux u:object_r:system_file:s0 etc/bluetooth
 	
+	cp "$origin/files-patch/system/etc/bluetooth/bt_did.conf" etc/bluetooth/bt_did.conf
+	xattr -w security.selinux u:object_r:system_file:s0 etc/bluetooth/bt_did.conf
+	cp "$origin/files-patch/system/etc/bluetooth/bt_stack.conf" etc/bluetooth/bt_stack.conf
+	xattr -w security.selinux u:object_r:system_file:s0 etc/bluetooth/bt_stack.conf
 	
+	# Special linkerconfig to support preavs
+	#rm -rf ../linkerconfig/ld.config.txt
+	#cp "$origin/files-patch/linkerconfig/ld.config.txt" ../linkerconfig/ld.config.txt
+	#xattr -w security.selinux object_r:linkerconfig_file:s0 ../linkerconfig/ld.config.txt
+	#chown root:root ../linkerconfig/ld.config.txt
+	#chmod 777 ../linkerconfig/ld.config.txt
+	
+	#cp "$origin/files-patch/linkerconfig/ld.config.28.txt" etc/ld.config.28.txt
+	#cp "$origin/files-patch/linkerconfig/ld.config.28.txt" etc/ld.config.txt
+	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.28.txt
+	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.txt
+
+		
 	# --------------AGPS Patch Only gnss model ---------------------- #
 	
 	if [ "$model" == "FIG-LX1" ] || [ "$model" == "ANE-LX1" ] || [ "$model" == "POT-LX1" ];then
@@ -710,7 +737,7 @@ sleep 1
 
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
-if [ "$model" == "POT-LX1" ];then
+if [ "$erofs" == "Y" ];then
 	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
 	umount d
 else
