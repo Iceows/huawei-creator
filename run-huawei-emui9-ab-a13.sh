@@ -42,6 +42,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	rm -rf splash2
 	rm -rf modem_log
+	rm -rf preavs
 	
 	mkdir splash2
 	chown root:root splash2
@@ -53,6 +54,10 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 777 modem_log
 	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
 	
+	mkdir preavs
+	chown root:root preavs
+	chmod 777 preavs
+	xattr -w security.selinux u:object_r:rootfs:s0 preavs
 
 	cd system
 		
