@@ -178,13 +178,6 @@ mount -o loop,rw s-ab-raw.img d
 
 	#-----------------------------File copy -----------------------------------------------------
 	
-	# rw-system custom for Huawei device
-	cp "$origin/files-patch/system/bin/rw-system.sh" bin/rw-system.sh
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 bin/rw-system.sh
-	cp "$origin/files-patch/system/phh/secure.sh" phh/secure.sh
-	xattr -w security.selinux u:object_r:system_file:s0 phh/secure.sh
-	
-
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
 		mkdir media

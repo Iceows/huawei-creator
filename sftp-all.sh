@@ -11,7 +11,7 @@ srcDateFile="$1"
 
 # LeaOS Vanilia + Google
 for model in ane fig stf cor vtr pot;do
- 	lftp sftp://altairfr:xxxx@frs.sourceforge.net -e "cd /home/frs/project/altairfr-huawei/LeaOS-A13 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-${model}.img.xz; bye"
+ 	lftp sftp://altairfr:xxx@frs.sourceforge.net -e "cd /home/frs/project/altairfr-huawei/LeaOS-A13 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-${model}.img.xz; bye"
  	lftp sftp://altairfr:xxxx@frs.sourceforge.net -e "cd /home/frs/project/altairfr-huawei/LeaOS-A13 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS-AOSP/A13/LeaOS-A13-${srcDateFile}-iceows-google-${model}.img.xz; bye"
  done
 
