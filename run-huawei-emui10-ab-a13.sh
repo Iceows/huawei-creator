@@ -13,6 +13,9 @@ origin="$(dirname "$origin")"
 
 
 srcFile="$1"
+versionNumber="$2"
+model="$3"
+bootanim="$4"
 
 
 if [ ! -f "$srcFile" ];then
