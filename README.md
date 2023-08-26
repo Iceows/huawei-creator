@@ -1,4 +1,9 @@
-# Usage
+# Huawei Creator
+***
+Language:  
+**English** | [简体中文](README_CN.md)  
+***
+## Usage
 
 
 Generate ARM64 AB (Huawei device) from ARM64 AB and include patchs and optimisations (target image name is s-ab.img):
