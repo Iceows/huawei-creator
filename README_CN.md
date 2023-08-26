@@ -1,7 +1,11 @@
 # Huawei GSI镜像优化/转化脚本  
+***
+语言:  
+[English](README_CN.md) | **简体中文**  
+***
 用于把[phh GSI](https://github.com/phhusson/treble_experimentations/wiki/Generic-System-Image-%28GSI%29-list)的GSI镜像转化为带有华为优化补丁的版本。  
 ***
-## 使用  
+## 使用方法  
 
 1. 先安装xattr : `sudo apt install xattr`
 2. 使用什么脚本取决于你想转换什么版本的GSI镜像。如:**AB分区**镜像用**run-huawei-ab.sh**(Android 13的用**run-huawei-ab-a13.sh**)。**A-Only分区**用**run-huawei-aonly.sh**。以此类推。
