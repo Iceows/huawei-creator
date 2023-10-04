@@ -232,7 +232,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	fi	
 
-	# VTR-L09 Huawei P10
+	# VTR-L09 / VTR-AL00 Huawei P10
 	if [ "$model" == "VTR-L09" ];then
 		# NFC
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" etc/libnfc-brcm.conf
@@ -252,15 +252,59 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-
+		
+		# Device Name
+		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
-		echo "ro.product.device=HWVTR" >> build.prop		
+		echo "ro.build.product=VTR-L09" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop	
+		echo "ro.product.model=VTR-L09" >> build.prop	
+		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+	elif [ "$model" == "VTR-AL00" ];then
+	# NFC
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
+		
+		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" product/etc/libnfc-brcm.conf
+		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" product/etc/libnfc-nci.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" product/etc/libnfc-nxp.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
+		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
+		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
+
+
+		# Device Name
+		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.build.product=VTR-AL00" >> build.prop
+		echo "ro.product.device=HWVTR" >> build.prop	
+		echo "ro.product.model=VTR-AL00" >> build.prop	
+		echo "ro.product.device=HWVTR" >> build.prop	
+		echo "ro.product.system.device=HWVTR" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop
+		# echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		# echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		# echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:9/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> system_ext/etc/build.prop
+
 
 	fi
 
@@ -539,6 +583,12 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
 	fi
 	
+
+	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
+	echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
+	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
 	
 	# Fix system ntp_server (europe pool)
 	set global ntp_server europe.pool.ntp.org
@@ -751,10 +801,10 @@ else
 	resize2fs -M s-ab-raw.img
 
 	mv s-ab-raw.img s-vndklite.img
+	chmod -R 777 s-vndklite.img
 fi
 	
 	
-
 
 
 
