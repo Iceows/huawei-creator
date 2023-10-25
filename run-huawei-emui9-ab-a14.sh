@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+#sudo bash run-huawei-ab-a114.sh  [/path/to/system.img] [version] [model device] [huawei animation]  [[erfs]]
 #cleanups
 #A13 version
 umount d
@@ -20,8 +20,8 @@ bootanim="$4"
 erofs="$5"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab-a13.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
-	echo "version=LeaOS A13"
+	echo "Usage: sudo bash run-huawei-ab-a14.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
+	echo "version=LeaOS A14"
 	echo "device=ANE-LX1"
 	echo "bootanimation=[Y/N]"
 	echo "erofs=[Y/N]"
@@ -607,10 +607,9 @@ mount -o loop,rw s-ab-raw.img d
 	# echo "ro.control_privapp_permissions=log" >> /system_root/system/build.prop;
 
 
+	#----------------------------- SELinux rules -----------------------------------------------------	
+	
 
-	
-	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
-	
 	
 	# --------------------------- Kirin EMUI 9 perf properties add SELinux rules for vendor init -----
 
