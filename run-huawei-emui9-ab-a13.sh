@@ -475,22 +475,24 @@ mount -o loop,rw s-ab-raw.img d
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
 	xattr -w security.selinux u:object_r:teecd_auth_exec:s0  bin/tee_auth_daemon
+	chmod 755 bin/tee_auth_daemon
+	# 2000 = shell
+	chown root:2000 bin/tee_auth_daemon
 	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
 	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
-	cp "$origin/files-patch/system/bin/libc_secshared.so" lib64/libc_secshared.so
+	cp "$origin/files-patch/system/lib64/libc_secshared.so" lib64/libc_secshared.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libc_secshared.so
-	cp "$origin/files-patch/system/bin/libtuidaemon.so" lib64/libtuidaemon.so
+	cp "$origin/files-patch/system/lib64/libtuidaemon.so" lib64/libtuidaemon.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libtuidaemon.so
-	cp "$origin/files-patch/system/bin/libteec_client.so" lib64/libteec_client.so
+	cp "$origin/files-patch/system/lib64/libteec_client.so" lib64/libteec_client.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libteec_client.so
-	cp "$origin/files-patch/system/bin/libhidlbase.so" lib64/libhidlbase.so
+	cp "$origin/files-patch/system/lib64/libhidlbase.so" lib64/libhidlbase.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libhidlbase.so
-	cp "$origin/files-patch/system/bin/vendor.huawei.hardware.libteec@1.0.so" lib64/vendor.huawei.hardware.libteec@1.0.so
+	cp "$origin/files-patch/system/lib64/vendor.huawei.hardware.libteec@1.0.so" lib64/vendor.huawei.hardware.libteec@1.0.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/vendor.huawei.hardware.libteec@1.0.so
-	cp "$origin/files-patch/system/bin/vendor.huawei.hardware.libteec@2.0.so" lib64/vendor.huawei.hardware.libteec@2.0.so
+	cp "$origin/files-patch/system/lib64/vendor.huawei.hardware.libteec@2.0.so" lib64/vendor.huawei.hardware.libteec@2.0.so
 	xattr -w security.selinux u:object_r:system_lib_file:s0   lib64/vendor.huawei.hardware.libteec@2.0.so	
 
-	
 	
 	# Codec bluetooth 32 bits
 	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
@@ -567,7 +569,7 @@ mount -o loop,rw s-ab-raw.img d
 		
 		# Set owner and permissions (system:system)
 		chmod 755 bin/gnss_watchlssd_thirdparty
-		chown 1000:1000 bin/gnss_watchlssd_thirdparty
+		chown root:2000 bin/gnss_watchlssd_thirdparty
 
 		xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
 		xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
