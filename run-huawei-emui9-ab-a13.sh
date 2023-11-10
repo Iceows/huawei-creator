@@ -474,9 +474,22 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
-	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:teecd_auth_exec:s0  bin/tee_auth_daemon
 	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
 	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
+	cp "$origin/files-patch/system/bin/libc_secshared.so" lib64/libc_secshared.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libc_secshared.so
+	cp "$origin/files-patch/system/bin/libtuidaemon.so" lib64/libtuidaemon.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libtuidaemon.so
+	cp "$origin/files-patch/system/bin/libteec_client.so" lib64/libteec_client.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libteec_client.so
+	cp "$origin/files-patch/system/bin/libhidlbase.so" lib64/libhidlbase.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libhidlbase.so
+	cp "$origin/files-patch/system/bin/vendor.huawei.hardware.libteec@1.0.so" lib64/vendor.huawei.hardware.libteec@1.0.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/vendor.huawei.hardware.libteec@1.0.so
+	cp "$origin/files-patch/system/bin/vendor.huawei.hardware.libteec@2.0.so" lib64/vendor.huawei.hardware.libteec@2.0.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0   lib64/vendor.huawei.hardware.libteec@2.0.so	
+
 	
 	
 	# Codec bluetooth 32 bits
@@ -590,6 +603,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
 	
+	
+	
 	# Fix system ntp_server (europe pool)
 	set global ntp_server europe.pool.ntp.org
 
@@ -598,18 +613,24 @@ mount -o loop,rw s-ab-raw.img d
 	echo "assisted_gps_enabled=1"  >> build.prop;
 
 	# Uncomment to Debug GPS
-	# echo "log.tag.GnssConfiguration=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.GnssLocationProvider=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.GnssManagerService=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.NtpTimeHelper=DEBUG" >> /system_root/system/build.prop;
+	# echo "log.tag.GnssConfiguration=DEBUG" >> build.prop;
+	# echo "log.tag.GnssLocationProvider=DEBUG" >> build.prop;
+	# echo "log.tag.GnssManagerService=DEBUG" >> build.prop;
+	# echo "log.tag.NtpTimeHelper=DEBUG" >> build.prop;
 	
 	# active le mode journalisation
-	# echo "ro.control_privapp_permissions=log" >> /system_root/system/build.prop;
-
+	# echo "ro.control_privapp_permissions=log" >> build.prop;
 
 
 	
 	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
+
+	# NFC and perf
+	echo "(allow nfc system_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_root_file (file (setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow kernel system_data_root_file (dir (setattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
+
 	
 	
 	# --------------------------- Kirin EMUI 9 perf properties add SELinux rules for vendor init -----
@@ -736,7 +757,7 @@ mount -o loop,rw s-ab-raw.img d
 
 
 	# property
-	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> /system_root/system/etc/selinux/plat_property_contexts
+	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> etc/selinux/plat_property_contexts
 		
 	# Kirin	
 	echo "persist.kirin.alloc_buffer_sync=true" >> build.prop
@@ -749,7 +770,131 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.media.lowlatency.enable=true" >> build.prop
 	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
 
+	#----------------------------- tee daemon --------------------------------------------------------	
+	
+	echo "/system/bin/tee_auth_daemon   u:object_r:teecd_auth_exec:s0" >> etc/selinux/plat_file_contexts
+	echo "/sec_storage(/.*)?              u:object_r:teecd_data_file:s0" >> etc/selinux/plat_file_contexts
+	echo "/sec_storage            u:object_r:teecd_data_file:s0" >> etc/selinux/plat_file_contexts
+	echo "/dev/hisi_teelog                u:object_r:teelog_device:s0" >> etc/selinux/plat_file_contexts
+	echo "/sys/kernel/tui/c_state         u:object_r:sysfs_tee:s0" >> etc/selinux/plat_file_contexts
+	echo "/dev/socket/tee-multi-user              u:object_r:tee_multi_user_socket:s0" >> etc/selinux/plat_file_contexts
+	
+	echo "(type teecd_auth_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r teecd_auth_exec)" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
 
+	echo "(type teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(type teelog_device)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r teelog_device)" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(type sysfs_tee)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r sysfs_tee)" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(type tee_multi_user_socket)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r tee_multi_user_socket)" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(type system_teecd)" >> etc/selinux/plat_sepolicy.cil
+	echo "(roletype object_r system_teecd)" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow tee_multi_user_socket socket_device (dir (write add_name)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow tee_multi_user_socket socket_device (sock_file (create setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	echo "(allow init teecd_data_file (dir (mounton)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow fsck teecd_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init system_teecd (process (transition)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd tmpfs (dir (getattr search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd tee_device (chr_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd tee_data_file (dir (ioctl read write getattr lock add_name remove_name search open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd tee_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (netlink_socket (read write create getattr setattr lock append bind connect getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (netlink_generic_socket (read write create getattr setattr lock append bind connect getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_type (dir (ioctl read getattr lock search open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_type (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_type (lnk_file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_data_file (file (read getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_data_file (lnk_file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (chown sys_admin)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd kernel (process (setsched)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init system_teecd (process (transition)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd rootfs (file (read getattr execute entrypoint open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(dontaudit init system_teecd (process (noatsecure)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow init system_teecd (process (siginh rlimitinh)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd property_socket (sock_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd init (unix_stream_socket (connectto)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_data_file (dir (setattr mounton)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typetransition system_teecd system_data_file dir teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(typetransition system_teecd system_data_file fifo_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(typetransition system_teecd system_data_file sock_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(typetransition system_teecd system_data_file lnk_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(typetransition system_teecd system_data_file file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd keystore (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd keystore (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_data_file (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_server (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_server (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (fowner fsetid net_raw)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (tcp_socket (ioctl read write create connect getopt setopt name_connect)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd port (tcp_socket (name_connect)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (udp_socket (ioctl read write create connect getopt setopt)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_data_file (lnk_file (read create getattr setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd domain (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd domain (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow coredomain system_teecd (unix_stream_socket (connectto)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow domain system_teecd (fd (use)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd init (unix_stream_socket (read write listen accept connectto)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd cpuctl_device (dir (search)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (sys_nice)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd vendor_file (file (ioctl read getattr lock execute open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_auth_exec (file (read getattr map execute entrypoint open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_tee (dir (ioctl read getattr lock search open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_tee (file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_tee (lnk_file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd sysfs_tee (file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow system_teecd dnsproxyd_socket (sock_file (write)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_device (chr_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_data_file (dir (ioctl read write create getattr setattr lock rename add_name remove_name reparent search rmdir open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd system_data_file (dir (ioctl read write getattr lock add_name remove_name search open)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow system_teecd teecd_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
+
+	echo "(allow init tee_multi_user_socket (sock_file (create setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
+	echo "(allow tee_multi_user_socket tmpfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(dontaudit teecd hal_keymaster_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(dontaudit teecd hal_gatekeeper_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+
+	# Add type attribute
+	sed -i '/(typeattributeset dev_type (teelog_device device ashmem_device ashmem_libcutils_device audio_device binder_device hwbinder_device/d' etc/selinux/plat_sepolicy.cil
+	sed -i '/(typeattributeset file_type (teecd_auth_exec adbd_exec aidl_lazy_test_server_exec apexd_exec appdomain_tmpfs app_zygote_tmpfs/d' etc/selinux/plat_sepolicy.cil
+	sed -i '/(typeattributeset exec_type (teecd_auth_exec adbd_exec aidl_lazy_test_server_exec apexd_exec bootanim_exec bootstat_exec bufferhubd_exec/d' etc/selinux/plat_sepolicy.cil
+	sed -i '/(typeattributeset mlstrustedobject (shmem_device ashmem_libcutils_device binder_device/d' etc/selinux/plat_sepolicy.cil
+	sed -i '/(typeattributeset coredomain (adbd aidl_lazy_test_server apexd/d' etc/selinux/plat_sepolicy.cil
+	sed -i '/(typeattributeset domain (system_teecd adbd aidl_lazy_test_server apexd app_zygote/d' etc/selinux/plat_sepolicy.cil
+	
+	echo "(typeattributeset dev_type (teelog_device device ashmem_device ashmem_libcutils_device audio_device binder_device hwbinder_device vndbinder_device block_device camera_device dm_device dm_user_device keychord_device loop_control_device loop_device pmsg_device radio_device ram_device rtc_device vd_device vold_device console_device fscklogs gpu_device graphics_device hw_random_device input_device port_device lowpan_device mtp_device nfc_device ptmx_device kmsg_device kmsg_debug_device null_device random_device secure_element_device sensors_device serial_device socket_device owntty_device tty_device video_device zero_device fuse_device iio_device ion_device dmabuf_heap_device dmabuf_system_heap_device dmabuf_system_secure_heap_device qtaguid_device watchdog_device uhid_device uio_device tun_device usbaccessory_device usb_device usb_serial_device gnss_device properties_device properties_serial property_info hci_attach_dev rpmsg_device root_block_device frp_block_device system_block_device recovery_block_device boot_block_device userdata_block_device cache_block_device swap_block_device metadata_block_device misc_block_device super_block_device sdcard_block_device userdata_sysdev rootdisk_sysdev ppp_device tee_device kvm_device ))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset file_type (teecd_auth_exec adbd_exec aidl_lazy_test_server_exec apexd_exec appdomain_tmpfs app_zygote_tmpfs audioserver_tmpfs bootanim_exec bootstat_exec bufferhubd_exec cameraserver_exec cameraserver_tmpfs charger_exec crash_dump_exec credstore_exec dhcp_exec diced_exec dnsmasq_exec drmserver_exec drmserver_socket dumpstate_exec e2fs_exec extra_free_kbytes_exec unlabeled system_file system_asan_options_file system_event_log_tags_file system_lib_file system_bootstrap_lib_file system_group_file system_linker_exec system_linker_config_file system_passwd_file system_seccomp_policy_file system_security_cacerts_file tcpdump_exec system_zoneinfo_file cgroup_desc_file cgroup_desc_api_file vendor_cgroup_desc_file task_profiles_file task_profiles_api_file vendor_task_profiles_file art_apex_dir linkerconfig_file incremental_control_file vendor_hal_file vendor_file vendor_app_file vendor_configs_file same_process_hal_file vndk_sp_file vendor_framework_file vendor_overlay_file vendor_public_lib_file vendor_public_framework_file vendor_keylayout_file vendor_keychars_file vendor_idc_file vendor_uuid_mapping_config_file vendor_vm_file vendor_vm_data_file metadata_file vold_metadata_file gsi_metadata_file gsi_public_metadata_file password_slot_metadata_file apex_metadata_file ota_metadata_file metadata_bootstat_file userspace_reboot_metadata_file staged_install_file watchdog_metadata_file dev_cpu_variant runtime_event_log_tags_file logcat_exec cgroup_rc_file coredump_file system_data_root_file system_data_file packages_list_file game_mode_intervention_list_file vendor_data_file unencrypted_data_file install_data_file drm_data_file adb_data_file anr_data_file tombstone_data_file tombstone_wifi_data_file apex_data_file apk_data_file apk_tmp_file apk_private_data_file apk_private_tmp_file dalvikcache_data_file ota_data_file ota_package_file user_profile_root_file user_profile_data_file profman_dump_data_file prereboot_data_file resourcecache_data_file shell_data_file property_data_file bootchart_data_file dropbox_data_file heapdump_data_file nativetest_data_file shell_test_data_file ringtone_file preloads_data_file preloads_media_file dhcp_data_file server_configurable_flags_data_file staging_data_file vendor_apex_file mnt_media_rw_file mnt_user_file mnt_pass_through_file mnt_expand_file mnt_sdcard_file storage_file mnt_media_rw_stub_file storage_stub_file mnt_vendor_file mnt_product_file apex_mnt_dir apex_info_file postinstall_mnt_dir postinstall_file postinstall_apex_mnt_dir mirror_data_file adb_keys_file apex_system_server_data_file apex_module_data_file apex_ota_reserved_file apex_rollback_data_file appcompat_data_file audio_data_file audioserver_data_file bluetooth_data_file bluetooth_logs_data_file bootstat_data_file boottrace_data_file camera_data_file credstore_data_file gatekeeper_data_file incident_data_file keychain_data_file keystore_data_file media_data_file media_rw_data_file misc_user_data_file net_data_file network_watchlist_data_file nfc_data_file nfc_logs_data_file radio_data_file recovery_data_file shared_relro_file snapshotctl_log_data_file stats_data_file systemkeys_data_file textclassifier_data_file trace_data_file vpn_data_file wifi_data_file zoneinfo_data_file vold_data_file iorapd_data_file tee_data_file update_engine_data_file update_engine_log_data_file method_trace_data_file gsi_data_file radio_core_data_file app_data_file privapp_data_file system_app_data_file cache_file overlayfs_file cache_backup_file cache_private_backup_file cache_recovery_file efs_file wallpaper_file shortcut_manager_icons icon_file asec_apk_file asec_public_file asec_image_file backup_data_file bluetooth_efs_file fingerprintd_data_file fingerprint_vendor_data_file app_fuse_file face_vendor_data_file iris_vendor_data_file adbd_socket bluetooth_socket dnsproxyd_socket dumpstate_socket fwmarkd_socket lmkd_socket logd_socket logdr_socket logdw_socket mdns_socket mdnsd_socket misc_logd_file mtpd_socket property_socket racoon_socket recovery_socket rild_socket rild_debug_socket snapuserd_socket snapuserd_proxy_socket statsdw_socket system_wpa_socket system_ndebug_socket system_unsolzygote_socket tombstoned_crash_socket tombstoned_java_trace_socket tombstoned_intercept_socket traced_consumer_socket traced_perf_socket traced_producer_socket uncrypt_socket wpa_socket zygote_socket heapprofd_socket gps_control pdx_display_dir pdx_performance_dir pdx_bufferhub_dir pdx_display_client_endpoint_socket pdx_display_manager_endpoint_socket pdx_display_screenshot_endpoint_socket pdx_display_vsync_endpoint_socket pdx_performance_client_endpoint_socket pdx_bufferhub_client_endpoint_socket file_contexts_file mac_perms_file property_contexts_file seapp_contexts_file sepolicy_file service_contexts_file keystore2_key_contexts_file vendor_service_contexts_file hwservice_contexts_file vndservice_contexts_file vendor_kernel_modules system_dlkm_file audiohal_data_file fingerprintd_exec flags_health_check_exec fsck_exec gatekeeperd_exec hal_graphics_composer_server_tmpfs hwservicemanager_exec idmap_exec init_exec init_tmpfs inputflinger_exec installd_exec iorap_inode2filename_exec iorap_inode2filename_tmpfs iorap_prefetcherd_exec iorap_prefetcherd_tmpfs iorapd_exec iorapd_tmpfs keystore_exec llkd_exec lmkd_exec logd_exec mediadrmserver_exec mediaextractor_exec mediaextractor_tmpfs mediametrics_exec mediaserver_exec mediaserver_tmpfs mediaswcodec_exec mtp_exec netd_exec netutils_wrapper_exec performanced_exec ppp_exec profman_exec racoon_exec recovery_persist_exec recovery_refresh_exec rs_exec runas_exec sdcardd_exec servicemanager_exec sgdisk_exec shell_exec simpleperf_app_runner_exec statsd_exec su_exec surfaceflinger_tmpfs system_server_tmpfs tombstoned_exec toolbox_exec traced_tmpfs tzdatacheck_exec ueventd_tmpfs uncrypt_exec update_engine_exec update_verifier_exec usbd_exec vdc_exec vendor_misc_writer_exec vendor_shell_exec vendor_toolbox_exec virtual_touchpad_exec vold_exec vold_prepare_subdirs_exec watchdogd_exec webview_zygote_exec webview_zygote_tmpfs wificond_exec wpantund_exec zygote_tmpfs zygote_exec apex_test_prepostinstall_exec artd_exec atrace_exec audioserver_exec auditctl_exec automotive_display_service_exec blank_screen_exec blkid_exec boringssl_self_test_exec vendor_boringssl_self_test_exec boringssl_self_test_marker bpfloader_exec canhalconfigurator_exec clatd_exec compos_verify_exec composd_exec cppreopts_exec crosvm_exec crosvm_tmpfs derive_classpath_exec derive_sdk_exec dex2oat_exec dexoptanalyzer_exec dexoptanalyzer_tmpfs dmesgd_exec dumpstate_tmpfs evsmanagerd_exec storaged_data_file wm_trace_data_file accessibility_trace_data_file perfetto_traces_data_file perfetto_traces_bugreport_data_file perfetto_configs_data_file sdk_sandbox_system_data_file sdk_sandbox_data_file app_exec_data_file rollback_data_file checkin_data_file ota_image_data_file gsi_persistent_data_file emergency_data_file profcollectd_data_file apex_art_data_file apex_art_staging_data_file apex_compos_data_file apex_appsearch_data_file apex_permission_data_file apex_scheduling_data_file apex_tethering_data_file apex_wifi_data_file font_data_file dmesgd_data_file odrefresh_data_file odsign_data_file odsign_metrics_file virtualizationservice_data_file environ_system_data_file bootanim_data_file fd_server_exec compos_exec compos_key_helper_exec sepolicy_metadata_file sepolicy_test_file prng_seeder_socket fsverity_init_exec fwk_bufferhub_exec gki_apex_prepostinstall_exec gpuservice_exec gsid_exec hal_allocator_default_exec heapprofd_exec heapprofd_tmpfs hidl_lazy_test_server_exec incident_exec incident_helper_exec incidentd_exec iw_exec linkerconfig_exec lpdumpd_exec mdnsd_exec mediatranscoding_exec mediatranscoding_tmpfs mediatuner_exec migrate_legacy_obb_data_exec mm_events_exec mtectrl_exec odrefresh_exec odsign_exec otapreopt_chroot_exec otapreopt_slot_exec perfetto_exec perfetto_tmpfs postinstall_exec postinstall_dexopt_exec postinstall_dexopt_tmpfs preloads_copy_exec preopt2cachename_exec prng_seeder_exec profcollectd_exec remount_exec rss_hwm_reset_exec simpleperf_exec simpleperf_boot_data_file snapshotctl_exec snapuserd_exec stats_exec storaged_exec surfaceflinger_exec system_server_startup_tmpfs system_suspend_exec traced_exec traced_perf_exec traced_probes_exec traced_probes_tmpfs vehicle_binding_util_exec viewcompiler_exec viewcompiler_tmpfs virtualizationservice_exec wait_for_keymaster_exec ))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset exec_type (teecd_auth_exec adbd_exec aidl_lazy_test_server_exec apexd_exec bootanim_exec bootstat_exec bufferhubd_exec cameraserver_exec charger_exec crash_dump_exec credstore_exec dhcp_exec diced_exec dnsmasq_exec drmserver_exec dumpstate_exec e2fs_exec extra_free_kbytes_exec tcpdump_exec logcat_exec fingerprintd_exec flags_health_check_exec fsck_exec gatekeeperd_exec hwservicemanager_exec idmap_exec init_exec inputflinger_exec installd_exec iorap_inode2filename_exec iorap_prefetcherd_exec iorapd_exec keystore_exec llkd_exec lmkd_exec logd_exec mediadrmserver_exec mediaextractor_exec mediametrics_exec mediaserver_exec mediaswcodec_exec mtp_exec netd_exec netutils_wrapper_exec performanced_exec ppp_exec profman_exec racoon_exec recovery_persist_exec recovery_refresh_exec rs_exec runas_exec sdcardd_exec servicemanager_exec sgdisk_exec shell_exec simpleperf_app_runner_exec statsd_exec su_exec tombstoned_exec toolbox_exec tzdatacheck_exec uncrypt_exec update_engine_exec update_verifier_exec usbd_exec vdc_exec vendor_misc_writer_exec vendor_shell_exec vendor_toolbox_exec virtual_touchpad_exec vold_exec vold_prepare_subdirs_exec watchdogd_exec webview_zygote_exec wificond_exec wpantund_exec zygote_exec apex_test_prepostinstall_exec artd_exec atrace_exec audioserver_exec auditctl_exec automotive_display_service_exec blank_screen_exec blkid_exec boringssl_self_test_exec vendor_boringssl_self_test_exec bpfloader_exec canhalconfigurator_exec clatd_exec compos_verify_exec composd_exec cppreopts_exec crosvm_exec derive_classpath_exec derive_sdk_exec dex2oat_exec dexoptanalyzer_exec dmesgd_exec evsmanagerd_exec fd_server_exec compos_exec compos_key_helper_exec fsverity_init_exec fwk_bufferhub_exec gki_apex_prepostinstall_exec gpuservice_exec gsid_exec hal_allocator_default_exec heapprofd_exec hidl_lazy_test_server_exec incident_exec incident_helper_exec incidentd_exec iw_exec linkerconfig_exec lpdumpd_exec mdnsd_exec mediatranscoding_exec mediatuner_exec migrate_legacy_obb_data_exec mm_events_exec mtectrl_exec odrefresh_exec odsign_exec otapreopt_chroot_exec otapreopt_slot_exec perfetto_exec postinstall_exec postinstall_dexopt_exec preloads_copy_exec preopt2cachename_exec prng_seeder_exec profcollectd_exec remount_exec rss_hwm_reset_exec simpleperf_exec snapshotctl_exec snapuserd_exec stats_exec storaged_exec surfaceflinger_exec system_suspend_exec traced_exec traced_perf_exec traced_probes_exec vehicle_binding_util_exec viewcompiler_exec virtualizationservice_exec wait_for_keymaster_exec ))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset mlstrustedobject (system_teecd sysfs_tee ashmem_device ashmem_libcutils_device binder_device hwbinder_device pmsg_device gpu_device mtp_device ptmx_device kmsg_device null_device random_device owntty_device zero_device fuse_device ion_device dmabuf_heap_device dmabuf_system_heap_device dmabuf_system_secure_heap_device uhid_device tun_device usbaccessory_device usb_device proc_qtaguid_ctrl proc_qtaguid_stat selinuxfs cgroup sysfs sysfs_bluetooth_writable sysfs_kernel_notes sysfs_nfc_power_writable sysfs_vendor_sched inotify devpts fuse sdcardfs vfat exfat debugfs_trace_marker debugfs_tracing debugfs_tracing_debug functionfs anr_data_file tombstone_data_file apk_tmp_file apk_private_tmp_file ota_package_file user_profile_data_file shell_data_file heapdump_data_file ringtone_file media_rw_data_file radio_data_file shared_relro_file trace_data_file method_trace_data_file system_app_data_file cache_file cache_backup_file cache_recovery_file wallpaper_file shortcut_manager_icons asec_apk_file backup_data_file app_fuse_file dnsproxyd_socket fwmarkd_socket logd_socket logdr_socket logdw_socket mdnsd_socket property_socket statsdw_socket system_ndebug_socket system_unsolzygote_socket tombstoned_crash_socket tombstoned_java_trace_socket traced_consumer_socket traced_perf_socket traced_producer_socket heapprofd_socket pdx_display_client_endpoint_socket pdx_display_manager_endpoint_socket pdx_display_screenshot_endpoint_socket pdx_display_vsync_endpoint_socket pdx_performance_client_endpoint_socket pdx_bufferhub_client_endpoint_socket system_server_tmpfs traced_tmpfs wm_trace_data_file prng_seeder_socket heapprofd_tmpfs ))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset coredomain (system_teecd adbd aidl_lazy_test_server apexd app_zygote atrace audioserver blkid blkid_untrusted bluetooth bootanim bootstat bpfloader bufferhubd cameraserver charger crash_dump credstore dhcp diced dnsmasq drmserver dumpstate e2fs ephemeral_app evsmanagerd extra_free_kbytes fastbootd fingerprintd flags_health_check fsck fsck_untrusted gatekeeperd gmscore_app gpuservice healthd heapprofd hwservicemanager idmap incident incident_helper incidentd init inputflinger installd iorap_inode2filename iorap_prefetcherd iorapd isolated_app kernel keystore llkd lmkd logd logpersist mdnsd mediadrmserver mediaextractor mediametrics mediaprovider mediaserver mediaswcodec mediatranscoding modprobe mtp netd netutils_wrapper network_stack nfc otapreopt_chroot perfetto performanced platform_app postinstall ppp priv_app prng_seeder profman racoon radio recovery recovery_persist recovery_refresh rs rss_hwm_reset runas runas_app sdcardd secure_element servicemanager sgdisk shared_relro shell simpleperf simpleperf_app_runner slideshow statsd su surfaceflinger system_app system_server tombstoned toolbox traced traced_perf traced_probes traceur_app tzdatacheck ueventd uncrypt untrusted_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app_25 update_engine update_verifier usbd vdc virtual_touchpad vold vold_prepare_subdirs watchdogd webview_zygote wificond wpantund zygote apex_test_prepostinstall apexd_derive_classpath artd auditctl automotive_display_service blank_screen boringssl_self_test canhalconfigurator clatd compos_fd_server compos_verify composd cppreopts crosvm derive_classpath derive_sdk dex2oat dexoptanalyzer dmesgd fsverity_init fwk_bufferhub gki_apex_prepostinstall gsid hal_allocator_default hidl_lazy_test_server iw linkerconfig lpdumpd mediaprovider_app mediatuner migrate_legacy_obb_data mm_events mtectrl odrefresh odsign otapreopt_slot permissioncontroller_app postinstall_dexopt preloads_copy preopt2cachename profcollectd remote_prov_app remount sdk_sandbox simpleperf_boot snapshotctl snapuserd stats storaged system_server_startup system_suspend vehicle_binding_util viewcompiler virtualizationservice wait_for_keymaster ))" >> etc/selinux/plat_sepolicy.cil
+	echo "(typeattributeset domain (system_teecd adbd aidl_lazy_test_server apexd app_zygote atrace audioserver blkid blkid_untrusted bluetooth bootanim bootstat bpfloader bufferhubd cameraserver charger charger_vendor crash_dump credstore dhcp diced dnsmasq drmserver dumpstate e2fs ephemeral_app evsmanagerd extra_free_kbytes fastbootd fingerprintd flags_health_check fsck fsck_untrusted gatekeeperd gmscore_app gpuservice healthd heapprofd hwservicemanager idmap incident incident_helper incidentd init inputflinger installd iorap_inode2filename iorap_prefetcherd iorapd isolated_app kernel keystore llkd lmkd logd logpersist mdnsd mediadrmserver mediaextractor mediametrics mediaprovider mediaserver mediaswcodec mediatranscoding modprobe mtp netd netutils_wrapper network_stack nfc otapreopt_chroot perfetto performanced platform_app postinstall ppp priv_app prng_seeder profman racoon radio recovery recovery_persist recovery_refresh rs rss_hwm_reset runas runas_app sdcardd secure_element servicemanager sgdisk shared_relro shell simpleperf simpleperf_app_runner slideshow statsd su surfaceflinger system_app system_server tee tombstoned toolbox traced traced_perf traced_probes traceur_app tzdatacheck ueventd uncrypt untrusted_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app_25 update_engine update_verifier usbd vdc vendor_init vendor_misc_writer vendor_modprobe vendor_shell virtual_touchpad vndservicemanager vold vold_prepare_subdirs watchdogd webview_zygote wificond wpantund zygote apex_test_prepostinstall apexd_derive_classpath artd auditctl automotive_display_service blank_screen boringssl_self_test vendor_boringssl_self_test canhalconfigurator clatd compos_fd_server compos_verify composd cppreopts crosvm derive_classpath derive_sdk dex2oat dexoptanalyzer dmesgd fsverity_init fwk_bufferhub gki_apex_prepostinstall gsid hal_allocator_default hidl_lazy_test_server iw linkerconfig lpdumpd mediaprovider_app mediatuner migrate_legacy_obb_data mm_events mtectrl odrefresh odsign otapreopt_slot permissioncontroller_app postinstall_dexopt preloads_copy preopt2cachename profcollectd remote_prov_app remount sdk_sandbox simpleperf_boot snapshotctl snapuserd stats storaged system_server_startup system_suspend vehicle_binding_util viewcompiler virtualizationservice vzwomatrigger_app wait_for_keymaster ))" >> etc/selinux/plat_sepolicy.cil
+
+	
+	
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
 	# Remove non use apex vndk
