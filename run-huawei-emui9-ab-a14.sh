@@ -189,7 +189,46 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
-	
+ 
+       #----------------------------- 调整-----------------------------------------------------	
+	#Helps Scrolling Response
+	#帮助滚动响应
+	echo "windowsmgr.max_events_per_sec=150" >> build.prop
+
+	#Increases overall touch response
+	#提高整体触摸响应
+	echo "Debug.performance.tuning=1" >> build.prop
+	echo "Video.accelerate.hw=1" >> build.prop
+
+	#Fix some application issues
+	#修复一些应用程序问题
+	echo "ro.kernel.android.checkjni=0" >> build.prop
+
+	#framerate boost (may eat battery)
+	#帧率提升（可能会消耗电池）
+	#windowsmgr.max_events_per_sec=240
+
+	#save battery 节省电池
+	echo "wifi.supplicant_scan_interval=180" >> build.prop
+	echo "pm.sleep_mode=1" >> build.prop
+	echo "[COLOR="Red"]ro.ril.disable.power.collapse=0[/COLOR]" >> build.prop
+
+	# Net Speed Tweaks/网速调整
+	echo "net.tcp.buffersize.default=4096,87380,256960,4096, 16384,256960" >> build.prop
+	echo "net.tcp.buffersize.wifi=4096,87380,256960,4096,163 84,256960" >> build.prop
+	echo "net.tcp.buffersize.umts=4096,87380,256960,4096,163 84,256960" >> build.prop
+	echo "net.tcp.buffersize.gprs=4096,87380,256960,4096,163 84,256960" >> build.prop
+	echo "net.tcp.buffersize.edge=4096,87380,256960,4096,163 84,256960" >> build.prop
+	echo "net.tcp.buffersize.hspa=4096,87380,256960,4096,163 84,256960" >> build.prop
+	echo "net.tcp.buffersize.lte=524288,1048576,2097152,5242 88,1048576,2097152" >> build.prop
+	echo "net.tcp.buffersize.lte=262144,524288,3145728,262144,524288,3145728" >> build.prop
+	echo "net.tcp.buffersize.hspda=4096,87380,256960,4096,16 384,256960" >> build.prop
+	echo "net.tcp.buffersize.evdo_b=6144,87380,1048576,6144, 87380,1048576" >> build.prop
+	echo "net.tcp.buffersize.hsdpa=6144,262144,1048576,6144,262144,1048576" >> build.prop
+
+	#Better signal/信号更好
+	echo "persist.cust.tel.eons=1" >> build.prop
+	echo "ro.config.hw_fast_dormancy=1" >> build.prop
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -441,7 +480,19 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 	fi
+ 
+	# Huawei mate 10 Pro
+	if [ "$model" == "BLA-L29" ];then
 	
+		echo "ro.product.system.device=HWBLA" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.device=HWBLA" >> build.prop
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.product.device=HWBLA" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWBLA" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+	fi	
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
