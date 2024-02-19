@@ -119,7 +119,7 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.lineage.display.version/d" build.prop
 	sed -i "/ro.modversion/d" build.prop
 	sed -i "/ro.lineage.device/d" build.prop
-	echo "ro.lineage.version=20" >>  build.prop
+	echo "ro.lineage.version=$versionNumber" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	
 	# set modversion
