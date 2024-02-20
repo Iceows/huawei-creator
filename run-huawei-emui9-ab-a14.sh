@@ -202,7 +202,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	#Fix some application issues
 	#修复一些应用程序问题
-	#echo "ro.kernel.android.checkjni=0" >> build.prop
+	echo "ro.kernel.android.checkjni=0" >> build.prop
 
 	#framerate boost (may eat battery)
 	#帧率提升（可能会消耗电池）
