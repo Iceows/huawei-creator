@@ -15,7 +15,7 @@
 6. xxxx.sh是你选择的脚本，xxxx.img是你选择的GSI镜像。剩下的在命令里展现了。
 7. 举个详细例子: `sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-20240217" "ANE-LX1" "N" "N"` 。
 
-Generate ARM64 AB (Huawei device) from ARM64 AB and include patchs and optimisations (target image name is s-ab.img):
+
 
     sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-20240217" "ANE-LX1" "N" "N"
 
