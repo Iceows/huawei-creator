@@ -17,7 +17,7 @@
    
 .
 
-    sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-2024.02.17" "Huawei_P20_lite (ANE-LX1)" "N" "N"
+    sudo run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-2024.02.17" "Huawei_P20_lite (ANE-LX1)" "N" "N"
 
 
    
