@@ -206,7 +206,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	#framerate boost (may eat battery)
 	#帧率提升（可能会消耗电池）
-	#windowsmgr.max_events_per_sec=240
+	echo "windowsmgr.max_events_per_sec=240" >> build.prop
 
 	#save battery 节省电池
 	echo "wifi.supplicant_scan_interval=180" >> build.prop
