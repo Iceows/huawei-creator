@@ -19,7 +19,7 @@ Generate ARM64 AB (Huawei device) from ARM64 AB and include patchs and optimisat
 
     sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-20240217" "ANE-LX1" "N" "N"
 
-Generate ARM64 A-only (Huawei device) from ARM64 A-only and include patchs and optimisations (target image name is s-aonly.img)
+
    
 ***
 ## 原始README
