@@ -13,8 +13,7 @@
 4. **A-Only分区**用**run-huawei-aonly.sh**。以此类推。
 5. 命令语法是 : `sudo bash xxxx.sh xxxx.img "GSI镜像名称" "设备型号代码" "是否开启华为原生开机动画，只能选择Y或者N" "是否使用erofs"`。
 6. xxxx.sh是你选择的脚本，xxxx.img是你选择的GSI镜像。剩下的在命令里展现了。
-7. 举个详细例子: `sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-20240217" "ANE-LX1" "N" "N"` 。
-
+7. 举个详细例子:
 .
 
     sudo bash run-huawei-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-20240217" "ANE-LX1" "N" "N"
