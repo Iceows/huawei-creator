@@ -15,7 +15,6 @@
 6. xxxx.sh是你选择的脚本，xxxx.img是你选择的GSI镜像。剩下的在命令里展现了。
 7. 举个详细例子:
    
-.
 
     sudo ./run-huawei-emui9-ab-a14.sh lineage-21.0-20240217-UNOFFICIAL-arm64_bgN.img "lineage-21.0-2024.02.17" "Huawei_P20_lite (ANE-LX1)" "N" "N"
 
