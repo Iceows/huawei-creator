@@ -11,7 +11,7 @@
 2. 使用什么脚本取决于你想转换什么版本的GSI镜像。
 3. 如:**AB分区**镜像用**run-huawei-ab.sh**(Android 13的用**run-huawei-ab-a13.sh**)。
 4. **A-Only分区**用**run-huawei-aonly.sh**。以此类推。
-5. 命令语法是 : `sudo bash xxxx.sh xxxx.img "GSI镜像名称" "设备型号代码" "是否开启华为原生开机动画，只能选择Y或者N" "是否使用erofs"`。
+5. 命令语法是 : `sudo bash xxxx.sh xxxx.img "GSI镜像名称" "设备型号代码" "是否开启华为原生开机动画，只能选择Y或者N" "是否使用erofs"`，只能选择Y或者N"（选择 Y 无法启动）。
 6. xxxx.sh是你选择的脚本，xxxx.img是你选择的GSI镜像。剩下的在命令里展现了。
 7. 举个详细例子:
    
