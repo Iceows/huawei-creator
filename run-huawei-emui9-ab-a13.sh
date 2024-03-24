@@ -207,6 +207,26 @@ mount -o loop,rw s-ab-raw.img d
 	fi
 
 
+	# STK-L22 y9s
+	if [ "$model" == "STK-L22" ];then
+	
+		# [ro.sf.lcd_density]: [480]
+		# [hw.lcd.density]: [480]
+		# [hw.lcd.density.scale]: [800]
+	
+		# NO NFC
+
+		# Device Name
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWSTK-HF" >> build.prop	
+		echo "ro.product.system.device=HWSTK-HF" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.product.device=HWSTK-HF" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWSTK-HF" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+	fi
+	
 	# POT-LX1 / POT-LX1A P Smart 2019 / 2020
 	if [ "$model" == "POT-LX1" ];then
 		# NFC
@@ -228,8 +248,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
-		
-
 	fi	
 
 	# VTR-L09 / VTR-AL00 Huawei P10
@@ -258,7 +276,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-L09" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
-		echo "ro.product.model=VTR-L09" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
@@ -293,7 +310,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-AL00" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
-		echo "ro.product.model=VTR-AL00" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop
