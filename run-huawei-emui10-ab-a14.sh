@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-emui10-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+#sudo bash run-huawei-emui10-ab-a14.sh  [/path/to/system.img] [version] [model device] [huawei animation]
 #cleanups
-#A13 version
+#A14 version
 umount d
 
 set -ex
@@ -19,7 +19,7 @@ bootanim="$4"
 
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash make-erofs.sh  [/path/to/system.img]"
+	echo "sudo bash run-huawei-emui10-ab-a14.sh  [/path/to/system.img] [version] [model device] [huawei animation]"
 	exit 1
 fi
 
@@ -173,7 +173,7 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
 	
 	
-	#Performance android 13
+	#Performance android 14
 	echo "debug.performance.tuning=1" >> build.prop
 	
 
@@ -238,8 +238,6 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
 	
-	
-
 
 )
 
@@ -250,5 +248,8 @@ rm -Rf s-erofs.img
 mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 
 umount d
+
+echo "To flash : fastboot reboot fastboot"
+echo "fastboot flash system s-erofs.img"
 
 
