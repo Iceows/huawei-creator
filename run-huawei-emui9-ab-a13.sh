@@ -582,7 +582,10 @@ mount -o loop,rw s-ab-raw.img d
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.28.txt
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.txt
 
-		
+	# -----------------------------APN Huawei ----------------------- #
+	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
+
+
 	# --------------AGPS Patch Only gnss model ---------------------- #
 	
 	if [ "$model" == "FIG-LX1" ] || [ "$model" == "ANE-LX1" ] || [ "$model" == "POT-LX1" ];then
