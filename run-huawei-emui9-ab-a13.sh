@@ -252,6 +252,15 @@ mount -o loop,rw s-ab-raw.img d
 
 		# For FM Radio volume (# Hisi)
 		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
+		
+		# IA for Camera
+		echo "ro.camera.master_ai_default=off" >>  build.prop
+		echo "ro.camera.front_ai_default=off" >>  build.prop
+		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+		
+		# -----------------------------IA Config Huawei ----------------------- #
+		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" product/etc/xml/iaware_config_cust.bin
+
 	fi	
 
 	# VTR-L09 / VTR-AL00 Huawei P10

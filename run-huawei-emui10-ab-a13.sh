@@ -171,15 +171,21 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
-	
+
 	
 	#Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
 
-	
 
 	#-----------------------------File copy -----------------------------------------------------
+
+        # -----------------------------IA Config Huawei ----------------------- #
+        mkdir etc/xml
+	cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
+		
+	# -----------------------------APN Huawei ----------------------- #
+	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
 	
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -193,7 +199,7 @@ mount -o loop,rw s-ab-raw.img d
 		xattr -w security.selinux u:object_r:system_file:s0 "media/bootanimation.zip"
 	
 	fi
-	
+
 	# Huawei P20 Pro
 	if [ "$model" == "CLT-L29" ];then
 	
@@ -205,15 +211,22 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+		# IA for Camera
+		echo "ro.camera.master_ai_default=off" >>  build.prop
+		echo "ro.camera.front_ai_default=off" >>  build.prop
+		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+		
+
 	fi
-	
-	
+
+
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
 	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
 	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
 	
-	# Remove non huawei overlay
+	# Remove non huawei Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
 	rm -rf product/overlay/treble-overlay-lenovo-*
 	rm -rf product/overlay/treble-overlay-lge-*
