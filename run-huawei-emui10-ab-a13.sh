@@ -200,6 +200,24 @@ mount -o loop,rw s-ab-raw.img d
 	
 	fi
 
+	# Huawei P40 Pro
+	if [ "$model" == "ELS-N29" ];then
+	
+		echo "ro.product.system.device=HWELS" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.device=HWELS" >> build.prop
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.product.device=HWELS" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+		# IA for Camera
+		echo "ro.camera.master_ai_default=off" >>  build.prop
+		echo "ro.camera.front_ai_default=off" >>  build.prop
+		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+	fi
+	
 	# Huawei P20 Pro
 	if [ "$model" == "CLT-L29" ];then
 	
@@ -216,8 +234,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.camera.master_ai_default=off" >>  build.prop
 		echo "ro.camera.front_ai_default=off" >>  build.prop
 		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
-		
-
 	fi
 
 
@@ -284,8 +300,20 @@ mount -o loop,rw s-ab-raw.img d
 sleep 1
 
 
-rm -Rf s-erofs.img
-mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
+# Huawei P20 Pro
+if [ "$model" == "CLT-L29" ];then
+	rm -Rf s-erofs.img
+	mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
+fi
+
+if [ "$model" == "ELS-N29" ];then
+	e2fsck -f -y s-ab-raw.img || true
+	resize2fs -M s-ab-raw.img
+
+	mv s-ab-raw.img s-p40.img
+	chmod -R 777 s-p40.img
+fi
+
 
 umount d
 
