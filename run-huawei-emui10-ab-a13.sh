@@ -121,51 +121,31 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.config.notification_sound=OnTheHunt.ogg">>  build.prop
 	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
- 
-	# Debug LMK - for Android Kernel that support it - e
-	echo "ro.lmk.debug=false" >>  build.prop
-	
-	# Debug Huawei Off/On - if on EMUI8 start service logcat on boot
-	echo "persist.sys.hiview.debug=0" >> build.prop
-	echo "persist.sys.huawei.debug.on=0" >> build.prop
+  	# Debug Huawei Off=0/On=1
+	echo "persist.sys.hiview.debug=1" >> build.prop
+	echo "persist.sys.huawei.debug.on=1" >> build.prop
 
-	
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >>  build.prop
 	
-	# Audio
-	echo "audio.deep_buffer.media=true" >>  build.prop
-
 	# Display
 	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
 
-	# Graphics hi6250 ?
-	echo "debug.egl.hw=1" >>  build.prop
-	echo "debug.egl.profiler=1" >>  build.prop
-	echo "debug.hwui.use_buffer_age=false" >>  build.prop
-	echo "debug.performance.tuning=1" >>  build.prop
-	echo "debug.sf.enable_hwc_vds=0" >>  build.prop
-	echo "debug.sf.hw=1" >>  build.prop
-	echo "hwui.disable_vsync=true" >>  build.prop
-	echo "ro.config.enable.hw_accel=true" >>  build.prop
-	echo "video.accelerate.hw=1" >>  build.prop
-	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
-	echo "debug.cpurend.vsync=false" >> build.prop
-	echo "ro.hardware.egl=mali" >> build.prop
-	echo "ro.hardware.vulkan=mali" >> build.prop
+	# Graphics
 	echo "debug.sf.disable_backpressure=1" >>  build.prop
 	echo "debug.sf.latch_unsignaled=1" >>  build.prop
 
 	# Color
 	echo "persist.sys.sf.native_mode=1" >> build.prop
-	echo "persist.sys.sf.color_mode=1" >> build.prop
-	echo "persist.sys.sf.color_saturation=1.1" >> build.prop
+	echo "persist.sys.sf.color_saturation=1.0" >> build.prop
 	
 	# CPU
 	echo "persist.sys.boost.byeachfling=true" >> build.prop
 	echo "persist.sys.boost.skipframe=3" >> build.prop
-	echo "persist.sys.boost.durationms=1000" >> build.prop		
+	echo "persist.sys.boost.durationms=1000" >> build.prop	
+		
 	echo "persist.sys.cpuset.enable=1" >> build.prop
+	echo "persist.sys.cpuset.subswitch=16" >> build.prop	
 	echo "persist.sys.performance=true" >> build.prop
 	
 
@@ -213,9 +193,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 
 		# IA for Camera
-		echo "ro.camera.master_ai_default=off" >>  build.prop
-		echo "ro.camera.front_ai_default=off" >>  build.prop
-		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
 	fi
 	
 	# Huawei P20 Pro
@@ -267,25 +244,29 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
 
-	#----------------------------- Set prop like vendor huawei --------------------------------------------------------		
+	#----------------------------- Set prop like vendor huawei -----------------------------------------		
 	# Kirin prop
-	echo "persist.kirin.alloc_buffer_sync=true" >> build.prop
-	echo "persist.kirin.texture_cache_opt=1"  >> build.prop
+	echo "persist.kirin.media.hires.enable=true" >> build.prop
+	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
+	echo "persist.kirin.media.offload.enable=true"  >> build.prop
+	echo "persist.kirin.media.usbvoice.enable=true"  >> build.prop
+	echo "persist.kirin.media.usbvoice.name=USB-Audio - HUAWEI GLASS"  >> build.prop
+	
 	echo "persist.kirin.touch_move_opt=1"  >> build.prop
 	echo "persist.kirin.touch_vsync_opt=1"  >> build.prop
 	echo "persist.kirin.touchevent_opt=1"  >> build.prop
-	
-	echo "persist.kirin.media.usbvoice.enable=true"  >> build.prop
-	echo "persist.kirin.media.usbvoice.name=USB-Audio - HUAWEI GLASS"  >> build.prop
-	echo "persist.kirin.media.offload.enable=true"  >> build.prop
-	echo "persist.kirin.media.hires.enable=true"  >> build.prop
+
+	echo "ro.kirin.config.callinwifi=200,6"  >> build.prop
 	
 	echo "ro.kirin.config.hw_perfgenius=true"  >> build.prop
 	echo "ro.kirin.config.hw_board_ipa=true"  >> build.prop
-
+	echo "ro.kirin.product.platform=kirin990"  >> build.prop
+	
+	
+	
 	# Enable lowlatency
 	echo "persist.media.lowlatency.enable=true" >> build.prop
-	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
+
 
 	#-----------------------------Clean vndk (EMUI10 have only vndk29) --------------------------------------------------------	
 
@@ -295,10 +276,37 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf "system_ext/apex/com.android.vndk.v32"
 
 	cd ../d
+
+        #-------------------- VNDK Lite
+	if [ "$model" == "ELS-N29" ];then
+		find -name \*.capex -or -name \*.apex -type f -delete
+		for vndk in 28 29;do
+		    for arch in 32 64;do
+			d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
+			[ ! -d "$d" ] && continue
+			p=lib
+			[ "$arch" = 64 ] && p=lib64
+			[ ! -d system/system_ext/apex/com.android.vndk.v${vndk}/${p}/ ] && continue
+			for lib in $(cd "$d"; echo *);do
+			    cp "$origin/vendor_vndk/vndk-${vndk}-arm${arch}/$lib" system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
+			    xattr -w security.selinux u:object_r:system_lib_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
+			    echo $lib >> system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
+			done
+			sort -u system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt > v
+			mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
+			xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
+
+			grep -v -e libgui.so -e libft2.so system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt > v
+			mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
+			xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
+		    done
+		done
+	fi		
 )
 
 sleep 1
-
+umount d
+sleep 5
 
 # Huawei P20 Pro
 if [ "$model" == "CLT-L29" ];then
@@ -315,6 +323,5 @@ if [ "$model" == "ELS-N29" ];then
 fi
 
 
-umount d
 
 
