@@ -149,8 +149,12 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.sys.performance=true" >> build.prop
 	
 
-	# Usb
-	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
+	# Usb (adb)
+	echo "persist.sys.usb.config=adb" >> build.prop
+
+	# echo "ro.adb.secure=0" >> build.prop
+	# echo "persist.service.adb.enable=1 " >> build.prop
+	# echo "service.adb.root=1" >> build.prop		
 
 	
 	#Performance android 13
