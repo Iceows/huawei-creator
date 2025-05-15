@@ -163,6 +163,9 @@ mount -o loop,rw s-ab-raw.img d
 
 
 	#-----------------------------File copy -----------------------------------------------------
+	
+        # -----------------------------VNDK fixe ----------------------- #	
+	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
 
         # -----------------------------IA Config Huawei ----------------------- #
         mkdir etc/xml
@@ -196,7 +199,8 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 
-		# IA for Camera
+		# HISI chip
+		
 	fi
 	
 	# Huawei P20 Pro
@@ -217,11 +221,18 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
 	fi
 
+	mkdir media
+	mkdir media/audio
+	mkdir media/audio/ui
+	cp "product/media/audio/ui/Lock.ogg" "media/audio/ui/Lock.ogg"
+	cp "product/media/audio/ui/Unlock.ogg" "media/audio/ui/Unlock.ogg"
+	cp "product/media/audio/ui/Trusted.ogg" "media/audio/ui/Trusted.ogg"
+
 
 	# Remove duplicate media audio
-	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
-	rm -rf product/media/audio/ringtones/CANISMAJOR.ogg
-	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
+	rm -rf "product/media/audio/ringtones/ANDROMEDA.ogg"
+	rm -rf "product/media/audio/ringtones/CANISMAJOR.ogg"
+	rm -rf "product/media/audio/ringtones/URSAMINOR.ogg"
 	
 	# Remove non huawei Overlay
 	rm -rf product/overlay/treble-overlay-infinix-*
@@ -265,11 +276,11 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.kirin.config.hw_perfgenius=true"  >> build.prop
 	echo "ro.kirin.config.hw_board_ipa=true"  >> build.prop
 	echo "ro.kirin.product.platform=kirin990"  >> build.prop
-	
-	
+
 	
 	# Enable lowlatency
 	echo "persist.media.lowlatency.enable=true" >> build.prop
+
 
 
 	#-----------------------------Clean vndk (EMUI10 have only vndk29) --------------------------------------------------------	
@@ -281,31 +292,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	cd ../d
 
-        #-------------------- VNDK Lite
-	if [ "$model" == "ELS-N29" ];then
-		find -name \*.capex -or -name \*.apex -type f -delete
-		for vndk in 28 29;do
-		    for arch in 32 64;do
-			d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
-			[ ! -d "$d" ] && continue
-			p=lib
-			[ "$arch" = 64 ] && p=lib64
-			[ ! -d system/system_ext/apex/com.android.vndk.v${vndk}/${p}/ ] && continue
-			for lib in $(cd "$d"; echo *);do
-			    cp "$origin/vendor_vndk/vndk-${vndk}-arm${arch}/$lib" system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
-			    xattr -w security.selinux u:object_r:system_lib_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
-			    echo $lib >> system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
-			done
-			sort -u system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt > v
-			mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
-			xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
 
-			grep -v -e libgui.so -e libft2.so system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt > v
-			mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
-			xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
-		    done
-		done
-	fi		
 )
 
 sleep 1
