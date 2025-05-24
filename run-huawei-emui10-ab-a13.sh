@@ -166,7 +166,9 @@ mount -o loop,rw s-ab-raw.img d
 	
         # -----------------------------VNDK fixe ----------------------- #	
 	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
-
+	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
+	
+	
         # -----------------------------IA Config Huawei ----------------------- #
         mkdir etc/xml
 	cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
@@ -281,29 +283,41 @@ mount -o loop,rw s-ab-raw.img d
 	# Enable lowlatency
 	echo "persist.media.lowlatency.enable=true" >> build.prop
 
+	#----------------------------- Make vndklite ------------------------------
+	cd ..
+	find -name \*.capex -or -name \*.apex -type f -delete
+	for vndk in 28 29;do
+	    for arch in 32 64;do
+		d="$origin/vendor_vndk/vndk-${vndk}-arm${arch}"
+		[ ! -d "$d" ] && continue
+		p=lib
+		[ "$arch" = 64 ] && p=lib64
+		[ ! -d system/system_ext/apex/com.android.vndk.v${vndk}/${p}/ ] && continue
+		for lib in $(cd "$d"; echo *);do
+		    cp "$origin/vendor_vndk/vndk-${vndk}-arm${arch}/$lib" system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
+		    xattr -w security.selinux u:object_r:system_lib_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/${p}/$lib
+		    echo $lib >> system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
+		done
+		sort -u system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt > v
+		mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
+		xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkcore.libraries.${vndk}.txt
 
-
-	#-----------------------------Clean vndk (EMUI10 have only vndk29) --------------------------------------------------------	
-
-	# Remove non use apex vndk
-	rm -rf "system_ext/apex/com.android.vndk.v30"
-	rm -rf "system_ext/apex/com.android.vndk.v31"
-	rm -rf "system_ext/apex/com.android.vndk.v32"
-
-	cd ../d
-
-
+		grep -v -e libgui.so -e libft2.so system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt > v
+		mv -f v system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
+		xattr -w security.selinux u:object_r:system_file:s0 system/system_ext/apex/com.android.vndk.v${vndk}/etc/vndkprivate.libraries.${vndk}.txt
+	    done
+	done
 )
-
 sleep 1
-umount d
-sleep 5
 
 # Huawei P20 Pro
 if [ "$model" == "CLT-L29" ];then
 	rm -Rf s-erofs.img
 	mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 fi
+
+umount d
+sleep 5
 
 if [ "$model" == "ELS-N29" ];then
 	e2fsck -f -y s-ab-raw.img || true
