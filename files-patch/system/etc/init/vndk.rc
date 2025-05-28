@@ -1,3 +1,7 @@
+on boot
+	setprop ro.connectivity.chiptype ${ro.boot.odm.conn.chiptype}
+	setprop ro.connectivity.sub_chiptype ${ro.boot.odm.conn.schiptype}
+
 on post-fs
 	exec - root -- /system/bin/vndk-detect
 	exec - root -- /system/bin/rw-system.sh
