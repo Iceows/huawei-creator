@@ -419,6 +419,37 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 	fi	
 
+	# MediaTab T5
+	if [ "$model" == "AGS2-L09" ];then
+
+		echo "ro.product.system.device=HWAGS2" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWAGS2" >> build.prop
+		echo "ro.product.product.device=HWAGS2" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWAGS2" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.build.product=AGS2" >> build.prop
+		echo "ro.lineage.device=HWAGS2" >>  build.prop
+				
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+		
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
+		
+		# For screen DPI
+		sed -i "/ro.sf.lcd_density/d" build.prop 
+		echo "ro.sf.lcd_density=566"  >> build.prop;
+	
+		# For lock the screen (netflix)
+		echo "lockscreen.rot_override=true"  >> build.prop;
+	fi
+	
+	
 	# BND-L21
 	if [ "$model" == "BND-L21" ];then
 
