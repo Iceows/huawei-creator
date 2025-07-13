@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
 #cleanups
 #A13 version
 umount d
@@ -258,8 +258,9 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.camera.front_ai_default=off" >>  build.prop
 		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
 		
-		# -----------------------------IA Config Huawei ----------------------- #
-		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" product/etc/xml/iaware_config_cust.bin
+		# -----------------------------IAWare Config Huawei ----------------------- #
+		mkdir etc/xml
+		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
 
 	fi	
 
