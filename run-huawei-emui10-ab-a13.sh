@@ -169,12 +169,24 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
 	
 	
-        # -----------------------------IA Config Huawei ----------------------- #
+        # -----------------------------IA Config Huawei -------------------- #
         mkdir etc/xml
 	cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
 		
-	# -----------------------------APN Huawei ----------------------- #
+	# -----------------------------APN Huawei -------------------------- #
 	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
+
+	# -----------------------------Huawei specific tweak ---------------------------- #	
+	cp "$origin/files-patch/system/etc/init/init.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
+	
+	# -----------------------------PHH Exec ---------------------------- #
+	cp "$origin/files-patch/system/bin/rw-system10.sh" "bin/rw-system.sh"
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
 	
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
@@ -217,10 +229,14 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.device=HWCLT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 
-		# IA for Camera
+		# Inteli Art for Camera
 		echo "ro.camera.master_ai_default=off" >>  build.prop
 		echo "ro.camera.front_ai_default=off" >>  build.prop
 		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+		
+		# Android10 Huawei iaware
+		echo "ro.config.enable_iaware=true" >>  build.prop
+	
 	fi
 
 	mkdir media
