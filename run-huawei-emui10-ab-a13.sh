@@ -177,11 +177,11 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
 
 	# -----------------------------Huawei specific tweak ---------------------------- #	
-	cp "$origin/files-patch/system/etc/init/init.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
 	
 	# -----------------------------PHH Exec ---------------------------- #
