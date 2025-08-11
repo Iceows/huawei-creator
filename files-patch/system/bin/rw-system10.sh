@@ -815,17 +815,6 @@ if [ -c /dev/dsm ];then
     chown system:system /dev/dsm
     chmod 0660 /dev/dsm
 
-    # The presence of /dev/dsm indicates that we have a teecd,
-    # which needs /sec_storage and /data/sec_storage_data
-
-    mkdir -p /data/sec_storage_data
-    chown system:system /data/sec_storage_data
-    chcon -R u:object_r:teecd_data_file:s0 /data/sec_storage_data
-
-    mkdir -p /data/sec_storage_data_users
-    chown system:system /data/sec_storage_data_users
-    chcon -R u:object_r:teecd_data_file:s0 /data/sec_storage_data_users
-
 fi
 
 

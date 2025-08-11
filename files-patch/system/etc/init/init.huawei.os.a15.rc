@@ -139,10 +139,10 @@ on post-fs-data
     chmod 2775 /data/log/reliability/xcollie
     restorecon_recursive /data/log/reliability
 
-    # mkdir /data/sec_storage_data 0700 system system
-    # restorecon /data/sec_storage_data
-    # mkdir /data/sec_storage_data_users 0700 system system
-    # restorecon /data/sec_storage_data_users
+    mkdir /data/sec_storage_data 0700 system system
+    restorecon /data/sec_storage_data
+    mkdir /data/sec_storage_data_users 0700 system system
+    restorecon /data/sec_storage_data_users
     
     mkdir /data/misc/installer
     chmod 2770 /data/misc/installer
