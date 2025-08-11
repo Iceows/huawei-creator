@@ -191,6 +191,17 @@ mount -o loop,rw s-ab-raw.img d
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
+	# -----------------------------Huawei specific tweak ---------------------------- #	
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
+	
+	# -----------------------------PHH Exec ---------------------------- #
+	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
 
 	#-----------------------------File copy -----------------------------------------------------
 
