@@ -185,7 +185,7 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
 	
 	# -----------------------------PHH Exec ---------------------------- #
-	cp "$origin/files-patch/system/bin/rw-system10.sh" "bin/rw-system.sh"
+	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
 	
 	# Copy bootanimation.zip	

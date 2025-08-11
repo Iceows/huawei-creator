@@ -76,14 +76,21 @@ fixSPL() {
     img="$(find /dev/block -type l -iname kernel"$(getprop ro.boot.slot_suffix)" | grep by-name | head -n 1)"
     [ -z "$img" ] && img="$(find /dev/block -type l -iname boot"$(getprop ro.boot.slot_suffix)" | grep by-name | head -n 1)"
     if [ -n "$img" ]; then
-        #Rewrite SPL/Android version if needed
-        Arelease="$(getSPL "$img" android)"
-        spl="$(getSPL "$img" spl)"
-        setprop ro.keymaster.xxx.release "$Arelease"
-        setprop ro.keymaster.xxx.security_patch "$spl"
+    #Rewrite SPL/Android version if needed
+    # Read Android version from vbmeta (often trustkernel's root of trust)
+    Arelease="$(strings -n 2 /dev/block/by-name/vbmeta* | grep -A1 com.android.build.system.os_version | grep -E '^[0-9]+$' | sort -n | head -n1)"
+    # Otherwise read it from boot.img
+    [ -z "$Arelease" ] && Arelease="$(getSPL "$img" android)"
+    spl="$(getSPL "$img" spl)"
+    setprop ro.keymaster.xxx.release "${Arelease}"
+    setprop ro.keymaster.xxx.security_patch "$spl"
 	if [ -z "$Arelease" ] || [ -z "$spl" ];then
 		return 0
 	fi
+    # Some devices will want true vbmeta_state and verifiedbootstate
+    # Setup those properties redirect for "keymaster" prop redirects
+    setprop ro.keymaster.xxx.vbmeta_state unlocked
+    setprop ro.keymaster.xxx.verifiedbootstate orange
 
     # Found on Cubot Pocket 3: trustkernel work only on stock model name or AOSP GSI model name
     if [ -f /vendor/bin/hw/android.hardware.keymaster@4.1-service.trustkernel ] && [ -f /proc/tkcore/tkcore_log ];then
@@ -156,6 +163,7 @@ changeKeylayout() {
 
     if getprop ro.vendor.build.fingerprint | grep -iq \
         -e poco/ -e POCO/ -e redmi/ -e xiaomi/ ; then
+        setprop persist.sys.phh.evgrab 'uinput-egis;uinput-goodix;uinput-fpc'
         if [ ! -f /mnt/phh/keylayout/uinput-goodix.kl ]; then
           cp /system/phh/empty /mnt/phh/keylayout/uinput-goodix.kl
           chmod 0644 /mnt/phh/keylayout/uinput-goodix.kl
@@ -180,6 +188,12 @@ changeKeylayout() {
            changed=true
         fi
         chmod 0644 ${mpk}/uinput* ${mpk}/msm8953*
+    fi
+
+    if getprop ro.vendor.build.fingerprint |grep -iq -e samsung/a10sxx;then
+        mkdir -p /data/vendor/mcRegistry
+        chown system /data/vendor/mcRegistry
+        chmod 755 /data/vendor/mcRegistry
     fi
 
     if getprop ro.vendor.build.fingerprint | grep -iq -e xiaomi/renoir; then
@@ -327,19 +341,21 @@ if [ "$(getprop ro.product.vendor.manufacturer)" = motorola ] && getprop ro.vend
     setprop persist.sys.overlay.devinputjack true
 fi
 
-if mount -o remount,rw /system; then
-    resize2fs "$(grep ' /system ' /proc/mounts | cut -d ' ' -f 1)" || true
-else
-    mount -o remount,rw /
-    major="$(stat -c '%D' /.|sed -E 's/^([0-9a-f]+)([0-9a-f]{2})$/\1/g')"
-    minor="$(stat -c '%D' /.|sed -E 's/^([0-9a-f]+)([0-9a-f]{2})$/\2/g')"
-    mknod /dev/tmp-phh b $((0x$major)) $((0x$minor))
-    blockdev --setrw /dev/tmp-phh
-    resize2fs /dev/root || true
-    resize2fs /dev/tmp-phh || true
+if ! getprop ro.vendor.build.fingerprint |grep samsung/;then
+    if mount -o remount,rw /system; then
+        resize2fs "$(grep ' /system ' /proc/mounts | cut -d ' ' -f 1)" || true
+    else
+        mount -o remount,rw /
+        major="$(stat -c '%D' /.|sed -E 's/^([0-9a-f]+)([0-9a-f]{2})$/\1/g')"
+        minor="$(stat -c '%D' /.|sed -E 's/^([0-9a-f]+)([0-9a-f]{2})$/\2/g')"
+        mknod /dev/tmp-phh b $((0x$major)) $((0x$minor))
+        blockdev --setrw /dev/tmp-phh
+        resize2fs /dev/root || true
+        resize2fs /dev/tmp-phh || true
+    fi
+    mount -o remount,ro /system || true
+    mount -o remount,ro / || true
 fi
-mount -o remount,ro /system || true
-mount -o remount,ro / || true
 
 for part in /dev/block/bootdevice/by-name/oppodycnvbk  /dev/block/platform/bootdevice/by-name/nvdata;do
     if [ -b "$part" ];then
@@ -559,10 +575,6 @@ if [ -f /vendor/bin/hw/vendor.samsung.hardware.miscpower@1.0-service ] && [ "$vn
     mount -o bind /system/phh/empty /vendor/bin/hw/android.hardware.power@1.0-service
 fi
 
-if [ "$vndk" = 27 ] || [ "$vndk" = 26 ]; then
-    mount -o bind /system/phh/libnfc-nci-oreo.conf /system/etc/libnfc-nci.conf
-fi
-
 if busybox_phh unzip -p /vendor/app/ims/ims.apk classes.dex | grep -qF -e Landroid/telephony/ims/feature/MmTelFeature -e Landroid/telephony/ims/feature/MMTelFeature; then
     mount -o bind /system/phh/empty /vendor/app/ims/ims.apk
 fi
@@ -595,16 +607,24 @@ if getprop ro.vendor.build.fingerprint | grep -iq -e Redmi/rosemary \
 fi
 
 # Iceows patch - NFC NXP conf remove, you must set by specify model patch
+# remove gnss_watchlssd_thirdparty to avoid log spam
 if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getprop persist.sys.overlay.huawei | grep -iq -E -e 'true'; then
 
-   setprop debug.sf.latch_unsignaled 1
+    setprop debug.sf.latch_unsignaled 1
 
     # Set proper /sdcard permissions to avoid dead storage
-   chown media_rw:media_rw /data/media/0
-   chmod 0770 /data/media/0
+    chown media_rw:media_rw /data/media/0
+    chmod 0770 /data/media/0
 
     # Disable this watchlss extension to fix logspams and dead gps
     mount -o bind /system/phh/empty /vendor/bin/gnss_watchlssd_thirdparty
+
+    # For audio_custom
+    chown system:system /sys/class/sensors/rpc_sensor/rpc_motion_req
+
+    # For activity reco
+    chmod 0644  /dev/ar
+    chown system:system /dev/ar
 fi
 
 if getprop ro.vendor.build.fingerprint | grep -qE -e ".*(crown|star)[q2]*lte.*" -e ".*(SC-0[23]K|SCV3[89]).*" && [ "$vndk" -lt 28 ]; then
@@ -732,7 +752,6 @@ copyprop() {
         resetprop_phh "$1" "$(getprop "$2")"
     fi
 }
-
 if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ] || [ -f /data/adb/phh/secure ];then
     copyprop ro.build.device ro.vendor.build.device
     copyprop ro.system.build.fingerprint ro.vendor.build.fingerprint
@@ -770,13 +789,9 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ] || [ -f /data/adb/ph
     resetprop_phh ro.boot.veritymode enforcing
     resetprop_phh ro.boot.warranty_bit 0
     resetprop_phh ro.warranty_bit 0
-    resetprop_phh ro.debuggable 0
     resetprop_phh ro.secure 1
     resetprop_phh ro.build.type user
     resetprop_phh ro.build.selinux 0
-
-    resetprop_phh ro.adb.secure 1
-    setprop ctl.restart adbd
 
     # Hide system/xbin/su
     mount /mnt/phh/empty_dir /system/xbin
@@ -809,6 +824,7 @@ if getprop ro.boot.boot_devices |grep -v , |grep -qE .;then
     ln -s /dev/block/platform/$(getprop ro.boot.boot_devices) /dev/block/bootdevice
 fi
 
+# Huawei device
 if [ -c /dev/dsm ];then
     # /dev/dsm is a magic device on Kirin chipsets that teecd needs to access.
     # Make sure that permissions are right.
@@ -816,25 +832,8 @@ if [ -c /dev/dsm ];then
     chmod 0660 /dev/dsm
 
     # The presence of /dev/dsm indicates that we have a teecd,
-    # which needs /sec_storage and /data/sec_storage_data
+    # which needs /sec_storage and /data/sec_storage_data provide by init.huawei.os.a15.rc
 
-    mkdir -p /data/sec_storage_data
-    chown system:system /data/sec_storage_data
-    chcon -R u:object_r:teecd_data_file:s0 /data/sec_storage_data
-
-    if mount | grep -q " on /sec_storage " ; then
-        # /sec_storage is already mounted by the vendor, don't try to create and mount it
-        # ourselves. However, some devices have /sec_storage owned by root, which means that
-        # the fingerprint daemon (running as system) cannot access it.
-        chown -R system:system /sec_storage
-        chmod -R 0660 /sec_storage
-        chcon -R u:object_r:teecd_data_file:s0 /sec_storage
-    else
-        # No /sec_storage provided by vendor, mount /data/sec_storage_data to it
-        mount /data/sec_storage_data /sec_storage
-        chown system:system /sec_storage
-        chcon u:object_r:teecd_data_file:s0 /sec_storage
-    fi
 fi
 
 has_hostapd=false
@@ -853,7 +852,7 @@ if [ "$has_hostapd" = false ];then
     setprop persist.sys.phh.system_hostapd true
 fi
 
-# In Huawei phones, the modem configuration is made depending on the model (/odm/phone.prop or /vendor/phone.prop)
+#Weird /odm/phone.prop Huawei stuff
 HW_PRODID="$(sed -nE 's/.*productid=([0-9xa-f]*).*/\1/p' /proc/cmdline)"
 [ -z "$HW_PRODID" ] && HW_PRODID="0x$(od -A none -t x1 /sys/firmware/devicetree/base/hisi,modem_id | sed s/' '//g)"
 for part in odm vendor;do
@@ -967,6 +966,9 @@ if getprop ro.vendor.build.fingerprint |grep -qiE -e ASUS_I006D -e ASUS_I003;the
 	setprop persist.sys.phh.fod.asus true
 fi
 
+# For Asus usb port picker
+setprop sys.usb.all_controllers "$(ls /sys/class/udc |tr ' ' ',')"
+
 if (getprop ro.vendor.build.fingerprint;getprop ro.odm.build.fingerprint) |grep -qiE '^oneplus/' ||
 	getprop ro.build.overlay.deviceid |grep -qiE -e '^RMX' -e '^CPH' ||
 	[ -n "$(getprop ro.separate.soft)" ];then
@@ -1004,8 +1006,6 @@ fi
 
 if [ "$board" = lahaina ]; then
 	setprop ro.netflix.bsp_rev Q875-32774-1
-	resetprop_phh ro.config.media_vol_steps 25
-	resetprop_phh ro.config.media_vol_default 15
 fi
 
 if [ "$board" = universal8825 ];then
@@ -1053,18 +1053,6 @@ done
 
 if [ "$vndk" -le 27 ] && [ -f /vendor/bin/mnld ];then
     setprop persist.sys.phh.sdk_override /vendor/bin/mnld=26
-fi
-
-# Disable secondary watchdogs
-echo -n V > /dev/watchdog1
-
-# Fix watchdog issue on Samsung Galaxy A20s
-if getprop ro.vendor.build.fingerprint | grep -iq samsung/a20sub/a20s; then
-    echo -n V > /dev/watchdog0
-fi
-
-if getprop ro.vendor.build.fingerprint | grep -iq samsung/a11que;then
-	echo -n V > /dev/watchdog0
 fi
 
 if [ "$vndk" -le 30 ];then
@@ -1134,3 +1122,48 @@ mount -o bind /mnt/phh/empty_dir /vendor/app/qti-logkit-lite
 
 # Redirect vendor props for QCOM hwcomposer
 setprop debug.phh.props.omposer-service vendor
+
+# On those Unisoc chips, Android's bluetooth stack will try to send a LE_EXTENDED_SCAN command, which isn't actually supported
+# The support of that command inherits from a "le vendor version". Force this at 0 to disable the use of that command
+if getprop ro.vendor.gnsschip |grep -q marlin3lite;then
+    setprop persist.sys.bt.max_vendor_cap 0
+fi
+
+if getprop ro.boot.hardware.sku | grep -q -e fuxi -e nuwa -e ishtar; then
+    setprop ro.surface_flinger.set_idle_timer_ms 1000
+
+    setprop ro.surface_flinger.set_touch_timer_ms 800
+
+    setprop ro.surface_flinger.set_display_power_timer_ms 4000
+
+    setprop debug.sf.frame_rate_multiple_threshold 120
+
+    setprop persist.phh.xiaomi.fod.enrollment.id 4
+fi
+
+if getprop ro.boot.hardware.sku | grep -q -e taoyao -e cupid -e daumier; then
+    setprop ro.surface_flinger.set_idle_timer_ms 1000
+
+    setprop ro.surface_flinger.set_touch_timer_ms 800
+
+    setprop ro.surface_flinger.set_display_power_timer_ms 4000
+
+    setprop debug.sf.frame_rate_multiple_threshold 120
+
+    setprop persist.phh.xiaomi.fod.enrollment.id 10
+fi
+
+# Fixes Vibrator on TECNO POVA 4 Pro
+
+if getprop ro.product.vendor.device | grep -q -e TECNO-LG8n; then
+    chown -R system:system /sys/class/leds/vibrator_single/
+fi
+
+# Override media volume steps
+resetprop_phh ro.config.media_vol_steps 25
+resetprop_phh ro.config.media_vol_default 8
+
+# Fix default orientation on Rebecco K70
+if getprop ro.vendor.build.fingerprint | grep -iq -e Rebecco/K70_ROW; then
+    resetprop_phh ro.surface_flinger.primary_display_orientation ORIENTATION_0
+fi
