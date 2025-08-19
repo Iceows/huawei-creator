@@ -329,7 +329,7 @@ sleep 1
 # Huawei P20 Pro
 if [ "$model" == "CLT-L29" ];then
 	rm -Rf s-erofs.img
-	mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
+	./mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 fi
 
 umount d

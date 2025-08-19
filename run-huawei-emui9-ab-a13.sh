@@ -805,7 +805,7 @@ sleep 1
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
 if [ "$erofs" == "Y" ];then
-	mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
+	./mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 	umount d
 else
 	umount d
