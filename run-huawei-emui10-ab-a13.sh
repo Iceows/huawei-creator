@@ -37,22 +37,48 @@ mount -o loop,rw s-ab-raw.img d
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
 	cd d
 	
-	rm -rf splash2
-	rm -rf modem_log
+	#rm -rf splash2
+	#rm -rf modem_log
+	#rm -rf preavs
+	rm -rf res
 	
-	mkdir splash2
-	chown root:root splash2
-	chmod 777 splash2
-	xattr -w security.selinux u:object_r:rootfs:s0 splash2
+	#mkdir splash2
+	#chown root:root splash2
+	#chmod 753 splash2
+	#xattr -w security.selinux u:object_r:splash2_data_file:s0 splash2
 	
-	mkdir modem_log
-	chown root:root modem_log
-	chmod 777 modem_log
-	xattr -w security.selinux u:object_r:rootfs:s0 modem_log
+	#mkdir modem_log
+	#chown root:root modem_log
+	#chmod 753 modem_log
+	#xattr -w security.selinux u:object_r:modem_log_file:s0 modem_log
+
+	#mkdir preavs
+	#chown root:root preavs
+	#chmod 753 preavs
+	#xattr -w security.selinux u:object_r:preavs_data_file:s0 preavs
+	
+	mkdir res
+	chown root:root res
+	chmod 753 res
+	xattr -w security.selinux u:object_r:rootfs:s0 res
+		
+
+	#---------------------------------Res -------------------------------------------------
+
+	cp "$origin/files-patch/res-emui12/native_packages.xml" "res/native_packages.xml"
+	cp "$origin/files-patch/res-emui12/keys" "res/keys"
 	
 
+	chmod 644 "res/native_packages.xml"
+	xattr -w security.selinux u:object_r:rootfs:s0  "res/native_packages.xml"
+	chmod 644 "res/keys"
+	xattr -w security.selinux u:object_r:rootfs:s0  "res/keys"
+
+
+	#---------------------------------System -------------------------------------------------
+	
 	cd system
-		
+	
 		
 	#---------------------------------Setting properties -------------------------------------------------
 	
@@ -169,25 +195,25 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
 	
 	
-        # -----------------------------IA Config Huawei -------------------- #
+        # -----------------------------IA Config Huawei ---------------------- #
         mkdir etc/xml
 	cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
 		
-	# -----------------------------APN Huawei -------------------------- #
+	# -----------------------------APN Huawei ---------------------------- #
 	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
 
-	# -----------------------------Huawei specific tweak ---------------------------- #	
-	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
+	# -----------------------------Huawei specific tweak ------------------#	
+	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui10.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
-	
-	# -----------------------------PHH Exec ---------------------------- #
+
+	# -----------------------------PHH Exec ------------------------------ #
 	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
-	
+
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
 		mkdir media
@@ -293,7 +319,6 @@ mount -o loop,rw s-ab-raw.img d
 	
 	echo "ro.kirin.config.hw_perfgenius=true"  >> build.prop
 	echo "ro.kirin.config.hw_board_ipa=true"  >> build.prop
-	echo "ro.kirin.product.platform=kirin990"  >> build.prop
 
 	
 	# Enable lowlatency
