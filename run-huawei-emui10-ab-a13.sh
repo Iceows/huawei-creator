@@ -148,8 +148,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.config.alarm_alert=Argon.ogg">>  build.prop
 
   	# Debug Huawei Off=0/On=1
-	echo "persist.sys.hiview.debug=1" >> build.prop
-	echo "persist.sys.huawei.debug.on=1" >> build.prop
+	echo "persist.sys.hiview.debug=0" >> build.prop
+	echo "persist.sys.huawei.debug.on=0" >> build.prop
 
 	# Enable wireless display (Cast/Miracast)
 	echo "persist.debug.wfd.enable=1" >>  build.prop
