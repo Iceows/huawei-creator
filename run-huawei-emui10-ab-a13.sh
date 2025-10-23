@@ -155,7 +155,8 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.debug.wfd.enable=1" >>  build.prop
 	
 	# Display
-	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
+	echo "ro.surface_flinger.running_without_sync_framework=false" >>  build.prop
+	echo "ro.surface_flinger.max_virtual_display_dimension=0" >>  build.prop
 
 	# Graphics
 	echo "debug.sf.disable_backpressure=1" >>  build.prop

@@ -149,8 +149,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.audio.offload_wakelock=false" >> build.prop
 	
 	# Display
-	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
-
+	echo "ro.surface_flinger.running_without_sync_framework=false" >>  build.prop
+	echo "ro.surface_flinger.max_virtual_display_dimension=0" >>  build.prop
+	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
+	
 	# Graphics hi6250 ?
 	echo "debug.egl.hw=1" >>  build.prop
 	echo "debug.egl.profiler=1" >>  build.prop
@@ -161,7 +163,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "hwui.disable_vsync=true" >>  build.prop
 	echo "ro.config.enable.hw_accel=true" >>  build.prop
 	echo "video.accelerate.hw=1" >>  build.prop
-	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
