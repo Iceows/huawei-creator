@@ -16,11 +16,11 @@ if [ -d /sys/module/five ];then
 elif [ -f /sbin/adbd ];then
 	mount -o bind /system/bin/adbd /sbin/adbd
 fi
-if ( getprop ro.hardware | grep -qE '(kirin970|hi3660|hi6250|hi3670)' );then
+if ( getprop ro.hardware | grep -qE '(kirin990|kirin980|kirin970|kirin710|hi3660|hi6250|hi3670)' );then
 	FOUND_HUAWEI=1
 fi
 
-if getprop ro.vendor.build.fingerprint |grep -qiE '(huawei|honor|hi3660)';then
+if getprop ro.vendor.build.fingerprint |grep -qiE '(huawei|honor|kirin990|kirin980|kirin710|kirin970|hi3660|hi6250|hi3670)';then
 	FOUND_HUAWEI=1
 fi
 
