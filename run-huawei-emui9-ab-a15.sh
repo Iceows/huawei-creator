@@ -249,7 +249,7 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
-s
+
 		# For FM Radio volume (# Hisi)
 		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 	fi	
@@ -970,7 +970,7 @@ sleep 1
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
 if [ "$erofs" == "Y" ];then
-	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+	./mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
 	umount d
 else
 	umount d
