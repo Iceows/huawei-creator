@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
 #cleanups
 #A13 version
 umount d
@@ -149,8 +149,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.audio.offload_wakelock=false" >> build.prop
 	
 	# Display
-	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
-
+	echo "ro.surface_flinger.running_without_sync_framework=false" >>  build.prop
+	echo "ro.surface_flinger.max_virtual_display_dimension=0" >>  build.prop
+	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
+	
 	# Graphics hi6250 ?
 	echo "debug.egl.hw=1" >>  build.prop
 	echo "debug.egl.profiler=1" >>  build.prop
@@ -161,7 +163,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "hwui.disable_vsync=true" >>  build.prop
 	echo "ro.config.enable.hw_accel=true" >>  build.prop
 	echo "video.accelerate.hw=1" >>  build.prop
-	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
@@ -170,7 +171,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Color
 	echo "persist.sys.sf.native_mode=1" >> build.prop
-	echo "persist.sys.sf.color_mode=1.0" >> build.prop
+	echo "persist.sys.sf.color_mode=1" >> build.prop
 	echo "persist.sys.sf.color_saturation=1.1" >> build.prop
 	
 	# CPU
@@ -191,6 +192,17 @@ mount -o loop,rw s-ab-raw.img d
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
+	# -----------------------------Huawei specific tweak ---------------------------- #	
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
+	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
+	
+	# -----------------------------PHH Exec ---------------------------- #
+	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
+	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -252,6 +264,16 @@ mount -o loop,rw s-ab-raw.img d
 
 		# For FM Radio volume (# Hisi)
 		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
+		
+		# IA for Camera
+		echo "ro.camera.master_ai_default=off" >>  build.prop
+		echo "ro.camera.front_ai_default=off" >>  build.prop
+		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+		
+		# -----------------------------IAWare Config Huawei ----------------------- #
+		mkdir etc/xml
+		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
+
 	fi	
 
 	# VTR-L09 / VTR-AL00 Huawei P10
@@ -410,6 +432,37 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 	fi	
 
+	# MediaTab T5
+	if [ "$model" == "AGS2-L09" ];then
+
+		echo "ro.product.system.device=HWAGS2" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWAGS2" >> build.prop
+		echo "ro.product.product.device=HWAGS2" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWAGS2" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.build.product=AGS2" >> build.prop
+		echo "ro.lineage.device=HWAGS2" >>  build.prop
+				
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+		
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
+		
+		# For screen DPI
+		sed -i "/ro.sf.lcd_density/d" build.prop 
+		echo "ro.sf.lcd_density=566"  >> build.prop;
+	
+		# For lock the screen (netflix)
+		echo "lockscreen.rot_override=true"  >> build.prop;
+	fi
+	
+	
 	# BND-L21
 	if [ "$model" == "BND-L21" ];then
 
@@ -582,7 +635,10 @@ mount -o loop,rw s-ab-raw.img d
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.28.txt
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.txt
 
-		
+	# -----------------------------APN Huawei ----------------------- #
+	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
+
+
 	# --------------AGPS Patch Only gnss model ---------------------- #
 	
 	if [ "$model" == "FIG-LX1" ] || [ "$model" == "ANE-LX1" ] || [ "$model" == "POT-LX1" ];then
@@ -642,16 +698,7 @@ mount -o loop,rw s-ab-raw.img d
 		echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 		echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
 
-
-
 	fi
-	
-
-	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
-	echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
-	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
 	
 	
 	
@@ -675,137 +722,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
 
-	# NFC and perf
-	echo "(allow nfc system_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow kernel system_data_root_file (file (setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow kernel system_data_root_file (dir (setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow uniperf system_data_file (lnk_file (read)))" >> etc/selinux/plat_sepolicy.cil
-
 	
-	
-	# --------------------------- Kirin EMUI 9 perf properties add SELinux rules for vendor init -----
-
-	echo "(type kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_dbg_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_dbg_prop)" >> etc/selinux/plat_sepolicy.cil	
-	echo "(type kirin_video_dbgs_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_dbgs_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_audio_set_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_audio_set_prop)" >> etc/selinux/plat_sepolicy.cil	
-	echo "(type kirin_drm_info)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_drm_info)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_sys_mediaserver_timestamp_print)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_sys_mediaserver_timestamp_print)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_sys_mediaserver_saveyuv)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_sys_mediaserver_saveyuv)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_perf_ro_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_perf_ro_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type product_platform_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r product_platform_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type tee_tui_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r tee_tui_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type vowifi_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r vowifi_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type huawei_hiai_ddk_version_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r huawei_hiai_ddk_version_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type huawei_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r huawei_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	
-	echo "(typeattribute kirin_exported_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset kirin_exported_public_read_prop (kirin_audio_prop kirin_video_dbg_prop kirin_video_dbgs_prop kirin_drm_info kirin_video_sys_mediaserver_timestamp_print kirin_video_sys_mediaserver_saveyuv kirin_perf_persist_public_read_prop kirin_perf_ro_public_read_prop product_platform_prop tee_tui_prop vowifi_prop huawei_hiai_ddk_version_prop ))" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattribute huawei_exported_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset huawei_exported_public_read_prop ( huawei_perf_persist_public_read_prop ))" >> etc/selinux/plat_sepolicy.cil
-
-
-	#sed -i '/(typeattributeset kirin_exported_public_read_prop/d' /system/etc/selinux/plat_sepolicy.cil	
-	#(type vrdisplay_property)
-	#(roletype object_r vrdisplay_property)
-	#(type netflix_certification_prop)
-	#(roletype object_r netflix_certification_prop)
-
-
-	# ------------------- etc/selinux/mapping/28.0.cil ------------------
-
-	echo "(typeattributeset kirin_audio_prop_28_0 (kirin_audio_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_audio_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_audio_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_dbg_prop_28_0 (kirin_video_dbg_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_dbg_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_dbg_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_dbgs_prop_28_0 (kirin_video_dbgs_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_dbgs_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_dbgs_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_drm_info_28_0 (kirin_drm_info))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_drm_info_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_drm_info_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_sys_mediaserver_timestamp_print_28_0 (kirin_video_sys_mediaserver_timestamp_print))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_sys_mediaserver_timestamp_print_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_sys_mediaserver_timestamp_print_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_sys_mediaserver_saveyuv_28_0 (kirin_video_sys_mediaserver_saveyuv))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_sys_mediaserver_saveyuv_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_sys_mediaserver_saveyuv_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_perf_persist_public_read_prop_28_0 (kirin_perf_persist_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_perf_persist_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_perf_persist_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_perf_ro_public_read_prop_28_0 (kirin_perf_ro_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_perf_ro_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_perf_ro_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset product_platform_prop_28_0 (product_platform_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (product_platform_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute product_platform_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset tee_tui_prop_28_0 (tee_tui_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (tee_tui_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute tee_tui_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	
-	echo "(typeattributeset huawei_perf_persist_public_read_prop_28_0 (huawei_perf_persist_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (huawei_perf_persist_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute huawei_perf_persist_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-
-
-	# ------------------- etc/selinux/plat_property_contexts ------------------
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# vendor-init-settable|public-readable" >> etc/selinux/plat_property_contexts
-	echo "# audio property" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.offload.enable  u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.usbvoice.enable  u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.usbvoice.name    u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.lowlatency.enable u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# video property" >> etc/selinux/plat_property_contexts
-	echo "kirin.video.debug.datadump             u:object_r:kirin_video_dbg_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.video.mntn                       u:object_r:kirin_video_dbgs_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.drm.info                         u:object_r:kirin_drm_info:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.sys.mediaserver.timestamp.print  u:object_r:kirin_video_sys_mediaserver_timestamp_print:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.sys.mediaserver.saveyuv          u:object_r:kirin_video_sys_mediaserver_saveyuv:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# perf property" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.alloc_buffer_sync u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.texture_cache_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touch_vsync_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touch_move_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touchevent_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.decodebitmap_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.perfoptpackage_list u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.config.hw_perfgenius u:object_r:kirin_perf_ro_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.config.hw_board_ipa u:object_r:kirin_perf_ro_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "persist.huawei.touch_vsync_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.huawei.touch_move_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.huawei.touchevent_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# product_platform" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.product.platform     u:object_r:product_platform_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.vendor.tui.service  u:object_r:tee_tui_prop:s0" >> etc/selinux/plat_property_contexts
-
-
 	# property
 	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> etc/selinux/plat_property_contexts
 		
@@ -816,116 +733,35 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.kirin.touch_vsync_opt=1"  >> build.prop
 	echo "persist.kirin.touchevent_opt=1"  >> build.prop
 	
+	echo "persist.kirin.media.usbvoice.enable=true"  >> build.prop
+	echo "persist.kirin.media.usbvoice.name=USB-Audio - HUAWEI GLASS"  >> build.prop
+	echo "persist.kirin.media.offload.enable=true"  >> build.prop
+	echo "persist.kirin.media.hires.enable=true"  >> build.prop
+	
+	echo "ro.kirin.config.hw_perfgenius=true"  >> build.prop
+	echo "ro.kirin.config.hw_board_ipa=true"  >> build.prop
+	
 	# Enable lowlatency
 	echo "persist.media.lowlatency.enable=true" >> build.prop
 	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
 
 	#----------------------------- tee daemon --------------------------------------------------------	
 	
-	echo "/system/bin/tee_auth_daemon   u:object_r:teecd_auth_exec:s0" >> etc/selinux/plat_file_contexts
-	echo "/sec_storage(/.*)?              u:object_r:teecd_data_file:s0" >> etc/selinux/plat_file_contexts
-	echo "/sec_storage            u:object_r:teecd_data_file:s0" >> etc/selinux/plat_file_contexts
-	echo "/dev/hisi_teelog                u:object_r:teelog_device:s0" >> etc/selinux/plat_file_contexts
-	echo "/sys/kernel/tui/c_state         u:object_r:sysfs_tee:s0" >> etc/selinux/plat_file_contexts
-	echo "/dev/socket/tee-multi-user              u:object_r:tee_multi_user_socket:s0" >> etc/selinux/plat_file_contexts
+
+	#echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(allow tee_multi_user_socket socket_device (dir (write add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow tee_multi_user_socket socket_device (sock_file (create setattr)))" >> etc/selinux/plat_sepolicy.cil
 	
-	echo "(type teecd_auth_exec)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r teecd_auth_exec)" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
 
-	echo "(type teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	
-	echo "(type teelog_device)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r teelog_device)" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow init tee_multi_user_socket (sock_file (create setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow tee_multi_user_socket tmpfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
 
-	echo "(type sysfs_tee)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r sysfs_tee)" >> etc/selinux/plat_sepolicy.cil
-	
-	echo "(type tee_multi_user_socket)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r tee_multi_user_socket)" >> etc/selinux/plat_sepolicy.cil
-	
-	echo "(type system_teecd)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r system_teecd)" >> etc/selinux/plat_sepolicy.cil
+	#echo "(dontaudit teecd hal_keymaster_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(dontaudit teecd hal_gatekeeper_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
 
-	echo "(allow tee_multi_user_socket socket_device (dir (write add_name)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow tee_multi_user_socket socket_device (sock_file (create setattr)))" >> etc/selinux/plat_sepolicy.cil
-	
-	echo "(allow init teecd_data_file (dir (mounton)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init teecd_data_file (filesystem (relabelto relabelfrom associate mount)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow fsck teecd_data_file (dir (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow teecd_data_file self (filesystem (relabelto relabelfrom associate)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow installd teecd_data_file (filesystem (quotaget)))" >> etc/selinux/plat_sepolicy.cil
 
-	echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
-
-	echo "(allow init system_teecd (file (open write read ioctl getattr setattr relabelfrom)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init system_teecd (process (transition)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd tmpfs (dir (getattr search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd tee_device (chr_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd tee_data_file (dir (ioctl read write getattr lock add_name remove_name search open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd tee_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (netlink_socket (read write create getattr setattr lock append bind connect getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (netlink_generic_socket (read write create getattr setattr lock append bind connect getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_type (dir (ioctl read getattr lock search open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_type (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_type (lnk_file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_data_file (file (read getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_data_file (lnk_file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (chown sys_admin)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd kernel (process (setsched)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init system_teecd (process (transition)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd rootfs (file (read getattr execute entrypoint open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(dontaudit init system_teecd (process (noatsecure)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow init system_teecd (process (siginh rlimitinh)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd property_socket (sock_file (write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd init (unix_stream_socket (connectto)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_data_file (dir (setattr mounton)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(typetransition system_teecd system_data_file dir teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typetransition system_teecd system_data_file fifo_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typetransition system_teecd system_data_file sock_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typetransition system_teecd system_data_file lnk_file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typetransition system_teecd system_data_file file teecd_data_file)" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd keystore (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd keystore (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_data_file (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_server (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_server (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (fowner fsetid net_raw)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (tcp_socket (ioctl read write create connect getopt setopt name_connect)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd port (tcp_socket (name_connect)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (udp_socket (ioctl read write create connect getopt setopt)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_data_file (lnk_file (read create getattr setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd domain (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd domain (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow coredomain system_teecd (unix_stream_socket (connectto)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow domain system_teecd (fd (use)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd init (unix_stream_socket (read write listen accept connectto)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd cpuctl_device (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (sys_nice)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd vendor_file (file (ioctl read getattr lock execute open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs (file (ioctl read getattr lock open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_auth_exec (file (read getattr map execute entrypoint open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_tee (dir (ioctl read getattr lock search open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_tee (file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_tee (lnk_file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd sysfs_tee (file (ioctl read getattr lock map open)))" >> etc/selinux/plat_sepolicy.cil
-
-	echo "(allow system_teecd dnsproxyd_socket (sock_file (write)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd self (capability (dac_override)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_device (chr_file (ioctl read write getattr lock append open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_data_file (dir (ioctl read write create getattr setattr lock rename add_name remove_name reparent search rmdir open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd system_data_file (dir (ioctl read write getattr lock add_name remove_name search open)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_teecd teecd_data_file (file (ioctl read write create getattr setattr lock append unlink rename open)))" >> etc/selinux/plat_sepolicy.cil
-
-	echo "(allow init tee_multi_user_socket (sock_file (create setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow tee_multi_user_socket tmpfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
-
-	
 	
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
@@ -970,7 +806,7 @@ sleep 1
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
 if [ "$erofs" == "Y" ];then
-	./mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+	./mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 	umount d
 else
 	umount d
