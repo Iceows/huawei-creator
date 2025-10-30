@@ -200,6 +200,10 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
 	
+	# -----------------------------Huawei specific tweak ---------------------------- #	
+	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
+		
 	# -----------------------------PHH Exec ---------------------------- #
 	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
