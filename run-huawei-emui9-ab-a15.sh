@@ -192,21 +192,34 @@ mount -o loop,rw s-ab-raw.img d
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
-	# -----------------------------Huawei specific tweak ---------------------------- #	
+        # -----------------------------VNDK fixe ----------------------- #	
+	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
+	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
+	
+
+	# -----------------------------Huawei specific tweak ------------------#	
 	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
 	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
 	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
-	
-	# -----------------------------Huawei specific tweak ---------------------------- #	
+
+	# -----------------------------Huawei debug ---------------------------- #	
 	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
 		
-	# -----------------------------PHH Exec ---------------------------- #
+	# -----------------------------PHH Exec ------------------------------ #
 	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
+	
+	# -----------------------------Policy------------------------------- #
+	cp "$origin/files-patch/system/etc/seccomp_policy/configstore@1.1.policy" "etc/seccomp_policy/configstore@1.1.policy"
+	chmod 644 "etc/seccomp_policy/configstore@1.1.policy"
+	xattr -w security.selinux u:object_r:system_seccomp_policy_file:s0 "etc/seccomp_policy/configstore@1.1.policy"
+	
+        # rm -rf "etc/seccomp_policy/crash_dump.arm64.policy"
+        # rm -rf "etc/seccomp_policy/crash_dump.arm.policy"
 
 	#-----------------------------File copy -----------------------------------------------------
 
