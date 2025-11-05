@@ -10,7 +10,7 @@ while read version;do
 done
 
 if [ -d /sys/module/five ];then
-	if mount -o bind /system/phh/empty /sbin/adbd;then
+	if mount -o bind /mnt/phh/empty /sbin/adbd;then
 		setprop sys.phh.five true
 	fi
 elif [ -f /sbin/adbd ];then
