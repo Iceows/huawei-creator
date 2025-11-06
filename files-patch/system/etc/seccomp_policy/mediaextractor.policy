@@ -1,0 +1,61 @@
+# Organized by frequency of systemcall - in descending order for
+# best performance.
+ioctl: 1
+futex: 1
+prctl: 1
+write: 1
+getpriority: 1
+close: 1
+dup: 1
+mmap: 1
+munmap: 1
+openat: 1
+mprotect: 1
+madvise: 1
+getuid: 1
+fstat: 1
+fstatfs: 1
+read: 1
+setpriority: 1
+sigaltstack: 1
+clone: 1
+sched_setscheduler: 1
+lseek: 1
+newfstatat: 1
+faccessat: 1
+restart_syscall: 1
+exit: 1
+exit_group: 1
+rt_sigreturn: 1
+getrlimit: 1
+nanosleep: 1
+getrandom: 1
+timer_create: 1
+timer_settime: 1
+timer_delete: 1
+
+# for FileSource
+readlinkat: 1
+
+# for dynamically loading extractors
+getdents64: 1
+readlinkat: 1
+pread64: 1
+mremap: 1
+
+# Required by Sanitizers
+sched_yield: 1
+
+# Android profiler (heapprofd, traced_perf) additions, where not already
+# covered by the rest of the file, or by builtin minijail allow-listing of
+# logging-related syscalls.
+# TODO(b/197184220): this is a targeted addition for a specific investigation,
+# and addresses just the arm64 framework av service policies. In the future, we
+# should make this more general (e.g. a central file that can be @included in
+# other policy files).
+setsockopt: 1
+sendmsg: 1
+set_tid_address: 1
+
+@include /apex/com.android.media/etc/seccomp_policy/crash_dump.arm64.policy
+@include /apex/com.android.media/etc/seccomp_policy/code_coverage.arm64.policy
