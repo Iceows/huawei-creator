@@ -58,4 +58,4 @@ sendmsg: 1
 set_tid_address: 1
 
 @include /apex/com.android.media/etc/seccomp_policy/crash_dump.arm64.policy
-@include /apex/com.android.media/etc/seccomp_policy/code_coverage.arm64.policy
+
