@@ -222,6 +222,13 @@ mount -o loop,rw s-ab-raw.img d
 	chmod 644 "etc/seccomp_policy/mediacodec.policy"
 	xattr -w security.selinux u:object_r:system_seccomp_policy_file:s0 "etc/seccomp_policy/mediacodec.policy"
 
+	# -----------------------------Priv-app--------------------------------- #
+        mkdir "priv-app/TrebleApp/"
+        xattr -w security.selinux u:object_r:system_file:s0 "priv-app/TrebleApp/"
+        
+	cp  "$origin/files-patch/system/priv-app/TrebleApp.apk" "priv-app/TrebleApp/TrebleApp.apk"
+	chmod 644 "priv-app//TrebleApp/TrebleApp.apk"
+	xattr -w security.selinux u:object_r:system_file:s0 "priv-app/TrebleApp/TrebleApp.apk"
 
 
 	#-----------------------------File copy -----------------------------------------------------
