@@ -212,15 +212,6 @@ mount -o loop,rw s-ab-raw.img d
 	# -----------------------------PHH Exec -------------------------------- #
 	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
 	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
-	
-	# -----------------------------Policy----------------------------------- #
-	cp "$origin/files-patch/system/etc/seccomp_policy/configstore@1.1.policy" "etc/seccomp_policy/configstore@1.1.policy"
-	chmod 644 "etc/seccomp_policy/configstore@1.1.policy"
-	xattr -w security.selinux u:object_r:system_seccomp_policy_file:s0 "etc/seccomp_policy/configstore@1.1.policy"
-
-	cp "$origin/files-patch/system/etc/seccomp_policy/mediacodec.policy" "etc/seccomp_policy/mediacodec.policy"
-	chmod 644 "etc/seccomp_policy/mediacodec.policy"
-	xattr -w security.selinux u:object_r:system_seccomp_policy_file:s0 "etc/seccomp_policy/mediacodec.policy"
 
 	# -----------------------------Priv-app--------------------------------- #
         mkdir "priv-app/TrebleApp/"
