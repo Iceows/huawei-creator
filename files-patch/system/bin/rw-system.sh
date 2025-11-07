@@ -664,9 +664,10 @@ if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getpro
 
     # For activity reco
     chmod 0644  /dev/ar
-    chown system:system /dev/ar    
+    chown system:system /dev/ar
     
-    mount /system/etc/seccomp_policy/configstore@1.1.policy  /vendor/etc/seccomp_policy/configstore@1.1.policy    
+    # Fix configstore crash on A15 - vendor configstore don't have getpid and gettid
+    mount -o bind /system/etc/seccomp_policy/configstore@1.1.policy  /vendor/etc/seccomp_policy/configstore@1.1.policy   
 fi
 
 if getprop ro.vendor.build.fingerprint | grep -qE -e ".*(crown|star)[q2]*lte.*" -e ".*(SC-0[23]K|SCV3[89]).*" && [ "$vndk" -lt 28 ]; then
