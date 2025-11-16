@@ -380,8 +380,10 @@ mkdir -p /mnt/phh/
 mount -t tmpfs -o rw,nodev,relatime,mode=755,gid=0 none /mnt/phh || true
 mkdir /mnt/phh/empty_dir
 touch /mnt/phh/empty
-fixSPL
+touch /mnt/phh/unreadable
+chmod 0 /mnt/phh/unreadable
 
+fixSPL
 changeKeylayout
 
 mount /mnt/phh/empty /vendor/bin/vendor.samsung.security.proca@1.0-service || true
@@ -641,6 +643,11 @@ if getprop ro.vendor.build.fingerprint | grep -iq -e Redmi/rosemary \
     mount -o bind /system/phh/rosemary-excluded-input-devices.xml /system/etc/excluded-input-devices.xml
 fi
 
+# Fix configstore crash on A15 - vendor configstore don't have getpid and gettid
+if [ "$vndk" -le 29 ]; then
+    mount /mnt/phh/unreadable /vendor/etc/seccomp_policy/configstore@1.1.policy
+fi
+
 if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getprop persist.sys.overlay.huawei | grep -iq -E -e 'true'; then
     p=/product/etc/nfc/libnfc_nxp_*_*.conf
     mount -o bind "$p" /system/etc/libnfc-nxp.conf ||
@@ -666,8 +673,6 @@ if getprop ro.vendor.build.fingerprint | grep -iq -E -e 'huawei|honor' || getpro
     chmod 0644  /dev/ar
     chown system:system /dev/ar
     
-    # Fix configstore crash on A15 - vendor configstore don't have getpid and gettid
-    mount -o bind /system/etc/seccomp_policy/configstore@1.1.policy  /vendor/etc/seccomp_policy/configstore@1.1.policy   
 fi
 
 if getprop ro.vendor.build.fingerprint | grep -qE -e ".*(crown|star)[q2]*lte.*" -e ".*(SC-0[23]K|SCV3[89]).*" && [ "$vndk" -lt 28 ]; then
