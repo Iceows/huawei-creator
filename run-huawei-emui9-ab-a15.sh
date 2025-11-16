@@ -210,8 +210,8 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
 		
 	# -----------------------------PHH Exec -------------------------------- #
-	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
+	# cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
+	# xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
 
 	# -----------------------------Priv-app--------------------------------- #
         mkdir "priv-app/TrebleApp/"
@@ -784,11 +784,13 @@ mount -o loop,rw s-ab-raw.img d
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
 	# Remove non use apex vndk
-	rm -rf "system_ext/apex/com.android.vndk.v29"
-	rm -rf "system_ext/apex/com.android.vndk.v30"
-	rm -rf "system_ext/apex/com.android.vndk.v31"
-	rm -rf "system_ext/apex/com.android.vndk.v32"
-
+	# rm -rf "system_ext/apex/com.android.vndk.v29"
+	# rm -rf "system_ext/apex/com.android.vndk.v30"
+	# rm -rf "system_ext/apex/com.android.vndk.v31"
+	# rm -rf "system_ext/apex/com.android.vndk.v32"
+	# rm -rf "system_ext/apex/com.android.vndk.v33"
+	# rm -rf "system_ext/apex/com.android.vndk.v34"
+	
 	cd ../d
 
 
