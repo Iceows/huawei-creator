@@ -197,21 +197,13 @@ mount -o loop,rw s-ab-raw.img d
 	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
 	
 
-	# -----------------------------Huawei specific tweak ------------------#	
-	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui9.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
-
 	# -----------------------------Huawei debug ---------------------------- #	
 	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
 		
-	# -----------------------------PHH Exec -------------------------------- #
-	# cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
-	# xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
+	# -----------------------------Radio -------------------------------- #
+	cp "$origin/files-patch/system/etc/vintf/manifest.xml" "etc/vintf/manifest.xml"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/vintf/manifest.xml"
 
 	# -----------------------------Priv-app--------------------------------- #
         mkdir "priv-app/TrebleApp/"
@@ -783,14 +775,6 @@ mount -o loop,rw s-ab-raw.img d
 	
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
-	# Remove non use apex vndk
-	# rm -rf "system_ext/apex/com.android.vndk.v29"
-	# rm -rf "system_ext/apex/com.android.vndk.v30"
-	# rm -rf "system_ext/apex/com.android.vndk.v31"
-	# rm -rf "system_ext/apex/com.android.vndk.v32"
-	# rm -rf "system_ext/apex/com.android.vndk.v33"
-	# rm -rf "system_ext/apex/com.android.vndk.v34"
-	
 	cd ../d
 
 
