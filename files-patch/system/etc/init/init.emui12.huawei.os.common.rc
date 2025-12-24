@@ -1,0 +1,39 @@
+
+
+
+on post-fs-data
+    mkdir /data/log/press10
+    chmod 0770 /data/log/press10
+    chown system system /data/log/press10
+    restorecon_recursive /data/log/press10
+
+    mkdir /data/misc_de/0/mdds
+    chmod 770 /data/misc_de/0/mdds
+    chown system system /data/misc_de/0/mdds
+    restorecon_recursive /data/misc_de/0/mdds
+
+    restorecon_recursive /data/hw_init
+
+on property:ro.logsystem.usertype=*
+    write /proc/log-usertype ${ro.logsystem.usertype}
+
+on property:ro.logsystem.usertype=3
+    write /sys/module/binder_alloc/parameters/debug_buffer_mask 1
+    write /sys/module/binder/parameters/debug_buffer_mask 1
+
+on property:ro.bootmode=normal
+    write /proc/sys/kernel/printk_level 6
+
+on property:sys.user.0.ce_available=true
+    mkdir /data/misc_ce/0/mdds
+    chmod 770 /data/misc_ce/0/mdds
+    chown system system /data/misc_ce/0/mdds
+    restorecon_recursive /data/misc_ce/0/mdds
+
+on boot
+    setprop hilog.tag I
+
+    #usb
+    chmod 0660 /dev/usb_pcinfo_common
+    chown root usb /dev/usb_pcinfo_common
+
