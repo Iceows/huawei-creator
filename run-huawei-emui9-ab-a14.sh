@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-ab-a114.sh  [/path/to/system.img] [version] [model device] [huawei animation]  [[erfs]]
+#sudo bash run-huawei-ab-a14.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
 #cleanups
 #A13 version
 umount d
@@ -20,9 +20,9 @@ bootanim="$4"
 erofs="$5"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab-a14.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
+	echo "Usage: sudo bash run-huawei-emui9-ab-a14.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
 	echo "version=LeaOS A14"
-	echo "device=ANE-LX1"
+	echo "device=POT-LX1"
 	echo "bootanimation=[Y/N]"
 	echo "erofs=[Y/N]"
 	exit 1
@@ -33,7 +33,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-ab-raw.img
-resize2fs s-ab-raw.img 5000M
+resize2fs s-ab-raw.img 4000M
 e2fsck -E unshare_blocks -y -f s-ab-raw.img
 mount -o loop,rw s-ab-raw.img d
 (
@@ -119,7 +119,7 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.lineage.display.version/d" build.prop
 	sed -i "/ro.modversion/d" build.prop
 	sed -i "/ro.lineage.device/d" build.prop
-	echo "ro.lineage.version=20" >>  build.prop
+	echo "ro.lineage.version=21" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	
 	# set modversion
@@ -149,8 +149,10 @@ mount -o loop,rw s-ab-raw.img d
 	echo "ro.audio.offload_wakelock=false" >> build.prop
 	
 	# Display
-	echo "ro.surface_flinger.running_without_sync_framework=true" >>  build.prop
-
+	echo "ro.surface_flinger.running_without_sync_framework=false" >>  build.prop
+	echo "ro.surface_flinger.max_virtual_display_dimension=0" >>  build.prop
+	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
+	
 	# Graphics hi6250 ?
 	echo "debug.egl.hw=1" >>  build.prop
 	echo "debug.egl.profiler=1" >>  build.prop
@@ -161,7 +163,6 @@ mount -o loop,rw s-ab-raw.img d
 	echo "hwui.disable_vsync=true" >>  build.prop
 	echo "ro.config.enable.hw_accel=true" >>  build.prop
 	echo "video.accelerate.hw=1" >>  build.prop
-	echo "ro.surface_flinger.max_frame_buffer_acquired_buffers=3" >> build.prop
 	echo "debug.cpurend.vsync=false" >> build.prop
 	echo "ro.hardware.egl=mali" >> build.prop
 	echo "ro.hardware.vulkan=mali" >> build.prop
@@ -170,7 +171,7 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Color
 	echo "persist.sys.sf.native_mode=1" >> build.prop
-	echo "persist.sys.sf.color_mode=1.0" >> build.prop
+	echo "persist.sys.sf.color_mode=1" >> build.prop
 	echo "persist.sys.sf.color_saturation=1.1" >> build.prop
 	
 	# CPU
@@ -182,6 +183,7 @@ mount -o loop,rw s-ab-raw.img d
 	
 	# bluetooth
 	echo "bluetooth.enable_timeout_ms=12000" >> build.prop
+	echo "persist.sys.bt.esco_transport_unit_size=16" >> build.prop
 	
 	# Usb
 	echo "persist.sys.usb.config=hisuite,mtp,mass_storage" >> build.prop 
@@ -190,6 +192,15 @@ mount -o loop,rw s-ab-raw.img d
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
+        # -----------------------------VNDK fixe ----------------------- #	
+	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
+	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
+	
+
+	# -----------------------------Huawei debug ---------------------------- #	
+	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
+	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
+		
 
 	#-----------------------------File copy -----------------------------------------------------
 
@@ -207,6 +218,26 @@ mount -o loop,rw s-ab-raw.img d
 	fi
 
 
+	# STK-L22 y9s
+	if [ "$model" == "STK-L22" ];then
+	
+		# [ro.sf.lcd_density]: [480]
+		# [hw.lcd.density]: [480]
+		# [hw.lcd.density.scale]: [800]
+	
+		# NO NFC
+
+		# Device Name
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWSTK-HF" >> build.prop	
+		echo "ro.product.system.device=HWSTK-HF" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.product.device=HWSTK-HF" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWSTK-HF" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+	fi
+	
 	# POT-LX1 / POT-LX1A P Smart 2019 / 2020
 	if [ "$model" == "POT-LX1" ];then
 		# NFC
@@ -228,7 +259,18 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWPOT" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 		
+		# IA for Camera
+		echo "ro.camera.master_ai_default=off" >>  build.prop
+		echo "ro.camera.front_ai_default=off" >>  build.prop
+		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
+		
+		# -----------------------------IAWare Config Huawei ----------------------- #
+		mkdir etc/xml
+		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
 
 	fi	
 
@@ -258,7 +300,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-L09" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
-		echo "ro.product.model=VTR-L09" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
@@ -293,7 +334,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-AL00" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
-		echo "ro.product.model=VTR-AL00" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop
@@ -338,13 +378,18 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.device=HWFIG" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 		echo "ro.build.product=FIG" >> build.prop
-		
 		echo "ro.lineage.device=HWFIG" >>  build.prop
+		
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+		
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 	fi
-			
-	
 
-	# ANE-LX1 Huawei P20 Lite 2017
+	# ANE-LX1 Huawei P20 Lite
 	if [ "$model" == "ANE-LX1" ];then
 		# NFC 
 		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_anne.conf" etc/libnfc-brcm.conf
@@ -374,8 +419,67 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.product.system_ext.device=HWANE" >>  system_ext/etc/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 		echo "ro.build.product=ANE" >> build.prop
+		echo "ro.lineage.device=HWANE" >>  build.prop
+				
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+		
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
 	fi	
 
+	# MediaTab T5
+	if [ "$model" == "AGS2-L09" ];then
+
+		echo "ro.product.system.device=HWAGS2" >>  build.prop
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.brand=HUAWEI" >> build.prop
+		echo "ro.product.device=HWAGS2" >> build.prop
+		echo "ro.product.product.device=HWAGS2" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWAGS2" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.build.product=AGS2" >> build.prop
+		echo "ro.lineage.device=HWAGS2" >>  build.prop
+				
+		# From iceows supl20 apk (# Hisi)
+		echo "is_hisi_connectivity_chip=1" >> build.prop
+		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
+		
+		# For FM Radio volume (# Hisi)
+		echo "ro.connectivity.chiptype=hisi"  >> build.prop;
+		
+		# For screen DPI
+		sed -i "/ro.sf.lcd_density/d" build.prop 
+		echo "ro.sf.lcd_density=566"  >> build.prop;
+	
+		# For lock the screen (netflix)
+		echo "lockscreen.rot_override=true"  >> build.prop;
+	fi
+	
+	
+	# BND-L21
+	if [ "$model" == "BND-L21" ];then
+
+		echo "ro.product.brand=[HONOR]" >> build.prop
+		echo "ro.product.device=HWBND-H" >> build.prop	
+		echo "ro.product.system.device=HWBND-H" >>  build.prop
+		echo "ro.product.system.brand=HONOR" >>  build.prop	
+		echo "ro.product.product.device=HWBND-H" >>  product/etc/build.prop
+		echo "ro.product.product.brand=HONOR" >>  product/etc/build.prop	
+		echo "ro.product.system_ext.device=HWBND-H" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.brand=HONOR" >>  system_ext/etc/build.prop
+		echo "ro.build.product=BND" >> build.prop
+		
+		# Perhaps also replace fingerprint
+		#[ro.build.description]: [BND-L21-user 9.1.0 HUAWEIBND-L21 194-LGRP2-OVS release-keys]
+		#[ro.build.display.id]: [BND-L21 9.1.0.174(C185E2R1P2)]
+		#[ro.build.fingerprint]: [HONOR/BND-L21/HWBND-H:9/HONORBND-L21/9.1.0.174C185:user/release-keys]
+		
+	fi
 
 	# STF-L09 Huawei Honor 9 (L09 - L29)
 	if [ "$model" == "STF-L09" ];then
@@ -474,10 +578,25 @@ mount -o loop,rw s-ab-raw.img d
 
 	# Tee Deamon
 	cp "$origin/files-patch/system/bin/tee_auth_daemon" bin/tee_auth_daemon
-	xattr -w security.selinux u:object_r:system_file:s0  bin/tee_auth_daemon
+	xattr -w security.selinux u:object_r:teecd_auth_exec:s0  bin/tee_auth_daemon
+	chmod 755 bin/tee_auth_daemon
+	# 2000 = shell
+	chown root:2000 bin/tee_auth_daemon
 	cp "$origin/files-patch/system/bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec" bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
-	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4
-	
+	xattr -w security.selinux u:object_r:system_file:s0  bin/79b77788-9789-4a7a-a2be-b60155eef5f4.sec
+	cp "$origin/files-patch/system/lib64/libc_secshared.so" lib64/libc_secshared.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libc_secshared.so
+	cp "$origin/files-patch/system/lib64/libtuidaemon.so" lib64/libtuidaemon.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libtuidaemon.so
+	cp "$origin/files-patch/system/lib64/libteec_client.so" lib64/libteec_client.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libteec_client.so
+	cp "$origin/files-patch/system/lib64/libhidlbase.so" lib64/libhidlbase.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/libhidlbase.so
+	cp "$origin/files-patch/system/lib64/vendor.huawei.hardware.libteec@1.0.so" lib64/vendor.huawei.hardware.libteec@1.0.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0  lib64/vendor.huawei.hardware.libteec@1.0.so
+	cp "$origin/files-patch/system/lib64/vendor.huawei.hardware.libteec@2.0.so" lib64/vendor.huawei.hardware.libteec@2.0.so
+	xattr -w security.selinux u:object_r:system_lib_file:s0   lib64/vendor.huawei.hardware.libteec@2.0.so	
+
 	
 	# Codec bluetooth 32 bits
 	cp "$origin/files-patch/system/lib/libaptX_encoder.so" lib/libaptX_encoder.so
@@ -514,7 +633,10 @@ mount -o loop,rw s-ab-raw.img d
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.28.txt
 	#xattr -w security.selinux u:object_r:system_file:s0 etc/ld.config.txt
 
-		
+	# -----------------------------APN Huawei ----------------------- #
+	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
+
+
 	# --------------AGPS Patch Only gnss model ---------------------- #
 	
 	if [ "$model" == "FIG-LX1" ] || [ "$model" == "ANE-LX1" ] || [ "$model" == "POT-LX1" ];then
@@ -554,7 +676,7 @@ mount -o loop,rw s-ab-raw.img d
 		
 		# Set owner and permissions (system:system)
 		chmod 755 bin/gnss_watchlssd_thirdparty
-		chown 1000:1000 bin/gnss_watchlssd_thirdparty
+		chown root:2000 bin/gnss_watchlssd_thirdparty
 
 		xattr -w security.selinux u:object_r:hi110x_daemon_exec:s0 bin/gnss_watchlssd_thirdparty
 		xattr -w security.selinux u:object_r:system_lib_file:s0 lib/libgnss_lss_gw_thirdparty.so
@@ -574,21 +696,9 @@ mount -o loop,rw s-ab-raw.img d
 		echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
 		echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
 
-
-		# ------------------------------------ #
-		
-		# From iceows supl20 apk (# Hisi)
-		echo "is_hisi_connectivity_chip=1" >> build.prop
-		echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
-		echo "ro.hardware.hisupl=hi1102"  >> build.prop;
 	fi
 	
-
-	# Hisupl (com.android.supl) - gnss_supl20service_hisi.apk (old version)
-	echo "(allow system_app hi110x_daemon (unix_stream_socket (connectto create bind read write getattr setattr lock append listen accept getopt setopt shutdown)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app hal_hisupl_default (binder (call transfer)))" >> etc/selinux/plat_sepolicy.cil 
-	echo "(allow system_app hi110x_vendor_file (dir (search)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow system_app hi110x_vendor_file (file (open read)))" >>  etc/selinux/plat_sepolicy.cil 
+	
 	
 	# Fix system ntp_server (europe pool)
 	set global ntp_server europe.pool.ntp.org
@@ -598,144 +708,21 @@ mount -o loop,rw s-ab-raw.img d
 	echo "assisted_gps_enabled=1"  >> build.prop;
 
 	# Uncomment to Debug GPS
-	# echo "log.tag.GnssConfiguration=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.GnssLocationProvider=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.GnssManagerService=DEBUG" >> /system_root/system/build.prop;
-	# echo "log.tag.NtpTimeHelper=DEBUG" >> /system_root/system/build.prop;
+	# echo "log.tag.GnssConfiguration=DEBUG" >> build.prop;
+	# echo "log.tag.GnssLocationProvider=DEBUG" >> build.prop;
+	# echo "log.tag.GnssManagerService=DEBUG" >> build.prop;
+	# echo "log.tag.NtpTimeHelper=DEBUG" >> build.prop;
 	
 	# active le mode journalisation
-	# echo "ro.control_privapp_permissions=log" >> /system_root/system/build.prop;
+	# echo "ro.control_privapp_permissions=log" >> build.prop;
 
-
-	#----------------------------- SELinux rules -----------------------------------------------------	
-	
 
 	
-	# --------------------------- Kirin EMUI 9 perf properties add SELinux rules for vendor init -----
+	#----------------------------- SELinux rules Now include in huawei.te ------------------------------	
 
-	echo "(type kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_audio_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_dbg_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_dbg_prop)" >> etc/selinux/plat_sepolicy.cil	
-	echo "(type kirin_video_dbgs_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_dbgs_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_audio_set_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_audio_set_prop)" >> etc/selinux/plat_sepolicy.cil	
-	echo "(type kirin_drm_info)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_drm_info)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_sys_mediaserver_timestamp_print)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_sys_mediaserver_timestamp_print)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_video_sys_mediaserver_saveyuv)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_video_sys_mediaserver_saveyuv)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type kirin_perf_ro_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r kirin_perf_ro_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type product_platform_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r product_platform_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type tee_tui_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r tee_tui_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type vowifi_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r vowifi_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type huawei_hiai_ddk_version_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r huawei_hiai_ddk_version_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(type huawei_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(roletype object_r huawei_perf_persist_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
 	
-	echo "(typeattribute kirin_exported_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset kirin_exported_public_read_prop (kirin_audio_prop kirin_video_dbg_prop kirin_video_dbgs_prop kirin_drm_info kirin_video_sys_mediaserver_timestamp_print kirin_video_sys_mediaserver_saveyuv kirin_perf_persist_public_read_prop kirin_perf_ro_public_read_prop product_platform_prop tee_tui_prop vowifi_prop huawei_hiai_ddk_version_prop ))" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattribute huawei_exported_public_read_prop)" >> etc/selinux/plat_sepolicy.cil
-	echo "(typeattributeset huawei_exported_public_read_prop ( huawei_perf_persist_public_read_prop ))" >> etc/selinux/plat_sepolicy.cil
-
-
-	#sed -i '/(typeattributeset kirin_exported_public_read_prop/d' /system/etc/selinux/plat_sepolicy.cil	
-	#(type vrdisplay_property)
-	#(roletype object_r vrdisplay_property)
-	#(type netflix_certification_prop)
-	#(roletype object_r netflix_certification_prop)
-
-
-	# ------------------- etc/selinux/mapping/28.0.cil ------------------
-
-	echo "(typeattributeset kirin_audio_prop_28_0 (kirin_audio_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_audio_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_audio_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_dbg_prop_28_0 (kirin_video_dbg_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_dbg_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_dbg_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_dbgs_prop_28_0 (kirin_video_dbgs_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_dbgs_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_dbgs_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_drm_info_28_0 (kirin_drm_info))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_drm_info_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_drm_info_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_sys_mediaserver_timestamp_print_28_0 (kirin_video_sys_mediaserver_timestamp_print))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_sys_mediaserver_timestamp_print_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_sys_mediaserver_timestamp_print_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_video_sys_mediaserver_saveyuv_28_0 (kirin_video_sys_mediaserver_saveyuv))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_video_sys_mediaserver_saveyuv_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_video_sys_mediaserver_saveyuv_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_perf_persist_public_read_prop_28_0 (kirin_perf_persist_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_perf_persist_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_perf_persist_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset kirin_perf_ro_public_read_prop_28_0 (kirin_perf_ro_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (kirin_perf_ro_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute kirin_perf_ro_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset product_platform_prop_28_0 (product_platform_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (product_platform_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute product_platform_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattributeset tee_tui_prop_28_0 (tee_tui_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (tee_tui_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute tee_tui_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-	
-	echo "(typeattributeset huawei_perf_persist_public_read_prop_28_0 (huawei_perf_persist_public_read_prop))" >> etc/selinux/mapping/28.0.cil
-	echo "(expandtypeattribute (huawei_perf_persist_public_read_prop_28_0) true)" >> etc/selinux/mapping/28.0.cil
-	echo "(typeattribute huawei_perf_persist_public_read_prop_28_0)" >> etc/selinux/mapping/28.0.cil
-
-
-	# ------------------- etc/selinux/plat_property_contexts ------------------
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# vendor-init-settable|public-readable" >> etc/selinux/plat_property_contexts
-	echo "# audio property" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.offload.enable  u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.usbvoice.enable  u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.usbvoice.name    u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.media.lowlatency.enable u:object_r:kirin_audio_prop:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# video property" >> etc/selinux/plat_property_contexts
-	echo "kirin.video.debug.datadump             u:object_r:kirin_video_dbg_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.video.mntn                       u:object_r:kirin_video_dbgs_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.drm.info                         u:object_r:kirin_drm_info:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.sys.mediaserver.timestamp.print  u:object_r:kirin_video_sys_mediaserver_timestamp_print:s0" >> etc/selinux/plat_property_contexts
-	echo "kirin.sys.mediaserver.saveyuv          u:object_r:kirin_video_sys_mediaserver_saveyuv:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# perf property" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.alloc_buffer_sync u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.texture_cache_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touch_vsync_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touch_move_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.touchevent_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.decodebitmap_opt u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.kirin.perfoptpackage_list u:object_r:kirin_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.config.hw_perfgenius u:object_r:kirin_perf_ro_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.config.hw_board_ipa u:object_r:kirin_perf_ro_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "persist.huawei.touch_vsync_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.huawei.touch_move_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "persist.huawei.touchevent_opt u:object_r:huawei_perf_persist_public_read_prop:s0" >> etc/selinux/plat_property_contexts
-
-	echo "" >> etc/selinux/plat_property_contexts	
-	echo "# product_platform" >> etc/selinux/plat_property_contexts
-	echo "ro.kirin.product.platform     u:object_r:product_platform_prop:s0" >> etc/selinux/plat_property_contexts
-	echo "ro.vendor.tui.service  u:object_r:tee_tui_prop:s0" >> etc/selinux/plat_property_contexts
-
-
 	# property
-	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> /system_root/system/etc/selinux/plat_property_contexts
+	#echo "ro.hwcamera.SlowMotionZoom  u:object_r:default_prop:s0" >> etc/selinux/plat_property_contexts
 		
 	# Kirin	
 	echo "persist.kirin.alloc_buffer_sync=true" >> build.prop
@@ -744,21 +731,39 @@ mount -o loop,rw s-ab-raw.img d
 	echo "persist.kirin.touch_vsync_opt=1"  >> build.prop
 	echo "persist.kirin.touchevent_opt=1"  >> build.prop
 	
+	echo "persist.kirin.media.usbvoice.enable=true"  >> build.prop
+	echo "persist.kirin.media.usbvoice.name=USB-Audio - HUAWEI GLASS"  >> build.prop
+	echo "persist.kirin.media.offload.enable=true"  >> build.prop
+	echo "persist.kirin.media.hires.enable=true"  >> build.prop
+	
+	echo "ro.kirin.config.hw_perfgenius=true"  >> build.prop
+	echo "ro.kirin.config.hw_board_ipa=true"  >> build.prop
+	
 	# Enable lowlatency
 	echo "persist.media.lowlatency.enable=true" >> build.prop
 	echo "persist.kirin.media.lowlatency.enable=true" >> build.prop
 
+	#----------------------------- tee daemon --------------------------------------------------------	
+	
 
+	#echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(allow tee_multi_user_socket socket_device (dir (write add_name)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow tee_multi_user_socket socket_device (sock_file (create setattr)))" >> etc/selinux/plat_sepolicy.cil
+	
+	#echo "(allow init teecd_auth_exec (file (read getattr map execute open)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(allow init tee_multi_user_socket (sock_file (create setattr unlink)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(allow tee_multi_user_socket tmpfs (filesystem (associate)))" >> etc/selinux/plat_sepolicy.cil
+
+	#echo "(dontaudit teecd hal_keymaster_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	#echo "(dontaudit teecd hal_gatekeeper_default (process (getattr)))" >> etc/selinux/plat_sepolicy.cil
+
+
+	
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
-	# Remove non use apex vndk
-	rm -rf "system_ext/apex/com.android.vndk.v29"
-	rm -rf "system_ext/apex/com.android.vndk.v30"
-	rm -rf "system_ext/apex/com.android.vndk.v31"
-	rm -rf "system_ext/apex/com.android.vndk.v32"
-
 	cd ../d
-
 
 	find -name \*.capex -or -name \*.apex -type f -delete
 	for vndk in 28 29;do
@@ -792,7 +797,7 @@ sleep 1
 # --------------------- erofs-vndklite or ext4-vndklite -------------------------------------------
 
 if [ "$erofs" == "Y" ];then
-	mkfs.erofs -E legacy-compress -zlz4hc -d2 s-erofs.img d/
+	./mkfs.erofs -E legacy-compress -zlz4 -d2 s-erofs.img d/
 	umount d
 else
 	umount d
