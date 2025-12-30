@@ -194,8 +194,6 @@ mount -o loop,rw s-ab-raw.img d
 	
         # -----------------------------VNDK fixe ----------------------- #	
 	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
-	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
-	
 
 	# -----------------------------Huawei debug ---------------------------- #	
 	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
