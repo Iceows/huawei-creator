@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Usage:
-#sudo bash run-huawei-ab-a13.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
+#sudo bash run-huawei-ab-a16.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
 #cleanups
 #A13 version
 umount d
@@ -20,9 +20,9 @@ bootanim="$4"
 erofs="$5"
 
 if [ ! -f "$srcFile" ];then
-	echo "Usage: sudo bash run-huawei-ab-a13.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
-	echo "version=LeaOS A13"
-	echo "device=ANE-LX1"
+	echo "Usage: sudo bash run-huawei-emui9-ab-a16.sh [/path/to/system.img] [version] [model device] [bootanimation] [erofs]"
+	echo "version=LeaOS A16"
+	echo "device=POT-LX1"
 	echo "bootanimation=[Y/N]"
 	echo "erofs=[Y/N]"
 	exit 1
@@ -33,7 +33,7 @@ fi
 rm -Rf tmp
 mkdir -p d tmp
 e2fsck -y -f s-ab-raw.img
-resize2fs s-ab-raw.img 5000M
+resize2fs s-ab-raw.img 4000M
 e2fsck -E unshare_blocks -y -f s-ab-raw.img
 mount -o loop,rw s-ab-raw.img d
 (
@@ -119,7 +119,7 @@ mount -o loop,rw s-ab-raw.img d
 	sed -i "/ro.lineage.display.version/d" build.prop
 	sed -i "/ro.modversion/d" build.prop
 	sed -i "/ro.lineage.device/d" build.prop
-	echo "ro.lineage.version=22" >>  build.prop
+	echo "ro.lineage.version=23.2" >>  build.prop
 	echo "ro.lineage.display.version=$versionNumber" >>  build.prop
 	
 	# set modversion
@@ -192,26 +192,12 @@ mount -o loop,rw s-ab-raw.img d
 	# Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
 	
-        # -----------------------------VNDK fixe ----------------------- #	
+	# -----------------------------VNDK fixe ----------------------- #	
 	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
-	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
-	
 
 	# -----------------------------Huawei debug ---------------------------- #	
 	cp "$origin/files-patch/system/etc/init/debug-log-gsi.rc" "etc/init/debug-log-gsi.rc"
 	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/debug-log-gsi.rc"
-		
-	# -----------------------------Radio -------------------------------- #
-	cp "$origin/files-patch/system/etc/vintf/manifest.xml" "etc/vintf/manifest.xml"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/vintf/manifest.xml"
-
-	# -----------------------------Priv-app--------------------------------- #
-        mkdir "priv-app/TrebleApp/"
-        xattr -w security.selinux u:object_r:system_file:s0 "priv-app/TrebleApp/"
-        
-	cp  "$origin/files-patch/system/priv-app/TrebleApp.apk" "priv-app/TrebleApp/TrebleApp.apk"
-	chmod 644 "priv-app//TrebleApp/TrebleApp.apk"
-	xattr -w security.selinux u:object_r:system_file:s0 "priv-app/TrebleApp/TrebleApp.apk"
 
 
 	#-----------------------------File copy -----------------------------------------------------
@@ -776,7 +762,6 @@ mount -o loop,rw s-ab-raw.img d
 	#-----------------------------vndk-lite --------------------------------------------------------	
 
 	cd ../d
-
 
 	find -name \*.capex -or -name \*.apex -type f -delete
 	for vndk in 28 29;do
