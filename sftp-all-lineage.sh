@@ -10,12 +10,13 @@ srcDateFile="$1"
 
 
 # LeaOS Vanilia + Google
-for model in pot;do
- 	lftp sftp://altairfr:xxx@frs.sourceforge.net -e "cd /home/frs/project/altairfr-huawei/LeaOS-21.0 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS/21.0/LeaOS-21.0-${srcDateFile}-iceows-google-${model}.img.xz; bye"
- done
+for model in pot ane;do
+ 	lftp sftp://xxxxx -e "cd /home/frs/project/altairfr-huawei/LeaOS-21.0 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS/21.0/LeaOS-21.0-${srcDateFile}-iceows-google-${model}.img.xz; bye"
+ 	lftp sftp://xxxxx -e "cd /home/frs/project/altairfr-huawei/LeaOS-21.0 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS/21.0/LeaOS-21.0-${srcDateFile}-iceows-${model}.img.xz; bye"
+done
 
 # LeaOS-GSI Vanilia + Google
-for model in arm64_byN;do
-	lftp sftp://altairfr:xxx@frs.sourceforge.net -e "cd /home/frs/project/altairfr-huawei/LeaOS-21.0 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS/21.0/LeaOS-21.0-${srcDateFile}-${model}.img.xz; bye"
+for model in arm64_byN arm64_boN;do
+	lftp sftp://xxxxx -e "cd /home/frs/project/altairfr-huawei/LeaOS-21.0 ;put /media/iceows/Sauvegardes/ice-rom/LeaOS/21.0/LeaOS-21.0-${srcDateFile}-${model}.img.xz; bye"
 done
 
