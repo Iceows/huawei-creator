@@ -32,30 +32,6 @@ on boot
 #teeos
     mkdir /data/log/tee 0770 root system
 
-# Create cgroup for pids
-    mount tmpfs none /sys/fs/cgroup mode=0750,uid=0,gid=1000
-    mkdir /sys/fs/cgroup/pids 0750 root system
-    mount cgroup none /sys/fs/cgroup/pids pids
-    mkdir /sys/fs/cgroup/pids/unconfirm_app 0750 root system
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/cgroup.procs
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/cgroup.procs
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/tasks
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/tasks
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/pids.group_limit
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/pids.group_limit
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/unconfirm_app/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/cgroup.event_control
-    mkdir /sys/fs/cgroup/pids/daemon_proc 0750 root system
-    chown root system /sys/fs/cgroup/pids/daemon_proc/cgroup.procs
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/cgroup.procs
-    chown root system /sys/fs/cgroup/pids/daemon_proc/tasks
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/tasks
-    chown root system /sys/fs/cgroup/pids/daemon_proc/pids.group_limit
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/pids.group_limit
-    chown root system /sys/fs/cgroup/pids/daemon_proc/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/daemon_proc/cgroup.event_control
-
 #for VCE lite
 on property:ro.board.boardid=6978
     setprop media.settings.xml /odm/etc/media_profiles_V1_0_lite.xml

@@ -1,7 +1,3 @@
 
-on post-fs-data
-
-
 on boot
     setprop hilog.tag I
-

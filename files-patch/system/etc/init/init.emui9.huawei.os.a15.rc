@@ -7,7 +7,7 @@ on init
     mkdir /dev/bus/usb 0755 root root
     mkdir /dev/bus/usb/001 0755 root root
     mkdir /dev/bus/usb/002 0755 root root
-    
+
 # mount secure storage partition for teeos
     mount ext4 /dev/block/by-name/secure_storage /sec_storage nosuid nodev noatime wait crypt discard,auto_da_alloc,mblk_io_submit,data=journal,context=u:object_r:teecd_data_file:s0
     chown root root /sec_storage
@@ -29,29 +29,6 @@ on boot
     chmod 775 /data/log/bt
 #teeos
     mkdir /data/log/tee 0770 root system
-# Create cgroup for pids
-    mount tmpfs none /sys/fs/cgroup mode=0750,uid=0,gid=1000
-    mkdir /sys/fs/cgroup/pids 0750 root system
-    mount cgroup none /sys/fs/cgroup/pids pids
-    mkdir /sys/fs/cgroup/pids/unconfirm_app 0750 root system
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/cgroup.procs
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/cgroup.procs
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/tasks
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/tasks
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/pids.group_limit
-    chmod 0660 /sys/fs/cgroup/pids/unconfirm_app/pids.group_limit
-    chown root system /sys/fs/cgroup/pids/unconfirm_app/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/unconfirm_app/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/cgroup.event_control
-    mkdir /sys/fs/cgroup/pids/daemon_proc 0750 root system
-    chown root system /sys/fs/cgroup/pids/daemon_proc/cgroup.procs
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/cgroup.procs
-    chown root system /sys/fs/cgroup/pids/daemon_proc/tasks
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/tasks
-    chown root system /sys/fs/cgroup/pids/daemon_proc/pids.group_limit
-    chmod 0660 /sys/fs/cgroup/pids/daemon_proc/pids.group_limit
-    chown root system /sys/fs/cgroup/pids/daemon_proc/cgroup.event_control
-    chmod 0220 /sys/fs/cgroup/pids/daemon_proc/cgroup.event_control
 
 #audio
     chmod 0660 /dev/nxp_smartpa_dev
@@ -103,18 +80,6 @@ on property:runtime.mmitest.isrunning=false
     write /sys/devices/platform/huawei_sensor/set_fingersense_enable 1
     write /sys/touchscreen/roi_enable 1
 
-on property:ro.config.hw_emcom=true
-    start emcomd
-
-service emcomd /system/bin/emcomd
-    class main
-    socket emcomd stream 0600 system system
-    user root
-    group root system vpn
-    seclabel u:r:emcomd:s0
-
-on update_oem_version_action
-    update_oem_version
 
 on post-fs-data
 
@@ -144,14 +109,6 @@ on post-fs-data
     restorecon /data/sec_storage_data_users
 
 
-    # DTS2018032707457 h00318668 20180505 begin
-    mkdir /data/misc/installer
-    chmod 2770 /data/misc/installer
-    chown system installer /data/misc/installer
-    restorecon_recursive /data/misc/installer
-    # DTS2018032707457 h00318668 20180505 end
-
-
 on property:ro.runmode=factory
     chown system system /sys/class/devfreq/ddrfreq_up_threshold/max_freq
     chmod 0660 /sys/class/devfreq/ddrfreq_up_threshold/max_freq
@@ -176,6 +133,4 @@ on property:persist.sys.huawei.debug.on=0
 
 on property:persist.sys.huawei.debug.on=1
     chown system system /sys/class/sensors/sensorhub_dump
-
-
     chmod 0664 /sys/class/sensors/sensorhub_dump

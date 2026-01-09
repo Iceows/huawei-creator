@@ -109,9 +109,8 @@ on init
     chown system system /dev/cpuset/boost/tasks
     chmod 0664 /dev/cpuset/boost/tasks
 
-#iaware main switch
+# iaware main switch
 on property:ro.config.enable_iaware=true
     setprop persist.sys.enable_iaware true
 on property:ro.config.enable_iaware=false
     setprop persist.sys.enable_iaware false
-
