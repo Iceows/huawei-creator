@@ -183,37 +183,22 @@ mount -o loop,rw s-ab-raw.img d
 	# echo "persist.service.adb.enable=1 " >> build.prop
 	# echo "service.adb.root=1" >> build.prop		
 
-	
+
 	#Performance android 13
 	echo "debug.performance.tuning=1" >> build.prop
-	
 
+	
+        #-----------------------------File copy -----------------------------------------------------
+	
+        # -----------------------------VNDK fixe ----------------------------- #	
+        cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
 
-	#-----------------------------File copy -----------------------------------------------------
-	
-        # -----------------------------VNDK fixe ----------------------- #	
-	cp "$origin/files-patch/system/bin/vndk-detect" "bin/vndk-detect"
-	cp "$origin/files-patch/system/etc/init/vndk.rc" "etc/init/vndk.rc"
-	
-	
         # -----------------------------IA Config Huawei ---------------------- #
         mkdir etc/xml
-	cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
-		
-	# -----------------------------APN Huawei ---------------------------- #
-	cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
-
-	# -----------------------------Huawei specific tweak ------------------#	
-	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.iaware.a15.rc" "etc/init/init.huawei.iaware.a15.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.iaware.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.os.a15.rc" "etc/init/init.huawei.os.a15.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.a15.rc"
-	cp "$origin/files-patch/system/etc/init/init.emui12.huawei.os.common.rc" "etc/init/init.huawei.os.common.rc"
-	xattr -w security.selinux u:object_r:system_file:s0 "etc/init/init.huawei.os.common.rc"
-
-	# -----------------------------PHH Exec ------------------------------ #
-	cp "$origin/files-patch/system/bin/rw-system.sh" "bin/rw-system.sh"
-	xattr -w security.selinux u:object_r:phhsu_exec:s0 "bin/rw-system.sh"
+        cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
+	
+        # -----------------------------APN Huawei ---------------------------- #
+        cp "$origin/files-patch/system/product/etc/apns-conf.xml" product/etc/apns-conf.xml
 
 	# Copy bootanimation.zip	
 	if [ "$bootanim" == "Y" ];then
