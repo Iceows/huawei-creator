@@ -264,10 +264,6 @@ mount -o loop,rw s-ab-raw.img d
 		echo "ro.camera.front_ai_default=off" >>  build.prop
 		echo "ro.hwcamera.ai_resolution=3264x2448" >>  build.prop
 		
-		# -----------------------------IAWare Config Huawei ----------------------- #
-		mkdir etc/xml
-		cp "$origin/files-patch/system/etc/xml/iaware_config_cust.bin" etc/xml/iaware_config_cust.bin
-
 	fi	
 
 	# VTR-L09 / VTR-AL00 Huawei P10
@@ -549,6 +545,11 @@ mount -o loop,rw s-ab-raw.img d
 	rm -rf product/media/audio/ringtones/URSAMINOR.ogg
 	
 	# Remove non huawei Overlay
+	rm -rf product/overlay/treble-overlay-duoqin*
+	rm -rf product/overlay/treble-overlay-meizu-*
+	rm -rf product/overlay/treble-overlay-oukitel-*
+	rm -rf product/overlay/treble-overlay-teclast-*
+	
 	rm -rf product/overlay/treble-overlay-infinix-*
 	rm -rf product/overlay/treble-overlay-lenovo-*
 	rm -rf product/overlay/treble-overlay-lge-*
