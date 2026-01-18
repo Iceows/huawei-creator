@@ -3,7 +3,7 @@
 #Usage:
 #sudo bash run-huawei-ab-a14.sh  [/path/to/system.img] [version] [model device] [huawei animation] [erofs]
 #cleanups
-#A13 version
+#A14 version
 umount d
 
 set -ex
